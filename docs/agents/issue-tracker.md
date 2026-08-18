@@ -12,6 +12,14 @@ Issues and specs for this repo live as markdown files in `.scratch/`.
 - `Blocked by: NN, NN` line when dependencies exist
 - Answers appended under `## Answer` heading on resolution
 
+## Jira mirroring (task tickets only)
+
+`task`-type tickets that produce PRs or deployments are mirrored in Jira project `KAN`. When creating a task ticket, also create the Jira counterpart and record the key:
+
+- `Jira: KAN-NN` — optional frontmatter field on `task` tickets only
+
+See `CLAUDE.md → Jira workflow` for the full agent lifecycle rules.
+
 ## Wayfinding operations
 
 - **Map**: `.scratch/<effort>/map.md`
