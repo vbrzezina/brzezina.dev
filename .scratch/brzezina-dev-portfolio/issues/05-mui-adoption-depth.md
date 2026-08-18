@@ -1,8 +1,7 @@
 # MUI adoption depth
 
 Type: grilling
-Status: open
-Blocked by: 04
+Status: resolved
 
 ## Question
 
@@ -16,3 +15,14 @@ Options:
 This decision depends on the design direction from "Design direction and visual identity" — a bold/expressive personal brand may require more bespoke components than full MUI allows cleanly.
 
 Resolve: which approach best serves the chosen design direction, and what are the long-term maintenance tradeoffs?
+
+## Answer
+
+MUI is rejected. The design direction (ticket 04) requires a bespoke aesthetic incompatible with Material Design conventions. Any MUI adoption would require constant theme overrides, adding weight without benefit.
+
+**Confirmed approach**: Radix UI (headless accessible primitives) + CSS custom properties (design tokens) + CSS Modules (component-scoped styles).
+
+- Radix UI provides accessible behaviours (focus management, ARIA, keyboard nav) without visual opinion
+- CSS custom properties carry all design tokens (colours, typography, radius, spacing)
+- CSS Modules scope component styles without runtime overhead
+- No Emotion, no Tailwind, no styled-components

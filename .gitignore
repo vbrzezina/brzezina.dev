@@ -36,3 +36,4 @@ Thumbs.db
 
 # Tooling
 .codemie/
+.playwright-mcp/

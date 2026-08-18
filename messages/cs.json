@@ -1,0 +1,70 @@
+{
+  "nav": {
+    "solutions": "Služby",
+    "work": "Projekty",
+    "about": "O mně",
+    "contact": "Kontakt"
+  },
+  "hero": {
+    "eyebrow": "Full-stack vývojář",
+    "heading": "Václav Brzezina",
+    "subheading": "Vyvíjím rychlé, přístupné webové aplikace, které řeší skutečné problémy.",
+    "cta": "Moje projekty",
+    "ctaSecondary": "Napište mi"
+  },
+  "solutions": {
+    "eyebrow": "Co dělám",
+    "heading": "Služby",
+    "items": {
+      "web": {
+        "title": "Webové aplikace",
+        "description": "Komplexní webové aplikace s moderními technologiemi — od prototypů po produkční platformy."
+      },
+      "frontend": {
+        "title": "Frontend engineering",
+        "description": "Výkonné, přístupné rozhraní postavené na Reactu a Next.js."
+      },
+      "backend": {
+        "title": "Backend & API",
+        "description": "Robustní API a serverová logika, od REST po event-driven architektury."
+      },
+      "platform": {
+        "title": "Platform & DevOps",
+        "description": "CI/CD pipelines, infrastruktura jako kód a cloudové nasazení."
+      }
+    }
+  },
+  "work": {
+    "eyebrow": "Vybrané projekty",
+    "heading": "Projekty",
+    "cta": "Zobrazit projekt"
+  },
+  "about": {
+    "eyebrow": "O mně",
+    "heading": "Profil",
+    "bio": "Jsem full-stack vývojář z Prahy se zaměřením na produktové inženýrství.",
+    "stack": {
+      "heading": "Tech stack"
+    },
+    "experience": {
+      "heading": "Zkušenosti"
+    }
+  },
+  "contact": {
+    "eyebrow": "Kontakt",
+    "heading": "Pojďme si promluvit",
+    "description": "K dispozici pro freelance projekty i plný úvazek.",
+    "form": {
+      "name": "Jméno",
+      "email": "E-mail",
+      "message": "Zpráva",
+      "submit": "Odeslat zprávu",
+      "success": "Zpráva odeslána — brzy se ozvu.",
+      "error": "Něco se pokazilo. Zkuste to znovu."
+    }
+  },
+  "footer": {
+    "copyright": "© {year} Vojtech Brzezina",
+    "madeWith": "Postaveno na Next.js"
+  }
+}

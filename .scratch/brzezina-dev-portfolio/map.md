@@ -8,7 +8,7 @@ A finalized spec for brzezina.dev — a bilingual (EN/CS) personal portfolio sit
 ## Notes
 
 - Stack: Next.js (App Router, TypeScript), Vercel hosting, public GitHub repo
-- **Styling**: Emotion CSS-in-JS is confirmed; MUI is under consideration — see ticket 05 (do not assume MUI is adopted)
+- **Styling**: Radix UI + CSS custom properties + CSS Modules — Emotion and MUI both rejected (see tickets 04, 05)
 - **Deployment mode**: `output: 'export'` (static) vs Vercel-native SSG — open question, see ticket 10
 - **i18n library**: next-intl is the research recommendation (ticket 01) but the HITL decision is ticket 06; next-i18next remains viable; choice may depend on deployment mode (ticket 10)
 - **Contact form**: approach depends on ticket 10 — Vercel route handler (Resend) if Vercel-native; external service if static export
@@ -30,11 +30,13 @@ A finalized spec for brzezina.dev — a bilingual (EN/CS) personal portfolio sit
 - [i18n options for Next.js App Router static export](.scratch/brzezina-dev-portfolio/issues/01-i18n-static-export-research.md) — use `next-intl` with `app/[locale]/` folder routing and `output: 'export'`; middleware is skipped, locale prefix is always required, JSON message files are the translation source of truth
 - [CMS options for a Next.js static export portfolio](.scratch/brzezina-dev-portfolio/issues/02-cms-options-research.md) — Start with no-CMS (TypeScript/JSON in git); Keystatic is the natural upgrade path when editing friction grows; Decap/Tina/Sanity are all disproportionate for a solo static-export portfolio.
 - [Contact form mailer for Vercel serverless functions](.scratch/brzezina-dev-portfolio/issues/03-mailer-options-research.md) — Use Resend: free tier (3k/month) covers all portfolio traffic, single env var, HTTPS-native (no SMTP cold-start), first-class Next.js support; Formspree free cap is too low, Nodemailer+Gmail is fragile, AWS SES setup overhead is unjustified without existing AWS footprint.
+- [Design direction and visual identity](issues/04-design-direction.md) — Developer-dark-first; Space Grotesk + DM Sans + JetBrains Mono; teal oklch accent on deep navy; CSS transitions only; sharp corners
+- [MUI adoption depth](issues/05-mui-adoption-depth.md) — MUI rejected; Radix UI + CSS custom properties + CSS Modules confirmed
+- [Hero section visual prototype](issues/09-visual-prototype.md) — Prototype at https://github.com/vbrzezina/brzezina-blueprint; design direction confirmed, ready for build phase
 
 ## Not yet specified
 
 - Specific page copy and content (emerges after design direction and CMS strategy are settled)
-- Animation/motion library choice (Framer Motion vs CSS transitions — depends on design direction ticket)
 - Portfolio section data structure (fields: title, description, tech stack, link, image — needs CMS strategy first)
 - Services section structure and engagement model copy
 - Deployment workflow (preview deployments, branch strategy — can be decided at build time)
