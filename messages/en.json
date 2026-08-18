@@ -1,0 +1,70 @@
+{
+  "nav": {
+    "solutions": "Solutions",
+    "work": "Work",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "hero": {
+    "eyebrow": "Full-stack developer",
+    "heading": "Václav Brzezina",
+    "subheading": "I build fast, accessible web applications that solve real problems.",
+    "cta": "See my work",
+    "ctaSecondary": "Get in touch"
+  },
+  "solutions": {
+    "eyebrow": "What I do",
+    "heading": "Solutions",
+    "items": {
+      "web": {
+        "title": "Web Applications",
+        "description": "End-to-end web apps with modern stacks — from product prototypes to production-grade platforms."
+      },
+      "frontend": {
+        "title": "Frontend Engineering",
+        "description": "Performant, accessible interfaces built with React and Next.js."
+      },
+      "backend": {
+        "title": "Backend & APIs",
+        "description": "Robust APIs and server-side logic, from REST to event-driven architectures."
+      },
+      "platform": {
+        "title": "Platform & DevOps",
+        "description": "CI/CD pipelines, infrastructure-as-code, and cloud deployments that scale."
+      }
+    }
+  },
+  "work": {
+    "eyebrow": "Selected work",
+    "heading": "Projects",
+    "cta": "View project"
+  },
+  "about": {
+    "eyebrow": "About me",
+    "heading": "Background",
+    "bio": "I'm a full-stack developer based in Prague with a focus on product engineering.",
+    "stack": {
+      "heading": "Tech stack"
+    },
+    "experience": {
+      "heading": "Experience"
+    }
+  },
+  "contact": {
+    "eyebrow": "Get in touch",
+    "heading": "Let's talk",
+    "description": "Available for freelance projects and full-time opportunities.",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "submit": "Send message",
+      "success": "Message sent — I'll be in touch shortly.",
+      "error": "Something went wrong. Please try again."
+    }
+  },
+  "footer": {
+    "copyright": "© {year} Vojtech Brzezina",
+    "madeWith": "Built with Next.js"
+  }
+}
