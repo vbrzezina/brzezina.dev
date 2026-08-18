@@ -1,70 +1,65 @@
 {
   "nav": {
-    "solutions": "Solutions",
-    "work": "Work",
     "about": "About",
+    "experience": "Experience",
+    "services": "Services",
+    "work": "Work",
     "contact": "Contact"
   },
   "hero": {
-    "eyebrow": "Full-stack developer",
+    "eyebrow": "00 / BASED IN THE CZECH REPUBLIC",
     "heading": "Václav Brzezina",
-    "subheading": "I build fast, accessible web applications that solve real problems.",
+    "role": "Software Engineer",
+    "tagline": "9 years building JavaScript products across the full stack",
+    "intro": "TypeScript and React on the frontend, Node.js and NestJS on the backend, AWS serverless in the cloud. Comfortable taking technical ownership of architecture, code quality and direction while staying hands-on with code.",
+    "current": "Currently Tech Lead on Burberry's O2O Clientelling platform at EPAM Systems.",
     "cta": "See my work",
     "ctaSecondary": "Get in touch"
   },
-  "solutions": {
-    "eyebrow": "What I do",
-    "heading": "Solutions",
-    "items": {
-      "web": {
-        "title": "Web Applications",
-        "description": "End-to-end web apps with modern stacks — from product prototypes to production-grade platforms."
-      },
-      "frontend": {
-        "title": "Frontend Engineering",
-        "description": "Performant, accessible interfaces built with React and Next.js."
-      },
-      "backend": {
-        "title": "Backend & APIs",
-        "description": "Robust APIs and server-side logic, from REST to event-driven architectures."
-      },
-      "platform": {
-        "title": "Platform & DevOps",
-        "description": "CI/CD pipelines, infrastructure-as-code, and cloud deployments that scale."
-      }
-    }
+  "about": {
+    "index": "01",
+    "slug": "ABOUT",
+    "heading": "Hands-on senior engineer",
+    "stackHeading": "Stack & tooling",
+    "languagesHeading": "Languages"
+  },
+  "experience": {
+    "index": "02",
+    "slug": "EXPERIENCE",
+    "heading": "Nine years, shipped",
+    "lead": "Enterprise platforms, agency projects, and greenfield products."
+  },
+  "services": {
+    "index": "03",
+    "slug": "SERVICES",
+    "heading": "What I take on",
+    "lead": "Contract engagements where technical ownership matters as much as throughput."
   },
   "work": {
-    "eyebrow": "Selected work",
-    "heading": "Projects",
-    "cta": "View project"
-  },
-  "about": {
-    "eyebrow": "About me",
-    "heading": "Background",
-    "bio": "I'm a full-stack developer based in Prague with a focus on product engineering.",
-    "stack": {
-      "heading": "Tech stack"
-    },
-    "experience": {
-      "heading": "Experience"
-    }
+    "index": "04",
+    "slug": "WORK",
+    "heading": "Selected work",
+    "comingSoon": "Projects coming soon"
   },
   "contact": {
-    "eyebrow": "Get in touch",
-    "heading": "Let's talk",
-    "description": "Available for freelance projects and full-time opportunities.",
+    "index": "05",
+    "slug": "CONTACT",
+    "heading": "Available for freelance and contract engagements",
+    "lead": "Tell me about the product, the stack, and the timeline. I will get back to you within 48 hours.",
     "form": {
       "name": "Name",
-      "email": "Email",
+      "email": "Email address",
       "message": "Message",
       "submit": "Send message",
-      "success": "Message sent — I'll be in touch shortly.",
+      "sending": "Sending…",
+      "success": "Message sent.",
       "error": "Something went wrong. Please try again."
+    },
+    "sidebar": {
+      "responseLabel": "Response time",
+      "responseValue": "Within 48 hours",
+      "cvLabel": "Curriculum vitae",
+      "cvCta": "Download PDF"
     }
-  },
-  "footer": {
-    "copyright": "© {year} Vojtech Brzezina",
-    "madeWith": "Built with Next.js"
   }
 }

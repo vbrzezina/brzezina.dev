@@ -1,15 +1,23 @@
-import { useTranslations } from 'next-intl';
+import { SiteNav } from '@/components/nav/SiteNav';
+import { Hero } from '@/components/sections/Hero';
+import { About } from '@/components/sections/About';
+import { Experience } from '@/components/sections/Experience';
+import { Services } from '@/components/sections/Services';
+import { Work } from '@/components/sections/Work';
+import { Contact } from '@/components/sections/Contact';
 
 export default function HomePage() {
-  const t = useTranslations('hero');
-
   return (
-    <main>
-      <section className="scroll-section">
-        <p className="eyebrow">{t('eyebrow')}</p>
-        <h1>{t('heading')}</h1>
-        <p>{t('subheading')}</p>
-      </section>
-    </main>
+    <>
+      <SiteNav />
+      <main>
+        <Hero />
+        <About />
+        <Experience />
+        <Services />
+        <Work />
+        <Contact />
+      </main>
+    </>
   );
 }

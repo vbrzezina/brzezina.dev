@@ -1,6 +1,17 @@
 # brzezina.dev portfolio — wayfinder map
 Type: wayfinder:map
 
+## Background
+
+Started: 2026-08-17. This is a completely new portfolio site — no previous site existed. The motivation was to build a public online presence for contractor work and headhunter visibility.
+
+**Early wrong turns (for case study):**
+- shadcn/ui evaluated and rejected: copy-paste pattern is not a real design system, no centralized updates, every component becomes a maintenance liability
+- Tailwind evaluated and rejected: utility-class approach creates friction with a bespoke visual identity; the terminal/CLI aesthetic requires precise, named abstractions not inline utilities
+- CSS Modules evaluated and rejected: adequate but doesn't scale well with dynamic theming and prop-driven variant styling; Emotion/styled-components is the chosen CSS-in-JS approach
+
+**Stack decisions still open as of 2026-08-18:** deployment mode (ticket 10), CMS (ticket 07), mailer (ticket 08), i18n library (ticket 06, blocked by 10), Radix Primitives vs Radix Themes as the component layer
+
 ## Destination
 
 A finalized spec for brzezina.dev — a bilingual (EN/CS) personal portfolio site for Václav Brzezina, a senior full-stack TypeScript/React engineer offering contractor services and visible to headhunters. The spec locks all architectural, design, content, and infrastructure decisions so a build session can proceed without ambiguity.
@@ -8,7 +19,7 @@ A finalized spec for brzezina.dev — a bilingual (EN/CS) personal portfolio sit
 ## Notes
 
 - Stack: Next.js (App Router, TypeScript), Vercel hosting, public GitHub repo
-- **Styling**: Radix UI + CSS custom properties + CSS Modules — Emotion and MUI both rejected (see tickets 04, 05)
+- **Styling**: Radix UI (Primitives or Themes — open) + Emotion/styled-components + CSS custom properties. CSS Modules, Tailwind, shadcn, MUI all rejected. See `ui-library-decision-summary.md` for option analysis.
 - **Deployment mode**: `output: 'export'` (static) vs Vercel-native SSG — open question, see ticket 10
 - **i18n library**: next-intl is the research recommendation (ticket 01) but the HITL decision is ticket 06; next-i18next remains viable; choice may depend on deployment mode (ticket 10)
 - **Contact form**: approach depends on ticket 10 — Vercel route handler (Resend) if Vercel-native; external service if static export
@@ -33,6 +44,7 @@ A finalized spec for brzezina.dev — a bilingual (EN/CS) personal portfolio sit
 - [Design direction and visual identity](issues/04-design-direction.md) — Developer-dark-first; Space Grotesk + DM Sans + JetBrains Mono; teal oklch accent on deep navy; CSS transitions only; sharp corners
 - [MUI adoption depth](issues/05-mui-adoption-depth.md) — MUI rejected; Radix UI + CSS custom properties + CSS Modules confirmed
 - [Hero section visual prototype](issues/09-visual-prototype.md) — Prototype at https://github.com/vbrzezina/brzezina-blueprint; design direction confirmed, ready for build phase
+- Styling library — `@radix-ui/react-*` Primitives + `@emotion/react` + `@emotion/styled`; Radix Themes, Chakra, Mantine, CSS Modules, Tailwind, shadcn all rejected; see `case-study-log.md` for rationale
 
 ## Not yet specified
 

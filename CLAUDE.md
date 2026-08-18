@@ -12,7 +12,10 @@ Pre-build. The stack and architecture are locked via a wayfinder planning effort
 ## Confirmed stack
 
 - **Framework**: Next.js (App Router, TypeScript), Vercel hosting, public GitHub repo
-- **Styling**: Radix UI (headless accessible primitives) + CSS custom properties (design tokens) + CSS Modules (component-scoped styles) — no Emotion, no MUI, no Tailwind
+- **Styling**: `@radix-ui/react-*` Primitives + `@emotion/react` + `@emotion/styled` — no Radix Themes, no Chakra, no Mantine, no CSS Modules, no Tailwind, no shadcn, no MUI
+  - Tokens stay in `tokens.css` as CSS custom properties; Emotion reads them via `var(--token-name)`
+  - Wrap Radix Primitives with `styled(Primitive)` — no visual defaults to fight
+  - Type-safe variants use `$`-prefixed props: `<Button $variant="solid" />`
 - **Analytics**: Vercel Analytics + GA4 via GTM + Google Search Console
 - **CMS**: None initially; Keystatic as the upgrade path when editing friction materialises
 - **Accessibility**: WCAG 2.1 AA target
@@ -106,6 +109,40 @@ NN —— SECTION NAME
 - i18n library: next-intl (pending ticket 10 resolution for route structure)
 - Structured data (skill lists, experience entries, work projects) will be typed TypeScript files in `src/data/` but contain no translatable strings — labels and descriptions go in messages files
 
+## Case study log
+
+This project is being built for eventual use as a portfolio case study. Maintain a running decision record so the material is available when writing it up.
+
+**Log file**: `.scratch/brzezina-dev-portfolio/case-study-log.md`
+
+### What to log (agent instructions)
+
+After any significant decision, wrong turn, or architectural choice — append an entry to the log file. Do not wait to be asked.
+
+Each entry follows this format:
+
+```markdown
+### YYYY-MM-DD — <Short decision title>
+
+**Decision:** What was chosen.
+**Alternatives considered:** What else was on the table.
+**Why:** The specific reason this option won (constraint, preference, technical fact).
+**Wrong turn / lesson (optional):** If something was tried and abandoned, say what and why.
+```
+
+### What counts as loggable
+
+- Any confirmed stack/tooling choice (library, framework, deployment approach)
+- Any explicit rejection with a reason (e.g. Tailwind, shadcn, CSS Modules)
+- Open decisions resolved — capture the moment of resolution with the reasoning
+- Discoveries that changed direction mid-build
+- Anything the user says was a "wrong turn"
+
+### What not to log
+
+- Routine implementation details (which file a component lives in, etc.)
+- Decisions already fully captured in the issue tracker tickets
+
 ## Git workflow
 
 Trunk-based development with conventional commits. **Never push or merge directly to `main`.**
@@ -130,22 +167,6 @@ Types: feat | fix | docs | style | refactor | perf | test | build | ci | chore |
 2. Commit with conventional commit messages
 3. Push the branch and open a PR via `gh pr create`
 4. Never run `git push origin main` — the Claude Code hook will block it
-
-## Jira workflow
-
-Build-phase implementation work (`task`-type tickets) is tracked in Jira alongside the local markdown system. Research, grilling, and prototype tickets stay in local markdown only.
-
-- **Site**: `vbrzezina.atlassian.net`
-- **cloudId**: `46be3ae8-1a03-4806-ba4a-c989577a1976`
-- **Project key**: `KAN` (rename via Jira UI if desired)
-
-### Agent lifecycle rules
-
-1. **When creating a `task` ticket** in `.scratch/`: create a Jira issue in `KAN` via the Atlassian MCP and record the key in frontmatter as `Jira: KAN-NN`.
-2. **When starting work on a task** with a `Jira:` key: transition it to "In Progress" via `transitionJiraIssue`.
-3. **When opening a PR**: include the issue key in the PR description and transition to "In Review".
-4. **When a PR merges**: transition to "Done".
-5. **At session start**: run `searchJiraIssuesUsingJql` with `project = KAN AND statusCategory != Done ORDER BY updated DESC` to surface open work as context.
 
 ## Open decisions — do not treat research recommendations as approved
 
