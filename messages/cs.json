@@ -41,6 +41,13 @@
     "heading": "Vybrané projekty",
     "comingSoon": "Projekty brzy"
   },
+  "footer": {
+    "tagline": "9 let tvorby JavaScript produktů napříč celým stackem",
+    "sectionsLabel": "Sekce",
+    "elsewhereLabel": "Jinde",
+    "downloadCv": "Stáhnout CV",
+    "copyright": "© 2026 Václav Brzezina"
+  },
   "contact": {
     "index": "05",
     "slug": "KONTAKT",

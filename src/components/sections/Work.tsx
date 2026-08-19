@@ -33,7 +33,6 @@ const CardGrid = styled.div`
 
 const CardArticle = styled.article`
   border: 1px dashed ${({ theme }) => theme.colors.border};
-  border-radius: 0.25rem;
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
@@ -47,16 +46,16 @@ const CardArticle = styled.article`
 
 const Thumbnail = styled.div`
   aspect-ratio: 4 / 3;
-  background-image:
+  background-image: 
     linear-gradient(to right, ${({ theme }) => theme.colors.border} 1px, transparent 1px),
     linear-gradient(to bottom, ${({ theme }) => theme.colors.border} 1px, transparent 1px);
   background-size: 72px 72px;
-  background-color: ${({ theme }) => theme.colors.background};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: 0.125rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  opacity: 0.6;
 `
 
 const CardTitle = styled.h3`

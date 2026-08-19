@@ -41,6 +41,13 @@
     "heading": "Selected work",
     "comingSoon": "Projects coming soon"
   },
+  "footer": {
+    "tagline": "9 years building JavaScript products across the full stack",
+    "sectionsLabel": "Sections",
+    "elsewhereLabel": "Elsewhere",
+    "downloadCv": "Download CV",
+    "copyright": "© 2026 Václav Brzezina"
+  },
   "contact": {
     "index": "05",
     "slug": "CONTACT",

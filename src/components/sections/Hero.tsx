@@ -118,14 +118,15 @@ const AvatarPlaceholder = styled.div`
   height: 320px;
   border-radius: 50%;
   background: ${({ theme }) => theme.colors.surface};
-  border: 2px solid ${({ theme }) => theme.colors.primary}40;
+  border: 2px solid ${({ theme }) => theme.colors.primary};
+  box-shadow: 0 0 0 8px ${({ theme }) => theme.colors.primary}18;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: ${({ theme }) => theme.fonts.mono};
   font-size: 2rem;
   font-weight: 700;
-  color: ${({ theme }) => theme.colors.primary}80;
+  color: ${({ theme }) => theme.colors.primary};
 `
 
 // ─── Component ────────────────────────────────────────────────────────────────

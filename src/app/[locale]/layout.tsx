@@ -3,7 +3,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { Space_Grotesk, DM_Sans, JetBrains_Mono } from "next/font/google";
 import { ThemeRegistry } from "@/app/ThemeRegistry";
-import "@/styles/globals.css";
+import "@/app/globals.css";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],

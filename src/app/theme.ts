@@ -25,7 +25,7 @@ const base = {
     mono: 'var(--font-mono)',
   },
   nav: {
-    height: '5.5rem',
+    height: '4rem',
   },
 } as const;
 
@@ -50,7 +50,7 @@ const darkColors = {
   destructive:          '#f0555b',
   destructiveForeground:'#050e19',
   border:               '#fcfcfc1f',
-  input:                '#fcfcfc29',
+  input:                '#0f1926',
   ring:                 '#00e2da',
 } as const;
 
@@ -82,7 +82,9 @@ const lightColors = {
 export const darkTheme = { ...base, colors: darkColors };
 export const lightTheme = { ...base, colors: lightColors };
 
-export type AppTheme = typeof darkTheme;
+export type AppTheme = Omit<typeof darkTheme, 'colors'> & {
+  colors: Record<keyof typeof darkColors, string>;
+};
 export type SpaceKey = keyof AppTheme['space'];
 
 declare module '@emotion/react' {

@@ -61,7 +61,7 @@ const inputBase = ({ theme }: { theme: import('@/app/theme').AppTheme }) => `
   }
 
   &:focus-visible {
-    outline: 2px solid ${theme.colors.ring};
+    outline: 1px solid ${theme.colors.ring};
     outline-offset: 0;
   }
 `

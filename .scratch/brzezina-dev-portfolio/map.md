@@ -10,7 +10,7 @@ Started: 2026-08-17. This is a completely new portfolio site — no previous sit
 - Tailwind evaluated and rejected: utility-class approach creates friction with a bespoke visual identity; the terminal/CLI aesthetic requires precise, named abstractions not inline utilities
 - CSS Modules evaluated and rejected: adequate but doesn't scale well with dynamic theming and prop-driven variant styling; Emotion/styled-components is the chosen CSS-in-JS approach
 
-**Stack decisions still open as of 2026-08-18:** deployment mode (ticket 10), CMS (ticket 07), mailer (ticket 08), i18n library (ticket 06, blocked by 10), Radix Primitives vs Radix Themes as the component layer
+**Stack decisions still open as of 2026-08-19:** deployment mode (ticket 10), CMS (ticket 07), mailer (ticket 08). i18n library resolved: next-intl confirmed (ticket 06). Radix Primitives confirmed (ticket 05).
 
 ## Destination
 
@@ -21,7 +21,7 @@ A finalized spec for brzezina.dev — a bilingual (EN/CS) personal portfolio sit
 - Stack: Next.js (App Router, TypeScript), Vercel hosting, public GitHub repo
 - **Styling**: Radix UI (Primitives or Themes — open) + Emotion/styled-components + CSS custom properties. CSS Modules, Tailwind, shadcn, MUI all rejected. See `ui-library-decision-summary.md` for option analysis.
 - **Deployment mode**: `output: 'export'` (static) vs Vercel-native SSG — open question, see ticket 10
-- **i18n library**: next-intl is the research recommendation (ticket 01) but the HITL decision is ticket 06; next-i18next remains viable; choice may depend on deployment mode (ticket 10)
+- **i18n library**: next-intl confirmed (ticket 06 resolved). ICU format, `app/[locale]/` routing, `messages/en.json` + `messages/cs.json`
 - **Contact form**: approach depends on ticket 10 — Vercel route handler (Resend) if Vercel-native; external service if static export
 - Audience: dual — freelance clients (contractor services) + headhunters/employers
 - Positioning: technical depth and 9 years seniority, not leadership-first; services are Full-stack TS/React, AWS Serverless, NestJS backend, frontend architecture
@@ -38,7 +38,8 @@ A finalized spec for brzezina.dev — a bilingual (EN/CS) personal portfolio sit
 ## Decisions so far
 
 <!-- one line per resolved ticket — populated as tickets close -->
-- [i18n options for Next.js App Router static export](.scratch/brzezina-dev-portfolio/issues/01-i18n-static-export-research.md) — use `next-intl` with `app/[locale]/` folder routing and `output: 'export'`; middleware is skipped, locale prefix is always required, JSON message files are the translation source of truth
+- [i18n options for Next.js App Router](.scratch/brzezina-dev-portfolio/issues/01-i18n-static-export-research.md) — use `next-intl` with `app/[locale]/` folder routing; ICU message format; `messages/en.json` + `messages/cs.json` as source of truth; confirmed over next-i18next (better App Router DX, per-request design, no concurrency footgun)
+- [i18n library selection](issues/06-i18n-approach.md) — next-intl confirmed; next-i18next evaluated and rejected for App Router use (singleton concurrency footgun, verbose setup, no first-class static export story)
 - [CMS options for a Next.js static export portfolio](.scratch/brzezina-dev-portfolio/issues/02-cms-options-research.md) — Start with no-CMS (TypeScript/JSON in git); Keystatic is the natural upgrade path when editing friction grows; Decap/Tina/Sanity are all disproportionate for a solo static-export portfolio.
 - [Contact form mailer for Vercel serverless functions](.scratch/brzezina-dev-portfolio/issues/03-mailer-options-research.md) — Use Resend: free tier (3k/month) covers all portfolio traffic, single env var, HTTPS-native (no SMTP cold-start), first-class Next.js support; Formspree free cap is too low, Nodemailer+Gmail is fragile, AWS SES setup overhead is unjustified without existing AWS footprint.
 - [Design direction and visual identity](issues/04-design-direction.md) — Developer-dark-first; Space Grotesk + DM Sans + JetBrains Mono; teal oklch accent on deep navy; CSS transitions only; sharp corners
