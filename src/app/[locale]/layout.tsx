@@ -1,30 +1,32 @@
-import type { Metadata } from 'next';
-import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
-import { Space_Grotesk, DM_Sans, JetBrains_Mono } from 'next/font/google';
-import '@/styles/globals.css';
+import type { Metadata } from "next";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { Space_Grotesk, DM_Sans, JetBrains_Mono } from "next/font/google";
+import { ThemeRegistry } from "@/app/ThemeRegistry";
+import "@/app/globals.css";
 
 const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin'],
-  variable: '--font-display',
-  display: 'swap',
+  subsets: ["latin"],
+  variable: "--font-display",
+  display: "swap",
 });
 
 const dmSans = DM_Sans({
-  subsets: ['latin'],
-  variable: '--font-sans',
-  display: 'swap',
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
 });
 
 const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  variable: '--font-mono',
-  display: 'swap',
+  subsets: ["latin"],
+  variable: "--font-mono",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: 'Vojtech Brzezina — Full-stack Developer',
-  description: 'Full-stack developer based in Prague building fast, accessible web applications.',
+  title: "Václav Brzezina — Senior Full-Stack TypeScript Engineer",
+  description:
+    "Full-stack TypeScript/React engineer based in Prague. Available for contractor work.",
 };
 
 export default async function LocaleLayout({
@@ -38,11 +40,16 @@ export default async function LocaleLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale} className={`${spaceGrotesk.variable} ${dmSans.variable} ${jetbrainsMono.variable}`} data-theme="dark">
+    <html
+      lang={locale}
+      className={`${spaceGrotesk.variable} ${dmSans.variable} ${jetbrainsMono.variable}`}
+    >
       <body>
-        <NextIntlClientProvider messages={messages}>
-          {children}
-        </NextIntlClientProvider>
+        <ThemeRegistry>
+          <NextIntlClientProvider messages={messages}>
+            {children}
+          </NextIntlClientProvider>
+        </ThemeRegistry>
       </body>
     </html>
   );
