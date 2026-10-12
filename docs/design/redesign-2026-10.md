@@ -48,14 +48,15 @@ All colours are CSS custom properties in `src/styles/tokens.css`, switched by `h
 
 | Token | Dark | Light | Use |
 |-------|------|-------|-----|
-| `--color-canvas` | `oklch(0.16 0.028 255)` | `oklch(0.978 0.006 106)` | Page background — one canvas, no striping |
-| `--color-surface` | `oklch(0.205 0.03 255)` | `oklch(0.995 0.003 106)` | Cards, form panel |
-| `--color-raised` | `oklch(0.245 0.03 255)` | `oklch(0.955 0.008 106)` | Hover/pressed fills, selected segment |
+| `--color-canvas` | `oklch(0.16 0.028 255)` | `oklch(0.978 0.006 106)` | Page background (hero, odd sections, footer) |
+| `--color-band` | `oklch(0.20 0.03 255)` | `oklch(0.958 0.008 106)` | Alternating section band — divides sections by tone |
+| `--color-surface` | `oklch(0.225 0.03 255)` | `oklch(0.995 0.003 106)` | Cards, form panel — always a step off both canvas and band |
+| `--color-raised` | `oklch(0.26 0.03 255)` | `oklch(0.935 0.009 106)` | Hover/pressed fills, selected segment |
 | `--color-material` | canvas / 72% | canvas / 78% | Translucent nav + sheet (with blur) |
 | `--color-fg` | `oklch(0.965 0.006 250)` | `oklch(0.19 0.03 250)` | Primary text — 17.5:1 / 17.3:1 |
 | `--color-fg-secondary` | `oklch(0.76 0.02 250)` | `oklch(0.42 0.02 250)` | Body copy — 9.1:1 / 7.9:1 |
-| `--color-fg-tertiary` | `oklch(0.62 0.02 250)` | `oklch(0.52 0.02 250)` | Meta, stack lists — 5.3:1 / 5.2:1 |
-| `--color-accent` | `oklch(0.82 0.15 190)` | `oklch(0.52 0.12 205)` | Primary action, active state — 11.9:1 / 4.7:1 |
+| `--color-fg-tertiary` | `oklch(0.64 0.02 250)` | `oklch(0.52 0.02 250)` | Meta, stack lists — ≥ 4.8:1 on every background |
+| `--color-accent` | `oklch(0.82 0.15 190)` | `oklch(0.50 0.12 205)` | Primary action, active state — ≥ 10.5:1 / ≥ 4.8:1 on every background (light was 0.52; darkened so teal text holds AA on the band) |
 | `--color-accent-hover` | `oklch(0.87 0.13 190)` | `oklch(0.46 0.12 205)` | Primary hover |
 | `--color-on-accent` | `oklch(0.18 0.03 255)` | `oklch(0.99 0 0)` | Text on accent — 11.6:1 / 4.9:1 |
 | `--color-accent-subtle` | accent / 12% | accent / 10% | Status pill, ghost hover, focus halo |
@@ -65,7 +66,7 @@ All colours are CSS custom properties in `src/styles/tokens.css`, switched by `h
 | `--color-success` | `oklch(0.80 0.15 150)` | `oklch(0.52 0.13 150)` | Availability dot, sent state |
 | `--color-error` | `oklch(0.72 0.16 25)` | `oklch(0.52 0.18 25)` | Field errors |
 
-All text pairs pass WCAG 2.1 AA (contrast ratios computed from the sRGB conversions; listed dark / light against canvas).
+All text pairs pass WCAG 2.1 AA on canvas, band **and** surface (computed from the sRGB conversions, confirmed with axe in both themes). Depth ladder: canvas < band < surface < raised (dark), mirrored in light.
 
 `prefers-contrast: more` → `--color-border` takes the `--color-border-strong` value and `--color-fg-tertiary` takes `--color-fg-secondary`.
 
@@ -92,7 +93,7 @@ Implemented as Emotion `css` mixins in `src/styles/typography.ts`. Body text mea
 ### 3.3 Space, radius, layout
 
 - **Spacing scale:** 4 · 8 · 12 · 16 · 24 · 32 · 48 · 64 · 96 · 128 px (`theme.space`).
-- **Section rhythm:** `padding-block: clamp(5rem, 3rem + 6vw, 8rem)`; sections are separated by space and the eyebrow alone — no rules between sections, no background changes. The only full-width rule is the footer's top edge.
+- **Section rhythm:** `padding-block: clamp(5rem, 3rem + 6vw, 8rem)`; sections are divided by **tone**, not rules: every even `<section>` in `<main>` sits on `--color-band` (About, Services, Contact), the rest on canvas. Hard edges, no hairlines — the same device as apple.com's alternating bands. Because the band sits between canvas and surface, cards stay distinct on either. Alternation is positional (`nth-of-type`), so reordering sections keeps the rhythm.
 - **Container:** 75rem max, gutter `clamp(1.25rem, 4vw, 2.5rem)`.
 - **Grid:** 12 columns, 1.5rem gap desktop. Breakpoints: `sm 640`, `md 900` (nav collapses below this), `lg 1100`.
 - **Radius:** `4px` for controls (buttons, inputs, pills, segments); `6px` for large surfaces (cards, panels, sheet). Corners stay sharp — the 2px step only makes larger surfaces read a little heavier.

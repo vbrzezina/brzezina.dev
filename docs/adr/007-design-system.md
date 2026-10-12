@@ -90,6 +90,6 @@ The identity above stands (dark-first, navy + one teal accent, the three typefac
 - **Radius:** 4px for controls, 6px for large surfaces (cards, panels, sheet).
 - **Eyebrow:** number and rule stay teal; the section name moves to `fg-secondary` so the accent marks only state and action.
 - **Nav active state:** a 1px accent rule under the label — the same mark as the eyebrow rule.
-- **Section separation:** space and the eyebrow only; no hairlines between sections.
+- **Section separation:** alternating tonal bands (`--color-band`) with hard edges; no hairlines between sections.
 - **Depth:** still no content shadows; the nav and mobile sheet use a translucent blurred material that appears only once content scrolls beneath it.
 - **Boxed skill tags** are replaced by dot-separated mono lists.

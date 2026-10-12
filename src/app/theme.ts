@@ -5,6 +5,7 @@
 
 const colors = {
   canvas: 'var(--color-canvas)',
+  band: 'var(--color-band)',
   surface: 'var(--color-surface)',
   raised: 'var(--color-raised)',
   material: 'var(--color-material)',

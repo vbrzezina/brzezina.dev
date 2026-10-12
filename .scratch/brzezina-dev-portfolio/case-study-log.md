@@ -135,6 +135,15 @@ Running record of decisions, alternatives considered, and wrong turns for the br
 
 ---
 
+### 2026-10-12 — Sections divided by tonal bands
+
+**Decision:** Every even section sits on a new `--color-band` (About, Services, Contact); hard edges, no rules. Depth ladder canvas < band < surface < raised; light accent darkened 0.52 → 0.50 and dark tertiary text lightened 0.62 → 0.64 so all text stays AA on the band.
+**Alternatives considered:** Hairlines (tried; doubled up in the hero and read as clutter); no division (tried; the page became one undifferentiated scroll); section title bars / giant numerals / gradient fades (more elements to solve a rhythm problem).
+**Why:** Tone divides without drawing anything, so nothing can double up — it's how apple.com bands its pages. The blueprint's alternation failed only because its band colour equalled its card colour; a dedicated band token between canvas and surface fixes that. A first pass at dark band L 0.185 measured just ~5 RGB steps off canvas — invisible on average panels — so it went to 0.20.
+**Wrong turn / lesson:** "No lines" over-corrected "weird lines". The owner was right that sections need a boundary; the fix was a different *kind* of boundary, not none.
+
+---
+
 ### 2026-10-12 — Theme reset on locale switch: React owns `<html>`
 
 **Decision:** Removed `data-theme` from the server-rendered `<html>`; dark is the CSS default on `:root`. The colour-scheme provider re-applies the stored theme in a layout effect on every mount.

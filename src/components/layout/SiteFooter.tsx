@@ -8,7 +8,6 @@ import { type } from '@/styles/typography';
 import { Container } from './Container';
 
 const Footer = styled.footer`
-  border-top: 1px solid ${({ theme }) => theme.colors.border};
   padding-block: 4rem 2rem;
 `;
 

@@ -16,6 +16,7 @@ const HeroSection = styled.section`
   overflow: hidden;
   margin-top: calc(-1 * ${({ theme }) => theme.layout.navHeight});
   padding-top: calc(${({ theme }) => theme.layout.navHeight} + clamp(3rem, 2rem + 4vw, 6rem));
+  padding-bottom: clamp(3rem, 2rem + 3vw, 5rem);
 `
 
 /** 72px technical grid, masked so it dissolves before the edges. */
