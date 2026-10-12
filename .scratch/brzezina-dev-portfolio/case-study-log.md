@@ -126,3 +126,19 @@ Running record of decisions, alternatives considered, and wrong turns for the br
 **Wrong turn / lesson:** The redesign also regressed the CV links from `/cv.pdf` (with `download`) to `#` because the spec was written from the nav button, the one place that was already `#`. Review the diff against the base branch, not against your memory of it. Other review fixes: mobile-menu focus now lands on the chosen section, explicit `role="list"` on styled lists (Safari/VoiceOver), active-section detection rewritten to use geometry instead of intersection ratios.
 
 ---
+
+### 2026-10-12 — Owner design review: fewer rules, one reading column, honest client wording
+
+**Decision:** Removed hairlines between sections (spacing + eyebrow do the job); section leads moved under the heading instead of a right-hand column; nav active state became a 1px accent rule (matching the eyebrow rule) instead of a dot; logo cursor made static; nav controls unified at 40px; experience cards equal height per row; "Shipped for" → "Worked on projects for".
+**Why:** The rules doubled up in the hero and read as clutter. The split header made the eye jump across the page. The dot was a borrowed idiom; the line is this design's own vocabulary. An endless blink distracts (and WCAG 2.2.2 would need a pause control). Burberry, Walmart, PSA etc. were clients of EPAM / Starky's Club / Etnetera — "shipped for" overstated a direct relationship.
+**Wrong turn / lesson:** The owner's review caught things the automated review and axe didn't: rhythm, consistency of marks, and the accuracy of a three-word label.
+
+---
+
+### 2026-10-12 — Theme reset on locale switch: React owns `<html>`
+
+**Decision:** Removed `data-theme` from the server-rendered `<html>`; dark is the CSS default on `:root`. The colour-scheme provider re-applies the stored theme in a layout effect on every mount.
+**Why:** Switching locale is a client-side navigation that re-renders the root layout; React re-applied `data-theme="dark"` from props, overwriting the user's choice (still in `localStorage`, so a reload "fixed" it — which made it look random). Reproduced with Playwright before fixing.
+**Alternatives considered:** A theme cookie read by the server layout — SSR-correct, but makes the route depend on `cookies()`, which conflicts with the still-open static-export option (ticket 10).
+
+---

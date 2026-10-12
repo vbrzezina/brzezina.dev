@@ -92,7 +92,7 @@ Implemented as Emotion `css` mixins in `src/styles/typography.ts`. Body text mea
 ### 3.3 Space, radius, layout
 
 - **Spacing scale:** 4 · 8 · 12 · 16 · 24 · 32 · 48 · 64 · 96 · 128 px (`theme.space`).
-- **Section rhythm:** `padding-block: clamp(5rem, 3rem + 6vw, 8rem)`; sections are separated by a single hairline, never by a background change.
+- **Section rhythm:** `padding-block: clamp(5rem, 3rem + 6vw, 8rem)`; sections are separated by space and the eyebrow alone — no rules between sections, no background changes. The only full-width rule is the footer's top edge.
 - **Container:** 75rem max, gutter `clamp(1.25rem, 4vw, 2.5rem)`.
 - **Grid:** 12 columns, 1.5rem gap desktop. Breakpoints: `sm 640`, `md 900` (nav collapses below this), `lg 1100`.
 - **Radius:** `4px` for controls (buttons, inputs, pills, segments); `6px` for large surfaces (cards, panels, sheet). Corners stay sharp — the 2px step only makes larger surfaces read a little heavier.
@@ -109,9 +109,9 @@ Implemented as Emotion `css` mixins in `src/styles/typography.ts`. Body text mea
 | Nav material | border + background fade in after 8px of scroll, 200ms | Same |
 | Mobile sheet | enters **from the trigger edge** (top): translateY(−0.75rem)+opacity, 320ms; exits along the same path, 200ms; scrim fades | Opacity only |
 | Theme switch | `background-color`/`color` cross-fade 300ms on the root — no abrupt brightness jump | Instant |
-| Logo cursor | 1s step blink | Static |
+| Logo cursor | Static — no blink (an endless blink distracts in peripheral vision; WCAG 2.2.2 would require a pause control) | — |
 
-Only `transform` and `opacity` are animated for movement. No looping animation besides the cursor (which is stepped, not oscillating). CSS transitions only — ADR-007 stands; nothing on the page is gesture-driven enough to need springs.
+Only `transform` and `opacity` are animated for movement. No looping animation anywhere. CSS transitions only — ADR-007 stands; nothing on the page is gesture-driven enough to need springs.
 
 `prefers-reduced-transparency: reduce` → nav and sheet become solid `--color-canvas`, no blur.
 
@@ -121,15 +121,15 @@ Only `transform` and `opacity` are animated for movement. No looping animation b
 
 | Component | Spec |
 |-----------|------|
-| **Button** | Variants `primary` (accent fill), `secondary` (transparent, `border-strong`, hover → `raised`), `ghost` (no border, `fg-secondary`, hover → `accent-subtle`). Sizes `md` (48px) and `sm` (40px; nav CV). Optional leading/trailing icon. Focus: 2px accent outline, 2px offset. `asChild` for links. One primary button per view. |
-| **SectionHeader** | `NN —— LABEL` eyebrow (number + rule in accent, label in `fg-secondary`) → h2 `displayL`. Optional lead sits in the right 5 columns, bottom-aligned with the heading, from `lg` up (editorial split); stacked below that. |
+| **Button** | Variants `primary` (accent fill), `secondary` (transparent, `border-strong`, hover → `raised`), `ghost` (no border, `fg-secondary`, hover → `accent-subtle`). Sizes `md` (48px, 4px radius) and `sm` (40px, 6px radius — nav CV, matching the icon button and locale switch). Optional leading/trailing icon. Focus: 2px accent outline, 2px offset. `asChild` for links. One primary button per view. |
+| **SectionHeader** | `NN —— LABEL` eyebrow (number + rule in accent, label in `fg-secondary`) → h2 `displayL`. Optional lead directly below the heading (max 40rem). One left-aligned reading column at every width — eyebrow → heading → lead — so the eye never jumps across the page. |
 | **StatusPill** | `accent-subtle` fill, success dot with soft glow, `monoS` label. Static — no pulse. |
 | **StackList** | Mono, dot-separated (`TypeScript · React · NestJS`), wraps naturally, rendered as `<ul role="list">` with CSS separators — the explicit role keeps Safari/VoiceOver announcing it after the `list-style: none` reset (same on every styled list). Replaces boxed tags everywhere. |
-| **Logo** | `$` accent + `brzezina.dev` + 0.5em block cursor. |
+| **Logo** | `$` accent + `brzezina.dev` + 0.5em static block cursor. |
 | **LocaleSwitch** | Segmented control (`EN | CS`) — selected segment on `raised`. Real `<a>` links to the locale route with `aria-current`, `hreflang`. |
 | **ThemeToggle** | 40px icon button, SVG sun/moon, label states the action ("Switch to light theme"). Persists to `localStorage`; inline head script applies the theme before first paint. |
 | **Field** | Label above (never floating), 48px control on `canvas` with `border-strong`; focus → accent border + 3px `accent-subtle` halo; error → error border + message (`aria-invalid`, `aria-describedby`). Validated on blur, then live. |
-| **IconButton** | 44px square, hairline border, `md` radius; hover → `raised`; press → `scale(0.94)` (off under reduced motion). Shared by the theme toggle and the menu open/close buttons. |
+| **IconButton** | 44px square on mobile (touch target), 40px from `md` up so every nav control shares one height; hairline border, `md` radius; hover → `raised`; press → `scale(0.94)` (off under reduced motion). Shared by the theme toggle and the menu open/close buttons. |
 | **Icons** | Inline SVG, 20px, 1.75 stroke, `currentColor` (Lucide geometry): sun, moon, menu, close, arrow-right, arrow-up-right, download, github, check. |
 
 ---
@@ -138,7 +138,7 @@ Only `transform` and `opacity` are animated for movement. No looping animation b
 
 ### Nav (sticky, 64px)
 - **Left:** Logo.
-- **Centre (≥900px):** About · Experience · Services · Work · Contact. Active section → `fg` + 4px accent dot underneath (`aria-current="location"`).
+- **Centre (≥900px):** About · Experience · Services · Work · Contact. Active section → `fg` + a 1px accent rule under the label, scaling in from the centre — the same mark as the eyebrow's rule (`aria-current`).
 - **Right:** LocaleSwitch · ThemeToggle · `CV` secondary `sm` button with download icon.
 - **Material:** transparent at the top of the page; after 8px of scroll it becomes `--color-material` + `backdrop-filter: blur(20px) saturate(180%)` with a hairline bottom edge. The edge exists only when content is actually under the bar.
 - **< 900px:** Logo · ThemeToggle · 44px menu button. Menu = Radix Dialog sheet anchored to the top edge: large `titleL` links with mono counters (`01 About`), LocaleSwitch, CV + "Get in touch" buttons. Focus trap, Escape, scrim click. Dismissing returns focus to the trigger; choosing a section moves focus to that section instead.
@@ -164,7 +164,7 @@ Only `transform` and `opacity` are animated for movement. No looping animation b
   speaks   EN · CS · SK
   ```
 - **Backdrop:** the 72px technical grid, masked with a radial fade so it dissolves before the edges, plus one soft accent glow top-right (decorative, `aria-hidden`).
-- **Proof strip** (bottom of hero, hairline above): `SHIPPED FOR` eyebrow + `Burberry · Walmart · PSA · Veolia · Carvago · Logio` in `monoBody` fg-tertiary. These are real past clients; headhunters scan for exactly this.
+- **Proof strip** (bottom of hero, no rule): `WORKED ON PROJECTS FOR` eyebrow + `Burberry · Walmart · PSA · Veolia · Carvago · Logio` in `monoBody`. Worded as *projects for* because these were clients of EPAM, Starky's Club and Etnetera, not direct engagements — the big names stay, the claim stays accurate.
 
 ### 01 About — "Hands-on senior engineer"
 - 5/7 split. Left: 4:5 portrait placeholder (surface, grid texture, `VB` monogram, `role="img"` with descriptive label). Right: first paragraph in `bodyL` fg (the lede), then two `bodyM` fg-secondary paragraphs, then a languages `<dl>`: **English** Fluent · **Czech** Native · **Slovak** Native.
@@ -173,7 +173,7 @@ Only `transform` and `opacity` are animated for movement. No looping animation b
 ### 02 Experience — "Nine years, shipped"
 - A vertical rail on the left with an accent dot per employer. The dot of the current role has a halo.
 - **Company header:** name in `titleL`, title in `bodyM` fg-secondary; period in `monoS` accent, right-aligned on desktop and above the name on mobile.
-- **Projects:** two-column grid from `lg` up (cuts the section height roughly in half). Each project: `> Client` (`titleM`, accent `>`), role (`bodyS` fg), description (`bodyS` fg-secondary), StackList.
+- **Projects:** two-column grid from `lg` up (cuts the section height roughly in half). Cards in the same row share a height, with the stack line pinned to the bottom, so rows read as clean bands; across rows heights follow content (forcing one global height would pad short cards with empty space). Each project: `> Client` (`titleM`, accent `>`), role (`bodyS` fg), description (`bodyS` fg-secondary), StackList.
 - Content is the real CV: EPAM (Burberry, Walmart), Starky's Club (Carvago/Omnitec DMS, 3G Project Guide Manager, Inventi/Summit Media — PSA), Etnetera (Logio, Veolia).
 
 ### 03 Services — "What I take on"

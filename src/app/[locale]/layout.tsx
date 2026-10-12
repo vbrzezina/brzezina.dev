@@ -44,7 +44,6 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      data-theme="dark"
       className={`${spaceGrotesk.variable} ${dmSans.variable} ${jetbrainsMono.variable}`}
       suppressHydrationWarning
     >

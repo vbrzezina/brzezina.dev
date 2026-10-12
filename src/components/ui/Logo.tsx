@@ -1,11 +1,5 @@
 import styled from '@emotion/styled'
-import { keyframes } from '@emotion/react'
 import { type } from '@/styles/typography'
-
-const blink = keyframes`
-  0%, 49% { opacity: 1; }
-  50%, 100% { opacity: 0; }
-`
 
 const Root = styled.a`
   ${type.monoBody}
@@ -28,11 +22,8 @@ const Cursor = styled.span`
   height: 1.05em;
   margin-left: 0.1ch;
   background: ${({ theme }) => theme.colors.accent};
-  animation: ${blink} 1s steps(1) infinite;
-
-  ${({ theme }) => theme.mq.reducedMotion} {
-    animation: none;
-  }
+  /* Static on purpose: an endless blink pulls the eye in peripheral vision (and WCAG 2.2.2
+     requires a pause control for blinking content that runs longer than 5s). */
 `
 
 interface LogoProps {

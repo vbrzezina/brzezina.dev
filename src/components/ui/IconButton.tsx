@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 
-/** Square 44px icon button (theme toggle, menu open/close). */
+/** Square icon button: 44px touch target on mobile, 40px on desktop to match the other nav controls. */
 export const IconButton = styled.button`
   position: relative;
   display: inline-flex;
@@ -26,6 +26,11 @@ export const IconButton = styled.button`
   /* Feedback on pointer-down, not release. */
   &:active {
     transform: scale(0.94);
+  }
+
+  ${({ theme }) => theme.mq.md} {
+    width: 2.5rem;
+    height: 2.5rem;
   }
 
   ${({ theme }) => theme.mq.reducedMotion} {

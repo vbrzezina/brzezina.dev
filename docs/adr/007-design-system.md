@@ -89,6 +89,7 @@ The identity above stands (dark-first, navy + one teal accent, the three typefac
 - **Type ramp** with size-specific tracking and leading (`src/styles/typography.ts`) replaces the single `-0.02em` heading rule.
 - **Radius:** 4px for controls, 6px for large surfaces (cards, panels, sheet).
 - **Eyebrow:** number and rule stay teal; the section name moves to `fg-secondary` so the accent marks only state and action.
-- **Nav active state:** a 4px accent dot replaces the underline.
+- **Nav active state:** a 1px accent rule under the label — the same mark as the eyebrow rule.
+- **Section separation:** space and the eyebrow only; no hairlines between sections.
 - **Depth:** still no content shadows; the nav and mobile sheet use a translucent blurred material that appears only once content scrolls beneath it.
 - **Boxed skill tags** are replaced by dot-separated mono lists.

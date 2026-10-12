@@ -101,10 +101,12 @@ const Projects = styled.ul`
   }
 `
 
+/* Fills its grid cell, so cards in the same row share a height; the stack line pins to the bottom. */
 const Project = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.375rem;
+  height: 100%;
   padding: 1.25rem 1.5rem 1.375rem;
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radius.md};
@@ -135,7 +137,11 @@ const ProjectRole = styled.p`
 const ProjectDescription = styled.p`
   ${type.bodyS}
   color: ${({ theme }) => theme.colors.fgSecondary};
-  margin-bottom: 0.5rem;
+`
+
+const ProjectStack = styled.div`
+  margin-top: auto;
+  padding-top: 0.75rem;
 `
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -182,7 +188,9 @@ export function Experience() {
                       </Client>
                       <ProjectRole>{t(`projects.${project.id}.role`)}</ProjectRole>
                       <ProjectDescription>{t(`projects.${project.id}.description`)}</ProjectDescription>
-                      <StackList items={project.stack} label={t('stackLabel')} />
+                      <ProjectStack>
+                        <StackList items={project.stack} label={t('stackLabel')} />
+                      </ProjectStack>
                     </Project>
                   </Reveal>
                 ))}

@@ -213,8 +213,6 @@ const Proof = styled.div`
   align-items: baseline;
   gap: 0.75rem 2rem;
   margin-top: clamp(4rem, 3rem + 4vw, 6rem);
-  padding-block: 1.5rem 2rem;
-  border-top: 1px solid ${({ theme }) => theme.colors.border};
 `
 
 const ProofLabel = styled.p`

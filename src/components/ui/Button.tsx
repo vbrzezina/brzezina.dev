@@ -29,7 +29,8 @@ const StyledButton = styled('button', {
   padding-inline: ${({ $size, $variant }) =>
     $variant === 'ghost' ? '0.75rem' : $size === 'sm' ? '0.875rem' : '1.375rem'};
   width: ${({ $fullWidth }) => ($fullWidth ? '100%' : 'auto')};
-  border-radius: ${({ theme }) => theme.radius.sm};
+  /* sm buttons sit in the nav next to the 6px-radius icon button and locale switch. */
+  border-radius: ${({ theme, $size }) => ($size === 'sm' ? theme.radius.md : theme.radius.sm)};
   border: 1px solid transparent;
   cursor: pointer;
   white-space: nowrap;

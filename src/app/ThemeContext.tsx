@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { createContext, useCallback, useContext, useLayoutEffect, useRef, useState } from 'react';
 import { THEME_STORAGE_KEY } from '@/app/themeScript';
 
 export type ColorScheme = 'dark' | 'light';
@@ -20,8 +20,22 @@ export function ColorSchemeProvider({ children }: { children: React.ReactNode })
   const [scheme, setScheme] = useState<ColorScheme | null>(null);
   const fadeTimer = useRef<number | undefined>(undefined);
 
-  useEffect(() => {
-    setScheme(document.documentElement.dataset.theme === 'light' ? 'light' : 'dark');
+  // React owns <html> and resets its attributes when the root layout re-renders
+  // (e.g. switching locale is a client-side navigation), so re-apply the stored
+  // preference on every mount rather than trusting the current attribute.
+  // Layout effect: runs before paint, so the reset is never visible.
+  useLayoutEffect(() => {
+    const root = document.documentElement;
+    let stored: string | null = null;
+    try {
+      stored = localStorage.getItem(THEME_STORAGE_KEY);
+    } catch {
+      // Storage unavailable — fall back to whatever the page currently shows.
+    }
+    const current: ColorScheme =
+      stored === 'light' || stored === 'dark' ? stored : root.dataset.theme === 'light' ? 'light' : 'dark';
+    root.dataset.theme = current;
+    setScheme(current);
   }, []);
 
   const toggleTheme = useCallback(() => {

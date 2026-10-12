@@ -9,19 +9,11 @@ interface SectionHeaderProps {
   lead?: string
 }
 
-const Root = styled.header<{ $split: boolean }>`
-  display: grid;
+/* One reading column: eyebrow → heading → lead, all left-aligned. */
+const Root = styled.header`
+  display: flex;
+  flex-direction: column;
   gap: ${({ theme }) => theme.space[5]};
-
-  ${({ theme }) => theme.mq.lg} {
-    ${({ $split }) =>
-      $split &&
-      `
-        grid-template-columns: 7fr 5fr;
-        column-gap: 4rem;
-        align-items: end;
-      `}
-  }
 `
 
 const Eyebrow = styled.p`
@@ -47,18 +39,18 @@ const Rule = styled.span`
 const Title = styled.h2`
   ${type.displayL}
   color: ${({ theme }) => theme.colors.fg};
-  max-width: 18ch;
+  max-width: 22ch;
 `
 
 const Lead = styled.p`
   ${type.bodyL}
   color: ${({ theme }) => theme.colors.fgSecondary};
-  max-width: 34rem;
+  max-width: 40rem;
 `
 
 export function SectionHeader({ index, label, title, titleId, lead }: SectionHeaderProps) {
   return (
-    <Root $split={Boolean(lead)}>
+    <Root>
       <div>
         <Eyebrow>
           <Index>{index}</Index>

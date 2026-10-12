@@ -89,18 +89,16 @@ const NavLink = styled(NavigationMenu.Link)`
   color: ${({ theme }) => theme.colors.fgSecondary};
   transition: color ${({ theme }) => theme.motion.fast} ease;
 
-  /* Active indicator: a small accent dot, scaled in from the link's centre. */
+  /* Active indicator: a 1px accent rule under the label — the same mark as the eyebrow's rule. */
   &::after {
     content: '';
     position: absolute;
-    left: 50%;
-    bottom: 0.3rem;
-    width: 4px;
-    height: 4px;
-    margin-left: -2px;
-    border-radius: 50%;
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: 0.375rem;
+    height: 1px;
     background: ${({ theme }) => theme.colors.accent};
-    transform: scale(0);
+    transform: scaleX(0);
     transition: transform 200ms ${({ theme }) => theme.motion.ease};
   }
 
@@ -110,7 +108,13 @@ const NavLink = styled(NavigationMenu.Link)`
   }
 
   &[data-active]::after {
-    transform: scale(1);
+    transform: scaleX(1);
+  }
+
+  ${({ theme }) => theme.mq.reducedMotion} {
+    &::after {
+      transition: none;
+    }
   }
 `;
 
