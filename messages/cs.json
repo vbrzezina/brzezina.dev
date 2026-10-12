@@ -1,72 +1,210 @@
 {
+  "a11y": {
+    "skip": "Přeskočit na obsah",
+    "mainNav": "Hlavní navigace",
+    "openMenu": "Otevřít menu",
+    "closeMenu": "Zavřít menu",
+    "menu": "Menu",
+    "language": "Jazyk",
+    "toggleTheme": "Přepnout barevný režim",
+    "toLight": "Přepnout na světlý režim",
+    "toDark": "Přepnout na tmavý režim"
+  },
   "nav": {
     "about": "O mně",
     "experience": "Zkušenosti",
     "services": "Služby",
     "work": "Projekty",
-    "contact": "Kontakt"
+    "contact": "Kontakt",
+    "cv": "CV",
+    "downloadCv": "Stáhnout CV",
+    "getInTouch": "Napište mi"
   },
   "hero": {
-    "eyebrow": "00 / ZÁKLADNA V ČESKU",
+    "status": "Volný pro zakázky",
     "heading": "Václav Brzezina",
     "role": "Softwarový inženýr",
-    "tagline": "9 let tvorby JavaScript produktů napříč celým stackem",
-    "intro": "TypeScript a React na frontendu, Node.js a NestJS na backendu, AWS serverless v cloudu. Rád přebírám technické vlastnictví architektury, kvality kódu a směřování, přičemž zůstávám hands-on.",
-    "current": "Aktuálně Tech Lead na Burberry O2O Clientelling platformě v EPAM Systems.",
+    "tagline": "9 let stavím JavaScriptové produkty napříč celým stackem.",
+    "intro": "TypeScript a React na frontendu, Node.js a NestJS na backendu, AWS serverless v cloudu. Přebírám technickou zodpovědnost za architekturu, kvalitu kódu a směřování — a kód dál píšu sám.",
     "cta": "Moje projekty",
-    "ctaSecondary": "Napište mi"
+    "ctaSecondary": "Napište mi",
+    "portraitLabel": "Václav Brzezina v tmavém saku a brýlích",
+    "whoami": {
+      "label": "Shrnutí profilu",
+      "role": "role",
+      "roleValue": "Lead Software Engineer · EPAM Systems",
+      "stack": "stack",
+      "based": "sídlo",
+      "basedValue": "Česko · SEČ",
+      "speaks": "jazyky"
+    },
+    "shippedFor": "Pracoval jsem na projektech pro"
   },
   "about": {
     "index": "01",
-    "slug": "O MNĚ",
-    "heading": "Zkušený senior inženýr",
-    "stackHeading": "Stack & nástroje",
-    "languagesHeading": "Jazyky"
+    "slug": "O mně",
+    "heading": "Senior inženýr, který pořád programuje",
+    "portraitLabel": "Usměvavý Václav Brzezina v tmavomodrém saku",
+    "bio": {
+      "lede": "Stavím JavaScriptové produkty od začátku do konce — TypeScript a React na frontendu, Node.js a NestJS na backendu, AWS serverless v cloudu.",
+      "p2": "Po devíti letech se moje práce pohybuje tam, kde se architektura potkává s dodávkou: návrh systémů, standardy kódu, code review — a vlastní produkční kód. Vedu technicky, ne z povzdálí. V EPAM Systems teď pracuji jako Software Engineer na projektu pro SAP; předtím jsem byl Tech Lead na O2O clientelling platformě pro Burberry.",
+      "p3": "Žiju v Česku, mluvím anglicky i česky a jsem k dispozici pro freelance a kontraktorskou spolupráci."
+    },
+    "languagesHeading": "Jazyky",
+    "languages": {
+      "en": { "name": "Angličtina", "level": "Plynně" },
+      "cs": { "name": "Čeština", "level": "Rodilý mluvčí" }
+    },
+    "stackHeading": "Stack a nástroje",
+    "skills": {
+      "categories": {
+        "frontend": "Frontend",
+        "backend": "Backend",
+        "cloud": "Cloud",
+        "databases": "Databáze",
+        "practices": "Postupy",
+        "genai": "GenAI"
+      },
+      "items": {
+        "ciCd": "CI/CD",
+        "codeReview": "Code review",
+        "codeStandards": "Standardy kódu",
+        "accessibility": "Přístupnost",
+        "promptEngineering": "Prompt engineering"
+      }
+    }
   },
   "experience": {
     "index": "02",
-    "slug": "ZKUŠENOSTI",
-    "heading": "Devět let, doručeno",
-    "lead": "Enterprise platformy, agenturní projekty a greenfield produkty."
+    "slug": "Zkušenosti",
+    "heading": "Devět let v produkci",
+    "lead": "Enterprise platformy, retailové systémy a interní nástroje — většinou TypeScript, většinou end to end.",
+    "present": "Současnost",
+    "current": "Aktuálně",
+    "stackLabel": "Stack",
+    "employers": {
+      "epam": { "role": "Lead Software Engineer" },
+      "starkys": { "role": "Frontend Lead" },
+      "etnetera": { "role": "Frontend vývojář" }
+    },
+    "projects": {
+      "sap": {
+        "role": "Software Engineer"
+      },
+      "burberry": {
+        "role": "Tech Lead",
+        "description": "O2O clientelling platforma — návrh architektury, technické vedení týmu, koordinace napříč streamy."
+      },
+      "walmart": {
+        "role": "Klíčový vývojář",
+        "description": "Nástroj pro software reliability engineering."
+      },
+      "carvago": {
+        "role": "Senior frontend vývojář",
+        "description": "Systém pro správu autobazarů — frontendová architektura a vedení týmu."
+      },
+      "pgm": {
+        "role": "Full-stack vývojář",
+        "description": "Interní nástroj pro výkazy práce napojený na Giriton."
+      },
+      "inventi": {
+        "role": "Senior technologický lídr",
+        "description": "Online konfigurátor vozů PSA — nová architektura a vedení týmu."
+      },
+      "logio": {
+        "role": "Frontend / backend vývojář",
+        "description": "Nástroj pro tvorbu cen a akcí v potravinářském retailu."
+      },
+      "veolia": {
+        "role": "Frontend vývojář",
+        "description": "Zákaznický samoobslužný portál."
+      }
+    }
   },
   "services": {
     "index": "03",
-    "slug": "SLUŽBY",
+    "slug": "Služby",
     "heading": "Co dělám",
-    "lead": "Zakázky, kde je technické vlastnictví stejně důležité jako rychlost dodání."
+    "lead": "Zakázky, kde je technická zodpovědnost stejně důležitá jako rychlost dodání.",
+    "stackLabel": "Typický stack",
+    "items": {
+      "fullstack": {
+        "title": "Frontend",
+        "description": "Frontendová architektura, komponentové systémy, optimalizace výkonu a přístupnost. Next.js App Router, React, Emotion / MUI."
+      },
+      "backend": {
+        "title": "Backend a API",
+        "description": "Backendy v Node.js, REST a GraphQL API s NestJS a TypeORM, návrh a optimalizace databází."
+      },
+      "serverless": {
+        "title": "AWS Serverless",
+        "description": "Lambda, Step Functions, API Gateway, Cognito, S3 a CDK. Kompletní cloudová architektura pro serverless produkty."
+      }
+    },
+    "facts": {
+      "engagement": "Freelance a kontrakt",
+      "remote": "Primárně na dálku, časové pásmo SEČ",
+      "languages": "Angličtina a čeština"
+    }
   },
   "work": {
     "index": "04",
-    "slug": "PROJEKTY",
+    "slug": "Projekty",
     "heading": "Vybrané projekty",
-    "comingSoon": "Projekty brzy"
-  },
-  "footer": {
-    "tagline": "9 let tvorby JavaScript produktů napříč celým stackem",
-    "sectionsLabel": "Sekce",
-    "elsewhereLabel": "Jinde",
-    "downloadCv": "Stáhnout CV",
-    "copyright": "© 2026 Václav Brzezina"
+    "lead": "Projekty brzy přibudou — právě stavím tento web.",
+    "featured": {
+      "status": "Rozpracováno",
+      "description": "Tento web — navržený a stavěný veřejně jako první case study. Dvojjazyčný, přístupný, primárně tmavý.",
+      "link": "Zdrojový kód",
+      "thumbLabel": "Náhled úvodní stránky brzezina.dev"
+    },
+    "open": {
+      "label": "Další case study",
+      "title": "Tohle místo je volné",
+      "description": "Další case study může být váš produkt.",
+      "cta": "Začít projekt"
+    }
   },
   "contact": {
     "index": "05",
-    "slug": "KONTAKT",
-    "heading": "Dostupný pro freelance a zakázkovou práci",
-    "lead": "Řekněte mi o produktu, stacku a termínu. Ozvu se do 48 hodin.",
+    "slug": "Kontakt",
+    "heading": "K dispozici pro freelance a kontraktorskou spolupráci",
+    "lead": "Napište mi o produktu, stacku a termínech. Odpovím do 1–2 pracovních dnů.",
     "form": {
+      "label": "Kontaktní formulář",
       "name": "Jméno",
-      "email": "E-mailová adresa",
+      "email": "E-mail",
       "message": "Zpráva",
+      "namePlaceholder": "Jana Nováková",
+      "emailPlaceholder": "jana@firma.cz",
+      "messagePlaceholder": "Co stavíte a kde bych mohl pomoct?",
+      "required": "Všechna pole jsou povinná.",
       "submit": "Odeslat zprávu",
       "sending": "Odesílám…",
-      "success": "Zpráva odeslána.",
-      "error": "Něco se pokazilo. Zkuste to znovu."
+      "errors": {
+        "name": "Vyplňte prosím jméno",
+        "email": "Zadejte platný e-mail",
+        "message": "Připište prosím krátkou zprávu"
+      },
+      "error": "Zprávu se nepodařilo odeslat — zůstala ve formuláři, takže to můžete zkusit znovu, nebo mě najdete na <link>GitHubu</link>.",
+      "successTitle": "Zpráva odeslána",
+      "successBody": "Děkuji — odpovím do 1–2 pracovních dnů.",
+      "sendAnother": "Poslat další zprávu"
     },
     "sidebar": {
-      "responseLabel": "Doba odezvy",
-      "responseValue": "Do 48 hodin",
-      "cvLabel": "Curriculum vitae",
+      "responseLabel": "Doba odpovědi",
+      "responseValue": "Do 1–2 pracovních dnů",
+      "basedLabel": "Sídlo",
+      "basedValue": "Česko · SEČ (UTC+1)",
+      "cvLabel": "Životopis",
       "cvCta": "Stáhnout PDF"
     }
+  },
+  "footer": {
+    "tagline": "Senior full-stack inženýr — TypeScript a React na frontendu, Node.js a AWS za ním. Devět let dodávám produkty; žiju v Česku a jsem k dispozici pro freelance a kontraktorskou spolupráci.",
+    "sectionsLabel": "Sekce",
+    "elsewhereLabel": "Jinde",
+    "copyright": "© 2026 Václav Brzezina",
+    "backToTop": "Zpět nahoru"
   }
 }

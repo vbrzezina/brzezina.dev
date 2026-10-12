@@ -1,250 +1,391 @@
 'use client'
 
-import { useState } from 'react'
+import { useId, useRef, useState } from 'react'
 import styled from '@emotion/styled'
-import * as Label from '@radix-ui/react-label'
 import { useTranslations } from 'next-intl'
-import { Container, Box, Spacer } from '@/components/layout'
-import { Button } from '@/components/ui'
+import { Container, Section } from '@/components/layout'
 import { Reveal } from '@/components/Reveal'
-import { SectionHeading } from '@/components/SectionHeading'
+import { Button, Icon, SectionHeader } from '@/components/ui'
+import { site } from '@/data/site'
+import { type } from '@/styles/typography'
+
+type FieldName = 'name' | 'email' | 'message'
+type Values = Record<FieldName, string>
+type Errors = Partial<Record<FieldName, string>>
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
+
+function validate(values: Values): Partial<Record<FieldName, true>> {
+  const invalid: Partial<Record<FieldName, true>> = {}
+  if (!values.name.trim()) invalid.name = true
+  if (!EMAIL_PATTERN.test(values.email.trim())) invalid.email = true
+  if (!values.message.trim()) invalid.message = true
+  return invalid
+}
 
 // ─── Layout ───────────────────────────────────────────────────────────────────
 
-const ContactSection = styled.section``
-
-const TwoColGrid = styled.div`
+const Layout = styled.div`
   display: grid;
-  gap: 3rem;
+  gap: 2rem;
+  margin-top: clamp(3rem, 2rem + 3vw, 4.5rem);
 
-  @media (min-width: 1024px) {
-    grid-template-columns: 1.2fr 0.8fr;
+  ${({ theme }) => theme.mq.lg} {
+    grid-template-columns: 8fr 4fr;
+    gap: 3rem;
     align-items: start;
   }
 `
 
-// ─── Form elements ────────────────────────────────────────────────────────────
-
-const StyledLabel = styled(Label.Root)`
-  display: block;
-  font-family: ${({ theme }) => theme.fonts.mono};
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.mutedForeground};
-  margin-bottom: 0.5rem;
+const Panel = styled.div`
+  padding: clamp(1.25rem, 1rem + 1.5vw, 2rem);
+  background: ${({ theme }) => theme.colors.surface};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.radius.md};
 `
 
-const inputBase = ({ theme }: { theme: import('@/app/theme').AppTheme }) => `
-  width: 100%;
-  background: ${theme.colors.input};
-  border: 1px solid ${theme.colors.border};
-  border-radius: 0.25rem;
-  padding: 0.75rem 1rem;
-  font-family: ${theme.fonts.sans};
-  font-size: 1rem;
-  color: ${theme.colors.foreground};
-  outline: none;
-  transition: border-color 200ms;
-  box-sizing: border-box;
-
-  &::placeholder {
-    color: ${theme.colors.mutedForeground}80;
-  }
-
-  &:hover {
-    border-color: ${theme.colors.mutedForeground};
-  }
-
-  &:focus {
-    border-color: ${theme.colors.primary};
-  }
-
-  &:focus-visible {
-    outline: 1px solid ${theme.colors.ring};
-    outline-offset: 0;
-  }
-`
-
-const StyledInput = styled.input`
-  ${({ theme }) => inputBase({ theme })}
-`
-
-const StyledTextarea = styled.textarea`
-  ${({ theme }) => inputBase({ theme })}
-  resize: vertical;
-  min-height: 8rem;
-`
-
-const FieldGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-`
-
-const FormGrid = styled.div`
+const Form = styled.form`
   display: grid;
   gap: 1.5rem;
 
-  @media (min-width: 640px) {
+  ${({ theme }) => theme.mq.sm} {
     grid-template-columns: 1fr 1fr;
   }
 `
 
-const FormStack = styled.div`
+// ─── Field ────────────────────────────────────────────────────────────────────
+
+const FieldRoot = styled.div<{ $wide?: boolean }>`
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 0.5rem;
+
+  ${({ theme }) => theme.mq.sm} {
+    grid-column: ${({ $wide }) => ($wide ? '1 / -1' : 'auto')};
+  }
 `
 
-const StatusMessage = styled.p<{ $isError?: boolean }>`
-  font-family: ${({ theme }) => theme.fonts.sans};
-  font-size: 0.9375rem;
-  color: ${({ theme, $isError }) =>
-    $isError ? theme.colors.destructive : theme.colors.primary};
-  margin-top: 1rem;
-  margin-bottom: 0;
+const Label = styled.label`
+  ${type.label}
+  color: ${({ theme }) => theme.colors.fg};
 `
 
-// ─── Sidebar ──────────────────────────────────────────────────────────────────
+const controlStyles = ({ theme }: { theme: import('@emotion/react').Theme }) => `
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.75rem 0.875rem;
+  border-radius: ${theme.radius.sm};
+  border: 1px solid ${theme.colors.borderStrong};
+  background: ${theme.colors.canvas};
+  color: ${theme.colors.fg};
+  font-family: ${theme.fonts.sans};
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  transition: border-color ${theme.motion.fast} ease, box-shadow ${theme.motion.fast} ease;
 
-const Sidebar = styled.aside`
-  border-left: 1px solid ${({ theme }) => theme.colors.border};
-  padding-left: 1.5rem;
+  &::placeholder {
+    color: ${theme.colors.fgTertiary};
+    opacity: 1;
+  }
+
+  &:hover {
+    border-color: ${theme.colors.fgTertiary};
+  }
+
+  &:focus-visible {
+    outline: none;
+    border-color: ${theme.colors.accent};
+    box-shadow: 0 0 0 3px ${theme.colors.accentSubtle};
+  }
+
+  &[aria-invalid='true'] {
+    border-color: ${theme.colors.error};
+  }
+`
+
+const Input = styled.input`
+  ${controlStyles}
+`
+
+const Textarea = styled.textarea`
+  ${controlStyles}
+  resize: vertical;
+  min-height: 11rem;
+`
+
+const ErrorText = styled.p`
+  ${type.bodyS}
+  color: ${({ theme }) => theme.colors.error};
+`
+
+const SubmitError = styled.p`
+  ${type.bodyS}
+  padding: 0.75rem 1rem;
+  border: 1px solid ${({ theme }) => theme.colors.error};
+  border-radius: ${({ theme }) => theme.radius.sm};
+  color: ${({ theme }) => theme.colors.fg};
+
+  ${({ theme }) => theme.mq.sm} {
+    grid-column: 1 / -1;
+  }
+
+  a {
+    color: ${({ theme }) => theme.colors.accent};
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+`
+
+const FormFooter = styled.div`
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 1rem;
+
+  ${({ theme }) => theme.mq.sm} {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+`
+
+const Hint = styled.p`
+  ${type.bodyS}
+  color: ${({ theme }) => theme.colors.fgTertiary};
+`
+
+// ─── Success state ────────────────────────────────────────────────────────────
+
+const Success = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding-block: 2rem;
+  outline: none;
 `
 
-const SidebarBlock = styled.div``
-
-const SidebarLabel = styled.p`
-  font-family: ${({ theme }) => theme.fonts.mono};
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.mutedForeground};
-  margin: 0 0 0.5rem;
+const SuccessIcon = styled.span`
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background: ${({ theme }) => theme.colors.accentSubtle};
+  color: ${({ theme }) => theme.colors.success};
 `
 
-const SidebarValue = styled.p`
-  font-family: ${({ theme }) => theme.fonts.display};
-  font-size: 1rem;
-  color: ${({ theme }) => theme.colors.foreground};
-  margin: 0;
+const SuccessTitle = styled.h3`
+  ${type.titleL}
+  color: ${({ theme }) => theme.colors.fg};
+  margin-top: 0.5rem;
+`
+
+const SuccessBody = styled.p`
+  ${type.bodyM}
+  color: ${({ theme }) => theme.colors.fgSecondary};
+  margin-bottom: 0.75rem;
+`
+
+// ─── Aside ────────────────────────────────────────────────────────────────────
+
+const Aside = styled.dl`
+  display: grid;
+  gap: 1.75rem;
+  align-content: start;
+
+  ${({ theme }) => theme.mq.sm} {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  ${({ theme }) => theme.mq.lg} {
+    grid-template-columns: 1fr;
+    padding-top: 0.5rem;
+  }
+
+  dt {
+    ${type.monoEyebrow}
+    color: ${({ theme }) => theme.colors.fgTertiary};
+    margin-bottom: 0.5rem;
+  }
+
+  dd {
+    ${type.bodyM}
+    color: ${({ theme }) => theme.colors.fg};
+  }
 `
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export function Contact() {
   const t = useTranslations('contact')
-  const [sending, setSending] = useState(false)
-  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle')
+  const uid = useId()
+  const [values, setValues] = useState<Values>({ name: '', email: '', message: '' })
+  const [touched, setTouched] = useState<Partial<Record<FieldName, boolean>>>({})
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
+  const successRef = useRef<HTMLDivElement>(null)
+  const formRef = useRef<HTMLFormElement>(null)
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    setSending(true)
-    setTimeout(() => {
-      setSending(false)
-      setStatus('success')
-    }, 1000)
+  const invalid = validate(values)
+  // Validate on blur first, then live — never shout at someone mid-typing.
+  const errors: Errors = {}
+  for (const field of ['name', 'email', 'message'] as const) {
+    if (touched[field] && invalid[field]) errors[field] = t(`form.errors.${field}`)
   }
 
+  function update(field: FieldName) {
+    return (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+      setValues((prev) => ({ ...prev, [field]: e.target.value }))
+  }
+
+  function blur(field: FieldName) {
+    return () => setTouched((prev) => ({ ...prev, [field]: true }))
+  }
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setTouched({ name: true, email: true, message: true })
+
+    const firstInvalid = (['name', 'email', 'message'] as const).find((f) => invalid[f])
+    if (firstInvalid) {
+      formRef.current?.querySelector<HTMLElement>(`[name="${firstInvalid}"]`)?.focus()
+      return
+    }
+
+    setStatus('sending')
+    try {
+      const res = await fetch(site.contactEndpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: values.name.trim(),
+          email: values.email.trim(),
+          message: values.message.trim(),
+        }),
+      })
+      if (!res.ok) throw new Error(`Contact endpoint responded ${res.status}`)
+      setStatus('success')
+      requestAnimationFrame(() => successRef.current?.focus())
+    } catch {
+      // Never claim success we can't confirm; the typed message stays in the form.
+      setStatus('error')
+    }
+  }
+
+  function reset() {
+    setValues({ name: '', email: '', message: '' })
+    setTouched({})
+    setStatus('idle')
+  }
+
+  const fieldProps = (field: FieldName) => ({
+    id: `${uid}-${field}`,
+    name: field,
+    value: values[field],
+    onChange: update(field),
+    onBlur: blur(field),
+    required: true,
+    'aria-invalid': errors[field] ? true : undefined,
+    'aria-describedby': errors[field] ? `${uid}-${field}-error` : undefined,
+    placeholder: t(`form.${field}Placeholder`),
+  })
+
   return (
-    <ContactSection id="contact">
+    <Section id="contact" aria-labelledby="contact-title">
       <Container>
-        <Box $py={24}>
-          <SectionHeading
+        <Reveal>
+          <SectionHeader
             index={t('index')}
-            slug={t('slug')}
+            label={t('slug')}
             title={t('heading')}
+            titleId="contact-title"
             lead={t('lead')}
           />
-          <Spacer $size={12} />
+        </Reveal>
 
-          <TwoColGrid>
-            <Reveal delay={0}>
-              <form onSubmit={handleSubmit} noValidate>
-                <FormStack>
-                  <FormGrid>
-                    <FieldGroup>
-                      <StyledLabel htmlFor="contact-name">
-                        {t('form.name')}
-                      </StyledLabel>
-                      <StyledInput
-                        id="contact-name"
-                        name="name"
-                        type="text"
-                        autoComplete="name"
-                        required
-                        placeholder={t('form.name')}
-                      />
-                    </FieldGroup>
-
-                    <FieldGroup>
-                      <StyledLabel htmlFor="contact-email">
-                        {t('form.email')}
-                      </StyledLabel>
-                      <StyledInput
-                        id="contact-email"
-                        name="email"
-                        type="email"
-                        autoComplete="email"
-                        required
-                        placeholder={t('form.email')}
-                      />
-                    </FieldGroup>
-                  </FormGrid>
-
-                  <FieldGroup>
-                    <StyledLabel htmlFor="contact-message">
-                      {t('form.message')}
-                    </StyledLabel>
-                    <StyledTextarea
-                      id="contact-message"
-                      name="message"
-                      required
-                      placeholder={t('form.message')}
-                    />
-                  </FieldGroup>
-
-                  <Button
-                    type="submit"
-                    disabled={sending}
-                    style={{ width: '100%', marginTop: '0.5rem' }}
-                  >
-                    {sending ? t('form.sending') : t('form.submit')}
+        <Layout>
+          <Reveal delay={80}>
+            <Panel>
+              {status === 'success' ? (
+                <Success ref={successRef} tabIndex={-1} role="status">
+                  <SuccessIcon>
+                    <Icon name="check" size={22} />
+                  </SuccessIcon>
+                  <SuccessTitle>{t('form.successTitle')}</SuccessTitle>
+                  <SuccessBody>{t('form.successBody')}</SuccessBody>
+                  <Button $variant="secondary" type="button" onClick={reset}>
+                    {t('form.sendAnother')}
                   </Button>
-                </FormStack>
+                </Success>
+              ) : (
+                <Form ref={formRef} onSubmit={handleSubmit} noValidate aria-label={t('form.label')}>
+                  <FieldRoot>
+                    <Label htmlFor={`${uid}-name`}>{t('form.name')}</Label>
+                    <Input type="text" autoComplete="name" {...fieldProps('name')} />
+                    {errors.name && <ErrorText id={`${uid}-name-error`}>{errors.name}</ErrorText>}
+                  </FieldRoot>
 
-                {status === 'success' && (
-                  <StatusMessage>{t('form.success')}</StatusMessage>
-                )}
-                {status === 'error' && (
-                  <StatusMessage $isError>{t('form.error')}</StatusMessage>
-                )}
-              </form>
-            </Reveal>
+                  <FieldRoot>
+                    <Label htmlFor={`${uid}-email`}>{t('form.email')}</Label>
+                    <Input type="email" autoComplete="email" inputMode="email" {...fieldProps('email')} />
+                    {errors.email && <ErrorText id={`${uid}-email-error`}>{errors.email}</ErrorText>}
+                  </FieldRoot>
 
-            <Reveal delay={100}>
-              <Sidebar>
-                <SidebarBlock>
-                  <SidebarLabel>{t('sidebar.responseLabel')}</SidebarLabel>
-                  <SidebarValue>{t('sidebar.responseValue')}</SidebarValue>
-                </SidebarBlock>
+                  <FieldRoot $wide>
+                    <Label htmlFor={`${uid}-message`}>{t('form.message')}</Label>
+                    <Textarea rows={7} {...fieldProps('message')} />
+                    {errors.message && <ErrorText id={`${uid}-message-error`}>{errors.message}</ErrorText>}
+                  </FieldRoot>
 
-                <SidebarBlock>
-                  <SidebarLabel>{t('sidebar.cvLabel')}</SidebarLabel>
-                  <Button $variant="outline" asChild style={{ marginTop: '0.5rem' }}>
-                    <a href="/cv.pdf" download>
+                  {status === 'error' && (
+                    <SubmitError role="alert">
+                      {t.rich('form.error', {
+                        link: (chunks) => (
+                          <a href={site.githubUrl} target="_blank" rel="noopener noreferrer">
+                            {chunks}
+                          </a>
+                        ),
+                      })}
+                    </SubmitError>
+                  )}
+
+                  <FormFooter>
+                    <Hint>{t('form.required')}</Hint>
+                    <Button type="submit" disabled={status === 'sending'}>
+                      {status === 'sending' ? t('form.sending') : t('form.submit')}
+                      {status !== 'sending' && <Icon name="arrowRight" size={18} data-nudge />}
+                    </Button>
+                  </FormFooter>
+                </Form>
+              )}
+            </Panel>
+          </Reveal>
+
+          <Reveal delay={160}>
+            <Aside>
+              <div>
+                <dt>{t('sidebar.responseLabel')}</dt>
+                <dd>{t('sidebar.responseValue')}</dd>
+              </div>
+              <div>
+                <dt>{t('sidebar.basedLabel')}</dt>
+                <dd>{t('sidebar.basedValue')}</dd>
+              </div>
+              <div>
+                <dt>{t('sidebar.cvLabel')}</dt>
+                <dd>
+                  <Button $variant="secondary" asChild>
+                    <a href={site.cvUrl} download>
                       {t('sidebar.cvCta')}
+                      <Icon name="download" size={16} />
                     </a>
                   </Button>
-                </SidebarBlock>
-              </Sidebar>
-            </Reveal>
-          </TwoColGrid>
-        </Box>
+                </dd>
+              </div>
+            </Aside>
+          </Reveal>
+        </Layout>
       </Container>
-    </ContactSection>
+    </Section>
   )
 }

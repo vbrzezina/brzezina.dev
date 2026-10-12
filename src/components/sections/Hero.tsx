@@ -1,182 +1,320 @@
 'use client'
 
+import Image from 'next/image'
 import styled from '@emotion/styled'
 import { useTranslations } from 'next-intl'
 import { Container } from '@/components/layout'
-import { Button } from '@/components/ui'
 import { Reveal } from '@/components/Reveal'
+import { Button, Icon, StatusPill } from '@/components/ui'
+import { CLIENTS, WHOAMI } from '@/data/site'
+import { gridBackdrop } from '@/styles/backdrop'
+import { type } from '@/styles/typography'
+import heroPortrait from '@/assets/photos/portrait-hero.jpg'
 
-// ─── Decorative elements ──────────────────────────────────────────────────────
-
-const GridBackdrop = styled.div`
-  position: absolute;
-  inset: 0;
-  opacity: 0.3;
-  pointer-events: none;
-  background-image:
-    linear-gradient(to right, ${({ theme }) => theme.colors.border} 1px, transparent 1px),
-    linear-gradient(to bottom, ${({ theme }) => theme.colors.border} 1px, transparent 1px);
-  background-size: 72px 72px;
-`
-
-const TealBlob = styled.div`
-  position: absolute;
-  top: -10rem;
-  right: -10rem;
-  width: 30rem;
-  height: 30rem;
-  background: radial-gradient(circle, rgba(0, 226, 218, 0.08) 0%, transparent 70%);
-  border-radius: 50%;
-  pointer-events: none;
-`
-
-// ─── Layout ───────────────────────────────────────────────────────────────────
+// ─── Backdrop ─────────────────────────────────────────────────────────────────
 
 const HeroSection = styled.section`
   position: relative;
   overflow: hidden;
-  padding-top: ${({ theme }) => theme.space[24]};
-  padding-bottom: ${({ theme }) => theme.space[24]};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  margin-top: calc(-1 * ${({ theme }) => theme.layout.navHeight});
+  padding-top: calc(${({ theme }) => theme.layout.navHeight} + clamp(3rem, 2rem + 4vw, 6rem));
+  padding-bottom: clamp(3rem, 2rem + 3vw, 5rem);
 `
 
-const HeroGrid = styled.div`
-  display: grid;
-  gap: ${({ theme }) => theme.space[16]};
-  grid-template-columns: 1fr;
+/** 72px technical grid, masked so it dissolves before the edges. */
+const Grid = styled.div`
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  ${gridBackdrop(72)}
+  background-position: center top;
+  mask-image: radial-gradient(ellipse 80% 70% at 60% 35%, #000 30%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 60% 35%, #000 30%, transparent 75%);
+`
 
-  @media (min-width: 1024px) {
-    grid-template-columns: 1.5fr 1fr;
-    align-items: center;
+const Glow = styled.div`
+  position: absolute;
+  top: -20rem;
+  right: -14rem;
+  width: 48rem;
+  height: 48rem;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, ${({ theme }) => theme.colors.accentSubtle} 0%, transparent 65%);
+`
+
+// ─── Layout ───────────────────────────────────────────────────────────────────
+
+const Layout = styled.div`
+  position: relative;
+  display: grid;
+  gap: 3rem;
+  align-items: center;
+
+  ${({ theme }) => theme.mq.lg} {
+    grid-template-columns: 7fr 5fr;
+    gap: 4rem;
   }
 `
 
-// ─── Text column ──────────────────────────────────────────────────────────────
+const Copy = styled.div``
 
-const Eyebrow = styled.p`
-  font-family: ${({ theme }) => theme.fonts.mono};
-  font-size: 0.75rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.primary};
-  margin: 0;
+const Name = styled.h1`
+  ${type.displayXl}
+  color: ${({ theme }) => theme.colors.fg};
+  margin-top: 1.75rem;
 `
 
-const Heading = styled.h1`
-  font-family: ${({ theme }) => theme.fonts.display};
-  font-size: clamp(2.5rem, 6vw, 5rem);
-  font-weight: 800;
-  line-height: 0.95;
-  letter-spacing: -0.02em;
-  color: ${({ theme }) => theme.colors.foreground};
-  margin: ${({ theme }) => theme.space[4]} 0 0;
+const NameLine = styled.span`
+  display: block;
 `
 
 const Role = styled.p`
-  font-family: ${({ theme }) => theme.fonts.mono};
-  font-size: 0.875rem;
-  color: ${({ theme }) => theme.colors.primary};
-  margin: ${({ theme }) => theme.space[4]} 0 0;
-  letter-spacing: 0.05em;
+  ${type.monoS}
+  color: ${({ theme }) => theme.colors.accent};
+  margin-top: 1.5rem;
+  letter-spacing: 0.04em;
 `
 
 const Tagline = styled.p`
-  font-family: ${({ theme }) => theme.fonts.display};
-  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
-  font-weight: 500;
-  color: ${({ theme }) => theme.colors.foreground};
-  margin: ${({ theme }) => theme.space[6]} 0 0;
-  line-height: 1.3;
+  ${type.titleL}
+  color: ${({ theme }) => theme.colors.fg};
+  margin-top: 0.75rem;
+  max-width: 30ch;
 `
 
-const BodyText = styled.p`
-  font-family: ${({ theme }) => theme.fonts.sans};
-  color: ${({ theme }) => theme.colors.mutedForeground};
-  line-height: 1.7;
-  margin: ${({ theme }) => theme.space[4]} 0 0;
+const Intro = styled.p`
+  ${type.bodyL}
+  color: ${({ theme }) => theme.colors.fgSecondary};
+  margin-top: 1.25rem;
+  max-width: 36rem;
 `
 
-const CtaRow = styled.div`
+const Actions = styled.div`
   display: flex;
-  flex-direction: row;
-  gap: ${({ theme }) => theme.space[4]};
-  margin-top: ${({ theme }) => theme.space[8]};
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 2.5rem;
+
+  & > * {
+    flex: 1 1 auto;
+  }
+
+  ${({ theme }) => theme.mq.sm} {
+    & > * {
+      flex: 0 0 auto;
+    }
+  }
 `
 
-// ─── Avatar column ────────────────────────────────────────────────────────────
+// ─── Portrait + whoami ────────────────────────────────────────────────────────
 
-const AvatarColumn = styled.div`
-  justify-self: end;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* Mobile: name first, then a smaller portrait with the card tucked under it.
+   Desktop: the card floats over the portrait's lower-left edge. */
+const Visual = styled.div`
+  position: relative;
+  width: min(100%, 26rem);
+
+  ${({ theme }) => theme.mq.lg} {
+    justify-self: end;
+    padding-bottom: 4.5rem;
+  }
 `
 
-const AvatarPlaceholder = styled.div`
-  width: 320px;
-  height: 320px;
+const Portrait = styled.div`
+  position: relative;
+  width: min(75%, 17rem);
+  aspect-ratio: 1;
+  margin-left: auto;
   border-radius: 50%;
+  padding: 6px;
+  border: 1px solid ${({ theme }) => theme.colors.accent};
+
+  ${({ theme }) => theme.mq.lg} {
+    width: 82%;
+  }
+`
+
+const PortraitFill = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
   background: ${({ theme }) => theme.colors.surface};
-  border: 2px solid ${({ theme }) => theme.colors.primary};
-  box-shadow: 0 0 0 8px ${({ theme }) => theme.colors.primary}18;
+
+  img {
+    object-fit: cover;
+  }
+`
+
+/** Floating material card — anchored to the portrait's lower-left edge. */
+/* Positioning lives on the Reveal wrapper: its transform would otherwise become the containing block mid-animation. */
+/* Below lg the card tucks under the portrait — overlapping the shoulders, never the face. */
+const WhoamiReveal = styled(Reveal)`
+  position: relative;
+  margin-top: -4rem;
+  width: min(100%, 23.5rem);
+
+  ${({ theme }) => theme.mq.lg} {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    margin-top: 0;
+  }
+`
+
+const Whoami = styled.div`
+  ${type.monoS}
+  padding: 1rem 1.25rem 1.125rem;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.radius.md};
+  background: ${({ theme }) => theme.colors.material};
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+
+  @media (prefers-reduced-transparency: reduce) {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+`
+
+const Facts = styled.dl`
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 1.25rem;
+  row-gap: 0.25rem;
+
+  dt {
+    color: ${({ theme }) => theme.colors.fgTertiary};
+  }
+  dd {
+    color: ${({ theme }) => theme.colors.fg};
+  }
+`
+
+const Prompt = styled.p`
+  color: ${({ theme }) => theme.colors.fgTertiary};
+  margin-bottom: 0.5rem;
+
+  b {
+    color: ${({ theme }) => theme.colors.accent};
+    font-weight: 400;
+  }
+  span {
+    color: ${({ theme }) => theme.colors.fg};
+  }
+`
+
+// ─── Proof strip ──────────────────────────────────────────────────────────────
+
+const Proof = styled.div`
+  position: relative;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: ${({ theme }) => theme.fonts.mono};
-  font-size: 2rem;
-  font-weight: 700;
-  color: ${({ theme }) => theme.colors.primary};
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.75rem 2rem;
+  margin-top: clamp(4rem, 3rem + 4vw, 6rem);
+`
+
+const ProofLabel = styled.p`
+  ${type.monoEyebrow}
+  color: ${({ theme }) => theme.colors.fgTertiary};
+`
+
+const ClientList = styled.ul`
+  ${type.monoBody}
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.75rem;
+  color: ${({ theme }) => theme.colors.fgSecondary};
 `
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export function Hero() {
   const t = useTranslations('hero')
+  const [first, ...rest] = t('heading').split(' ')
 
   return (
-    <HeroSection id="hero">
-      <GridBackdrop aria-hidden="true" />
-      <TealBlob aria-hidden="true" />
+    <HeroSection id="top" aria-labelledby="hero-title">
+      <Grid aria-hidden="true" />
+      <Glow aria-hidden="true" />
 
       <Container>
-        <HeroGrid>
-          <div>
-            <Reveal delay={0}>
-              <Eyebrow>{t('eyebrow')}</Eyebrow>
+        <Layout>
+          <Copy>
+            <Reveal>
+              <StatusPill>{t('status')}</StatusPill>
+              <Name id="hero-title">
+                <NameLine>{first}</NameLine> <NameLine>{rest.join(' ')}</NameLine>
+              </Name>
             </Reveal>
 
-            <Reveal delay={100}>
-              <Heading>{t('heading')}</Heading>
-            </Reveal>
-
-            <Reveal delay={200}>
+            <Reveal delay={80}>
               <Role>{t('role')}</Role>
               <Tagline>{t('tagline')}</Tagline>
-              <BodyText>{t('intro')}</BodyText>
-              <BodyText>{t('current')}</BodyText>
+              <Intro>{t('intro')}</Intro>
             </Reveal>
 
-            <Reveal delay={300}>
-              <CtaRow>
+            <Reveal delay={160}>
+              <Actions>
                 <Button asChild>
-                  <a href="#work">{t('cta')}</a>
+                  <a href="#work">
+                    {t('cta')}
+                    <Icon name="arrowRight" size={18} data-nudge />
+                  </a>
                 </Button>
-                <Button $variant="outline" asChild>
+                <Button $variant="secondary" asChild>
                   <a href="#contact">{t('ctaSecondary')}</a>
                 </Button>
-              </CtaRow>
+              </Actions>
             </Reveal>
-          </div>
+          </Copy>
 
-          <AvatarColumn>
-            <Reveal delay={150}>
-              <AvatarPlaceholder aria-label="Avatar placeholder — VB initials">
-                VB
-              </AvatarPlaceholder>
+          <Visual>
+            <Reveal delay={120}>
+              <Portrait>
+                <PortraitFill>
+                  <Image
+                    src={heroPortrait}
+                    alt={t('portraitLabel')}
+                    fill
+                    priority
+                    placeholder="blur"
+                    sizes="(min-width: 68.75em) 22rem, 11rem"
+                  />
+                </PortraitFill>
+              </Portrait>
             </Reveal>
-          </AvatarColumn>
-        </HeroGrid>
+            <WhoamiReveal delay={260}>
+              <Whoami>
+                <Prompt aria-hidden="true">
+                  ~ <b>$</b> <span>whoami</span>
+                </Prompt>
+                <Facts aria-label={t('whoami.label')}>
+                  <dt>{t('whoami.role')}</dt>
+                  <dd>{t('whoami.roleValue')}</dd>
+                  <dt>{t('whoami.stack')}</dt>
+                  <dd>{WHOAMI.stack.join(' · ')}</dd>
+                  <dt>{t('whoami.based')}</dt>
+                  <dd>{t('whoami.basedValue')}</dd>
+                  <dt>{t('whoami.speaks')}</dt>
+                  <dd>{WHOAMI.speaks.join(' · ')}</dd>
+                </Facts>
+              </Whoami>
+            </WhoamiReveal>
+          </Visual>
+        </Layout>
+
+        <Proof>
+          <ProofLabel>{t('shippedFor')}</ProofLabel>
+          <ClientList role="list">
+            {CLIENTS.map((client) => (
+              <li key={client}>{client}</li>
+            ))}
+          </ClientList>
+        </Proof>
       </Container>
     </HeroSection>
   )

@@ -1,302 +1,292 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import styled from '@emotion/styled';
+import { keyframes } from '@emotion/react';
+import * as Dialog from '@radix-ui/react-dialog';
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
-import { useTranslations, useLocale } from 'next-intl';
-import { useThemeToggle } from '@/app/ThemeContext';
+import { useTranslations } from 'next-intl';
 import { Container } from '@/components/layout';
-import { Button } from '@/components/ui';
+import { Button, Icon, IconButton, LocaleSwitch, Logo, ThemeToggle } from '@/components/ui';
+import { SECTION_IDS, site } from '@/data/site';
 import { useActiveSection } from '@/hooks/useActiveSection';
-import { usePathname, useRouter } from '@/i18n/navigation';
+import { useScrolled } from '@/hooks/useScrolled';
+import { type, visuallyHidden } from '@/styles/typography';
 
-const SECTION_IDS = ['about', 'experience', 'services', 'work', 'contact'] as const;
+// ─── Shell ────────────────────────────────────────────────────────────────────
 
-// ─── Header shell ─────────────────────────────────────────────────────────────
+const SkipLink = styled.a`
+  ${type.label}
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 100;
+  padding: 0.75rem 1rem;
+  border-radius: ${({ theme }) => theme.radius.sm};
+  background: ${({ theme }) => theme.colors.accent};
+  color: ${({ theme }) => theme.colors.onAccent};
+  transform: translateY(-200%);
 
-const Header = styled.header`
+  &:focus-visible {
+    transform: none;
+  }
+`;
+
+/**
+ * Translucent material that only shows its edge once content scrolls under it
+ * (scroll-edge effect) — no permanent hard divider.
+ */
+const Header = styled.header<{ $scrolled: boolean }>`
   position: sticky;
   top: 0;
   z-index: 50;
-  background: ${({ theme }) => theme.colors.background}cc;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  border-bottom: 1px solid ${({ theme, $scrolled }) => ($scrolled ? theme.colors.border : 'transparent')};
+  background: ${({ theme, $scrolled }) => ($scrolled ? theme.colors.material : 'transparent')};
+  backdrop-filter: ${({ $scrolled }) => ($scrolled ? 'blur(20px) saturate(180%)' : 'none')};
+  -webkit-backdrop-filter: ${({ $scrolled }) => ($scrolled ? 'blur(20px) saturate(180%)' : 'none')};
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease;
+
+  @media (prefers-reduced-transparency: reduce) {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
 `;
 
 const Inner = styled.div`
-  height: ${({ theme }) => theme.nav.height};
+  height: ${({ theme }) => theme.layout.navHeight};
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  gap: 1.5rem;
 `;
 
-// ─── Logo ─────────────────────────────────────────────────────────────────────
-
-const LogoLink = styled.a`
-  font-family: ${({ theme }) => theme.fonts.mono};
-  font-size: 1rem;
-  text-decoration: none;
-  color: ${({ theme }) => theme.colors.foreground};
-  white-space: nowrap;
-  transition: color 150ms ease;
-
-  &:hover {
-    color: ${({ theme }) => theme.colors.primary};
-  }
-
-  &:focus-visible {
-    outline: 2px solid ${({ theme }) => theme.colors.ring};
-    outline-offset: 2px;
-  }
-`;
-
-const LogoPrompt = styled.span`
-  color: ${({ theme }) => theme.colors.primary};
-`;
-
-// ─── Desktop nav (NavigationMenu) ─────────────────────────────────────────────
+// ─── Desktop links ────────────────────────────────────────────────────────────
 
 const NavRoot = styled(NavigationMenu.Root)`
   display: none;
 
-  @media (min-width: 768px) {
+  ${({ theme }) => theme.mq.md} {
     display: flex;
-    align-items: center;
   }
 `;
 
 const NavList = styled(NavigationMenu.List)`
   display: flex;
-  flex-direction: row;
   align-items: center;
-  gap: ${({ theme }) => theme.space[8]};
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  gap: 0.25rem;
 `;
 
 const NavLink = styled(NavigationMenu.Link)`
-  font-family: ${({ theme }) => theme.fonts.sans};
-  font-size: 0.9375rem;
-  text-decoration: none;
-  color: ${({ theme }) => theme.colors.mutedForeground};
+  ${type.label}
   position: relative;
-  padding-bottom: 2px;
-  transition: color 150ms ease;
-  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding-inline: 0.75rem;
+  border-radius: ${({ theme }) => theme.radius.sm};
+  color: ${({ theme }) => theme.colors.fgSecondary};
+  transition: color ${({ theme }) => theme.motion.fast} ease;
 
+  /* Active indicator: a 1px accent rule under the label — the same mark as the eyebrow's rule. */
   &::after {
     content: '';
     position: absolute;
-    bottom: -2px;
-    left: 0;
-    right: 0;
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: 0.375rem;
     height: 1px;
-    background: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme }) => theme.colors.accent};
     transform: scaleX(0);
-    transform-origin: left center;
-    transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 200ms ${({ theme }) => theme.motion.ease};
   }
 
-  &[data-active],
-  &:hover {
-    color: ${({ theme }) => theme.colors.foreground};
+  &:hover,
+  &[data-active] {
+    color: ${({ theme }) => theme.colors.fg};
   }
 
-  &[data-active]::after,
-  &:hover::after {
+  &[data-active]::after {
     transform: scaleX(1);
   }
 
-  &:focus-visible {
-    outline: 2px solid ${({ theme }) => theme.colors.ring};
-    outline-offset: 2px;
-    border-radius: 2px;
+  ${({ theme }) => theme.mq.reducedMotion} {
+    &::after {
+      transition: none;
+    }
   }
 `;
 
 // ─── Right cluster ────────────────────────────────────────────────────────────
 
-const RightCluster = styled.div`
+const Cluster = styled.div`
   display: flex;
-  flex-direction: row;
   align-items: center;
-  gap: ${({ theme }) => theme.space[4]};
+  gap: 0.5rem;
 `;
 
-const LocaleToggle = styled.div`
+const DesktopOnly = styled.div`
   display: none;
-  align-items: center;
-  gap: 0.25rem;
 
-  @media (min-width: 768px) {
+  ${({ theme }) => theme.mq.md} {
     display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 `;
 
-const LocaleButton = styled.button<{ $active: boolean }>`
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  font-family: ${({ theme }) => theme.fonts.mono};
-  font-size: 0.75rem;
-  color: ${({ theme, $active }) =>
-    $active ? theme.colors.foreground : theme.colors.mutedForeground};
-  transition: color 150ms ease;
+const MenuButton = styled(IconButton)`
+  color: ${({ theme }) => theme.colors.fg};
 
-  &:hover {
-    color: ${({ theme }) => theme.colors.foreground};
-  }
-
-  &:focus-visible {
-    outline: 2px solid ${({ theme }) => theme.colors.ring};
-    outline-offset: 2px;
-  }
-`;
-
-const LocaleSeparator = styled.span`
-  font-family: ${({ theme }) => theme.fonts.mono};
-  font-size: 0.75rem;
-  color: ${({ theme }) => theme.colors.mutedForeground};
-  opacity: 0.4;
-  user-select: none;
-`;
-
-const ThemeToggleButton = styled.button`
-  background: none;
-  border: none;
-  padding: ${({ theme }) => theme.space[1]};
-  cursor: pointer;
-  color: ${({ theme }) => theme.colors.mutedForeground};
-  font-size: 1.125rem;
-  line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: color 150ms ease;
-
-  &:hover {
-    color: ${({ theme }) => theme.colors.foreground};
-  }
-
-  &:focus-visible {
-    outline: 2px solid ${({ theme }) => theme.colors.ring};
-    outline-offset: 2px;
-  }
-`;
-
-const HamburgerButton = styled.button`
-  background: none;
-  border: none;
-  padding: ${({ theme }) => theme.space[2]};
-  cursor: pointer;
-  color: ${({ theme }) => theme.colors.foreground};
-  font-size: 1.25rem;
-  line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  @media (min-width: 768px) {
+  ${({ theme }) => theme.mq.md} {
     display: none;
   }
-
-  &:focus-visible {
-    outline: 2px solid ${({ theme }) => theme.colors.ring};
-    outline-offset: 2px;
-  }
 `;
 
-// ─── Mobile nav panel ─────────────────────────────────────────────────────────
+// ─── Mobile sheet ─────────────────────────────────────────────────────────────
 
-interface MobileLinkProps {
-  $active: boolean;
-}
+const fadeIn = keyframes`from { opacity: 0; } to { opacity: 1; }`;
+const fadeOut = keyframes`from { opacity: 1; } to { opacity: 0; }`;
+// Enters from the edge the trigger lives on and leaves along the same path.
+const sheetIn = keyframes`from { opacity: 0; transform: translateY(-0.75rem); } to { opacity: 1; transform: none; }`;
+const sheetOut = keyframes`from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(-0.75rem); }`;
 
-const MobilePanel = styled.div<{ $open: boolean }>`
+const Scrim = styled(Dialog.Overlay)`
   position: fixed;
-  top: ${({ theme }) => theme.nav.height};
-  left: 0;
-  right: 0;
-  background: ${({ theme }) => theme.colors.surface};
+  inset: 0;
+  z-index: 60;
+  background: oklch(0.1 0.02 255 / 55%);
+
+  &[data-state='open'] {
+    animation: ${fadeIn} 240ms ease;
+  }
+  &[data-state='closed'] {
+    animation: ${fadeOut} 200ms ease;
+  }
+`;
+
+const Sheet = styled(Dialog.Content)`
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 61;
+  max-height: 100dvh;
+  overflow-y: auto;
+  /* Larger surface → heavier material than the nav bar. */
+  background: color-mix(in oklch, ${({ theme }) => theme.colors.canvas} 92%, transparent);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-  display: ${({ $open }) => ($open ? 'flex' : 'none')};
+  border-radius: 0 0 ${({ theme }) => theme.radius.md} ${({ theme }) => theme.radius.md};
+  padding-bottom: 1.5rem;
+
+  &[data-state='open'] {
+    animation: ${sheetIn} 320ms ${({ theme }) => theme.motion.ease};
+  }
+  &[data-state='closed'] {
+    animation: ${sheetOut} 200ms ease-in;
+  }
+
+  ${({ theme }) => theme.mq.reducedMotion} {
+    &[data-state='open'] {
+      animation: ${fadeIn} 200ms ease;
+    }
+    &[data-state='closed'] {
+      animation: ${fadeOut} 150ms ease;
+    }
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+`;
+
+const SheetTitle = styled(Dialog.Title)`
+  ${visuallyHidden}
+`;
+
+const SheetLinks = styled.ul`
+  display: flex;
   flex-direction: column;
-  z-index: 49;
-
-  @media (min-width: 768px) {
-    display: none;
-  }
+  margin-top: 0.5rem;
 `;
 
-const MobileNavLink = styled.a<MobileLinkProps>`
-  font-family: ${({ theme }) => theme.fonts.sans};
-  font-size: 1rem;
-  text-decoration: none;
-  color: ${({ theme, $active }) =>
-    $active ? theme.colors.primary : theme.colors.foreground};
-  padding: ${({ theme }) => `${theme.space[4]} ${theme.space[6]}`};
+const SheetLink = styled.a<{ $active: boolean }>`
+  ${type.titleL}
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding-block: 0.875rem;
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-  transition: color 150ms ease;
+  color: ${({ theme, $active }) => ($active ? theme.colors.accent : theme.colors.fg)};
 
-  &:last-of-type {
-    border-bottom: none;
-  }
-
-  &:hover {
-    color: ${({ theme }) => theme.colors.primary};
-  }
-
-  &:focus-visible {
-    outline: 2px solid ${({ theme }) => theme.colors.ring};
-    outline-offset: 2px;
+  span {
+    ${type.monoS}
+    color: ${({ theme }) => theme.colors.fgTertiary};
   }
 `;
 
-const CvButtonWrapper = styled.div`
-  display: none;
+const SheetFooter = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+`;
 
-  @media (min-width: 768px) {
-    display: flex;
-  }
+const SheetActions = styled.div`
+  align-self: stretch;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
 `;
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export function SiteNav() {
   const t = useTranslations('nav');
-  const activeSection = useActiveSection([...SECTION_IDS]);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const locale = useLocale();
-  const pathname = usePathname();
-  const router = useRouter();
-  const { isDark, toggleTheme } = useThemeToggle();
+  const a11y = useTranslations('a11y');
+  const activeSection = useActiveSection(SECTION_IDS);
+  const scrolled = useScrolled();
+  const [open, setOpen] = useState(false);
+  // In-page target picked from the sheet; focus goes there instead of back to the trigger.
+  const pendingTarget = useRef<string | null>(null);
 
-  function switchLocale(next: 'en' | 'cs') {
-    router.replace(pathname, { locale: next });
+  function navigateFromSheet(id: string) {
+    pendingTarget.current = id;
+    setOpen(false);
   }
 
-  const navLinks = SECTION_IDS.map((id) => ({
+  function handleCloseAutoFocus(event: Event) {
+    const id = pendingTarget.current;
+    pendingTarget.current = null;
+    const target = id ? document.getElementById(id) : null;
+    if (!target) return; // Escape / close button / scrim: Radix returns focus to the trigger.
+
+    event.preventDefault();
+    if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+    target.focus({ preventScroll: true });
+  }
+
+  const links = SECTION_IDS.map((id, i) => ({
     id,
+    index: String(i + 1).padStart(2, '0'),
     label: t(id),
     href: `#${id}`,
   }));
 
   return (
     <>
-      <Header>
+      <SkipLink href="#main">{a11y('skip')}</SkipLink>
+      <Header $scrolled={scrolled || open}>
         <Container>
           <Inner>
-            <LogoLink href="#hero">
-              <LogoPrompt>$ </LogoPrompt>brzezina.dev
-            </LogoLink>
+            <Logo />
 
-            <NavRoot aria-label="Main navigation">
-              <NavList>
-                {navLinks.map(({ id, label, href }) => (
+            <NavRoot aria-label={a11y('mainNav')}>
+              <NavList role="list">
+                {links.map(({ id, label, href }) => (
                   <NavigationMenu.Item key={id}>
                     <NavLink href={href} active={activeSection === id}>
                       {label}
@@ -306,66 +296,80 @@ export function SiteNav() {
               </NavList>
             </NavRoot>
 
-            <RightCluster>
-              <LocaleToggle aria-label="Language toggle">
-                <LocaleButton
-                  type="button"
-                  $active={locale === 'en'}
-                  onClick={() => switchLocale('en')}
-                  aria-pressed={locale === 'en'}
-                >
-                  EN
-                </LocaleButton>
-                <LocaleSeparator aria-hidden="true">|</LocaleSeparator>
-                <LocaleButton
-                  type="button"
-                  $active={locale === 'cs'}
-                  onClick={() => switchLocale('cs')}
-                  aria-pressed={locale === 'cs'}
-                >
-                  CS
-                </LocaleButton>
-              </LocaleToggle>
-
-              <ThemeToggleButton
-                aria-label="Toggle colour theme"
-                type="button"
-                onClick={toggleTheme}
-              >
-                {isDark ? '☀' : '☾'}
-              </ThemeToggleButton>
-
-              <CvButtonWrapper>
-                <Button $variant="outline" asChild style={{ fontSize: '0.875rem', padding: '0.5rem 1rem' }}>
-                  <a href="#" aria-label="Download CV">CV ↓</a>
+            <Cluster>
+              <DesktopOnly>
+                <LocaleSwitch />
+              </DesktopOnly>
+              <ThemeToggle />
+              <DesktopOnly>
+                <Button $variant="subtle" $size="sm" asChild>
+                  <a href={site.cvUrl} download aria-label={t('downloadCv')}>
+                    {t('cv')}
+                    <Icon name="download" size={16} />
+                  </a>
                 </Button>
-              </CvButtonWrapper>
+              </DesktopOnly>
 
-              <HamburgerButton
-                aria-label={mobileOpen ? 'Close navigation' : 'Open navigation'}
-                aria-expanded={mobileOpen}
-                type="button"
-                onClick={() => setMobileOpen((prev) => !prev)}
-              >
-                ☰
-              </HamburgerButton>
-            </RightCluster>
+              <Dialog.Root open={open} onOpenChange={setOpen}>
+                <Dialog.Trigger asChild>
+                  <MenuButton type="button" aria-label={a11y('openMenu')}>
+                    <Icon name="menu" />
+                  </MenuButton>
+                </Dialog.Trigger>
+                <Dialog.Portal>
+                  <Scrim />
+                  <Sheet aria-describedby={undefined} onCloseAutoFocus={handleCloseAutoFocus}>
+                    <SheetTitle>{a11y('menu')}</SheetTitle>
+                    <Container>
+                      <Inner>
+                        <Logo onClick={() => navigateFromSheet('top')} />
+                        <Dialog.Close asChild>
+                          <MenuButton type="button" aria-label={a11y('closeMenu')}>
+                            <Icon name="close" />
+                          </MenuButton>
+                        </Dialog.Close>
+                      </Inner>
+                      <nav aria-label={a11y('mainNav')}>
+                        <SheetLinks role="list">
+                          {links.map(({ id, index, label, href }) => (
+                            <li key={id}>
+                              <SheetLink
+                                href={href}
+                                $active={activeSection === id}
+                                aria-current={activeSection === id ? 'location' : undefined}
+                                onClick={() => navigateFromSheet(id)}
+                              >
+                                <span aria-hidden="true">{index}</span>
+                                {label}
+                              </SheetLink>
+                            </li>
+                          ))}
+                        </SheetLinks>
+                      </nav>
+                      <SheetFooter>
+                        <LocaleSwitch />
+                        <SheetActions>
+                          <Button $variant="secondary" asChild>
+                            <a href={site.cvUrl} download>
+                              {t('downloadCv')}
+                              <Icon name="download" size={16} />
+                            </a>
+                          </Button>
+                          <Button asChild>
+                            <a href="#contact" onClick={() => navigateFromSheet('contact')}>
+                              {t('getInTouch')}
+                            </a>
+                          </Button>
+                        </SheetActions>
+                      </SheetFooter>
+                    </Container>
+                  </Sheet>
+                </Dialog.Portal>
+              </Dialog.Root>
+            </Cluster>
           </Inner>
         </Container>
       </Header>
-
-      <MobilePanel $open={mobileOpen} role="navigation" aria-label="Mobile navigation">
-        {navLinks.map(({ id, label, href }) => (
-          <MobileNavLink
-            key={id}
-            href={href}
-            $active={activeSection === id}
-            onClick={() => setMobileOpen(false)}
-          >
-            {label}
-          </MobileNavLink>
-        ))}
-      </MobilePanel>
     </>
   );
 }

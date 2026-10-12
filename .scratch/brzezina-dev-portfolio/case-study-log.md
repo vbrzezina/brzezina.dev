@@ -77,3 +77,94 @@ Running record of decisions, alternatives considered, and wrong turns for the br
 **Why:** Emotion's default `styled.button` filters `$`-prefixed props when the render target is a string (`'button'`). But when `as={Slot}` is set (a React component, not a string), Emotion forwards all props — including `$variant` — to Slot. Radix Slot then merges them onto the child `<a>` element, producing an invalid HTML attribute and a React hydration mismatch error. `shouldForwardProp` applies regardless of what the `as` target is, fixing the leak at the source.
 
 ---
+
+### 2026-10-12 — Redesign attempted in Figma via MCP, abandoned for a written spec
+
+**Decision:** Write the redesign as a spec (`docs/design/redesign-2026-10.md`) and implement it directly in the Next.js app, instead of producing full Figma screens first.
+**Alternatives considered:** Full Figma screens via the Figma MCP server; an HTML mockup importable into Figma later.
+**Why:** The Figma Starter plan caps the MCP server at 20 tool calls per month, files at 3 pages, and variable collections at 1 mode (so Dark/Light needed two parallel collections). The budget ran out after tokens + part of the component library were built.
+**Wrong turn / lesson:** For a solo project on the Starter plan, Figma-via-agent is a poor primary design surface — the code is the cheaper, faster prototype. The partial Figma file (tokens, buttons, fields, icons) still exists for reference.
+
+---
+
+### 2026-10-12 — MUI re-confirmed as rejected
+
+**Decision:** Keep Emotion `styled` + Radix Primitives; do not adopt MUI.
+**Alternatives considered:** Switching to MUI during the redesign.
+**Why:** On review, the remembered "switch to MUI" was the move *away from Tailwind*; ticket 05 had already rejected MUI and the codebase has never used it. Emotion-styled components would map onto MUI's `styled()` if that ever changes.
+
+---
+
+### 2026-10-12 — Colour tokens moved to CSS custom properties with `html[data-theme]`
+
+**Decision:** All colours live in `src/styles/tokens.css`; the Emotion theme references `var(--color-*)`. The toggle flips `data-theme`, persists to `localStorage`, and an inline `<head>` script applies the stored theme before first paint.
+**Alternatives considered:** Keep two Emotion theme objects swapped through `ThemeProvider` (previous approach).
+**Why:** Swapping theme objects re-serialised every style, required the `ThemeRoot` workaround for SSR `<Global>` rules (2026-08-19 entry), broke wherever a component imported `darkTheme` statically (Services), and could not persist the choice without a dark flash on reload. CSS variables remove the whole class of problems.
+
+---
+
+### 2026-10-12 — `asChild` never worked: custom `shouldForwardProp` swallowed Emotion's `as`
+
+**Decision:** `shouldForwardProp: (prop) => prop !== 'as' && !prop.startsWith('$')`.
+**Why:** Emotion only treats `as` as "change the rendered element" when `shouldForwardProp('as')` is false. The 2026-08-19 fix returned true for `as`, so every `<Button asChild><a/></Button>` rendered `<button as="…"><a>…</a></button>` — nested interactive content, invalid HTML. Found because button icons wrapped onto a second line in screenshots.
+**Wrong turn / lesson:** The earlier fix solved the visible symptom (`$variant` leaking) and silently created a worse one. Check the rendered DOM, not just the absence of console errors.
+
+---
+
+### 2026-10-12 — Placeholder content replaced with the real CV
+
+**Decision:** All experience, skills and bio copy now come from the original brief; data in `src/data/`, strings in `messages/*.json`.
+**Why:** The previous build shipped invented projects ("Data Pipeline Dashboard", "Banking Portal"), skills (LangChain, tRPC, Terraform) and claims (open-source maintainer, fintech). For a site aimed at headhunters, believable-but-false content is worse than an empty section.
+
+---
+
+### 2026-10-12 — Code review on the redesign PR: no fake success, CV regression caught
+
+**Decision:** The contact form now POSTs to `/api/contact` and shows an honest error (message kept, GitHub offered) when that fails, which it does until the route handler exists. The `setTimeout` "Message sent" stub is gone.
+**Alternatives considered:** Keep the stub until tickets 08/10 resolve; hide the form entirely.
+**Why:** A fake success silently throws away a recruiter's message while telling them it arrived — the worst possible outcome for a portfolio. Failing visibly costs nothing and the code path is already the real one.
+**Wrong turn / lesson:** The redesign also regressed the CV links from `/cv.pdf` (with `download`) to `#` because the spec was written from the nav button, the one place that was already `#`. Review the diff against the base branch, not against your memory of it. Other review fixes: mobile-menu focus now lands on the chosen section, explicit `role="list"` on styled lists (Safari/VoiceOver), active-section detection rewritten to use geometry instead of intersection ratios.
+
+---
+
+### 2026-10-12 — Owner design review: fewer rules, one reading column, honest client wording
+
+**Decision:** Removed hairlines between sections (spacing + eyebrow do the job); section leads moved under the heading instead of a right-hand column; nav active state became a 1px accent rule (matching the eyebrow rule) instead of a dot; logo cursor made static; nav controls unified at 40px; experience cards equal height per row; "Shipped for" → "Worked on projects for".
+**Why:** The rules doubled up in the hero and read as clutter. The split header made the eye jump across the page. The dot was a borrowed idiom; the line is this design's own vocabulary. An endless blink distracts (and WCAG 2.2.2 would need a pause control). Burberry, Walmart, PSA etc. were clients of EPAM / Starky's Club / Etnetera — "shipped for" overstated a direct relationship.
+**Wrong turn / lesson:** The owner's review caught things the automated review and axe didn't: rhythm, consistency of marks, and the accuracy of a three-word label.
+
+---
+
+### 2026-10-12 — Sections divided by tonal bands
+
+**Decision:** Every even section sits on a new `--color-band` (About, Services, Contact); hard edges, no rules. Depth ladder canvas < band < surface < raised; light accent darkened 0.52 → 0.50 and dark tertiary text lightened 0.62 → 0.64 so all text stays AA on the band.
+**Alternatives considered:** Hairlines (tried; doubled up in the hero and read as clutter); no division (tried; the page became one undifferentiated scroll); section title bars / giant numerals / gradient fades (more elements to solve a rhythm problem).
+**Why:** Tone divides without drawing anything, so nothing can double up — it's how apple.com bands its pages. The blueprint's alternation failed only because its band colour equalled its card colour; a dedicated band token between canvas and surface fixes that. A first pass at dark band L 0.185 measured just ~5 RGB steps off canvas — invisible on average panels — so it went to 0.20.
+**Wrong turn / lesson:** "No lines" over-corrected "weird lines". The owner was right that sections need a boundary; the fix was a different *kind* of boundary, not none.
+
+---
+
+### 2026-10-12 — One place per link; About keeps a (second) photo
+
+**Decision:** GitHub appears only in the footer, the CV only in the nav and Contact, the theme toggle only in the header. About keeps a 4:5 photo slot for a candid at-work shot, different from the hero headshot.
+**Alternatives considered:** Keeping GitHub + CV in both the Contact sidebar and the footer; replacing the About photo with an "At a glance" figures panel (years / companies / client projects computed from the CV data); a text-led About with no visual.
+**Why:** The link duplication was visible on one screen (Contact sidebar directly above the footer) — the original brief already assigned GitHub to the footer and the CV to Contact, so it was resolved by following the brief. For About, two *different* photos (headshot vs. at work) carry the human voice the brief asked for.
+**Wrong turn / lesson:** The figures panel was built and shipped, then reverted — a tall bordered box of giant numbers read as a dashboard widget, a different visual language from the rest of the page, sitting exactly where the eye expects a face. "Add information instead of repeating a face" was right in principle but wrong in form; asking with previews before the second attempt got to the answer in one step.
+
+---
+
+### 2026-10-12 — Emotion glues a leading `:root` onto the component class
+
+**Decision:** Theme-scoped selectors inside styled components start with `html[data-theme=…] &`, never `:root[data-theme=…] &`.
+**Why:** Emotion's compiler (stylis) treats a nested selector that begins with `:` as a pseudo-class of the component itself, so `:root[data-theme='light'] & .icon-sun` compiled to `.css-x:root[data-theme="light"] .css-x .icon-sun` — which never matches. The theme toggle had been showing the sun icon in light mode since the first redesign commit; it surfaced only when a new dark-mode image filter visibly failed to apply.
+**Wrong turn / lesson:** Axe and the interaction tests passed throughout — neither checks *which* icon is shown. Asserting computed styles of a visual state (here: `display` of each icon per theme) catches what accessibility and behaviour tests can't.
+
+---
+
+### 2026-10-12 — Theme reset on locale switch: React owns `<html>`
+
+**Decision:** Removed `data-theme` from the server-rendered `<html>`; dark is the CSS default on `:root`. The colour-scheme provider re-applies the stored theme in a layout effect on every mount.
+**Why:** Switching locale is a client-side navigation that re-renders the root layout; React re-applied `data-theme="dark"` from props, overwriting the user's choice (still in `localStorage`, so a reload "fixed" it — which made it look random). Reproduced with Playwright before fixing.
+**Alternatives considered:** A theme cookie read by the server layout — SSR-correct, but makes the route depend on `cookies()`, which conflicts with the still-open static-export option (ticket 10).
+
+---

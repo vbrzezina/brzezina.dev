@@ -22,7 +22,9 @@ Pre-build. The stack and architecture are locked via a wayfinder planning effort
 
 ## Design system
 
-Sourced from the Lovable.dev visual prototype at `https://github.com/vbrzezina/brzezina-blueprint`. The blueprint is the reference implementation (Vite/TanStack, different stack — use it for layout, tokens, and component structure only).
+**Current spec: `docs/design/redesign-2026-10.md`** — where it differs from the notes below (token names, type ramp, radius, eyebrow colour, section separation, skill lists), the spec wins. Tokens are CSS custom properties in `src/styles/tokens.css` (`--color-canvas`, `--color-fg`, `--color-accent`, …), switched by `html[data-theme]`; type mixins live in `src/styles/typography.ts`.
+
+Originally sourced from the Lovable.dev visual prototype at `https://github.com/vbrzezina/brzezina-blueprint`. The blueprint is the reference implementation (Vite/TanStack, different stack — use it for layout, tokens, and component structure only).
 
 ### Typography
 - **Display / headings**: Space Grotesk — `letter-spacing: -0.02em`

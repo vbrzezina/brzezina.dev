@@ -1,211 +1,206 @@
-'use client'
+"use client";
 
-import styled from '@emotion/styled'
-import { useTranslations } from 'next-intl'
-import { Container, Box, Spacer } from '@/components/layout'
-import { Tag } from '@/components/ui'
-import { Reveal } from '@/components/Reveal'
-import { SectionHeading } from '@/components/SectionHeading'
-
-// ─── Data ─────────────────────────────────────────────────────────────────────
-
-const LANGUAGES = [
-  { name: 'English', level: 'Fluent' },
-  { name: 'Czech', level: 'Native' },
-] as const
-
-const SKILL_GROUPS = [
-  { category: 'Frontend', items: ['TypeScript', 'React', 'Next.js', 'Emotion', 'Radix UI', 'React Native'] },
-  { category: 'Backend', items: ['Node.js', 'Express', 'NestJS', 'GraphQL', 'REST APIs', 'tRPC'] },
-  { category: 'Cloud & Infra', items: ['AWS', 'Terraform', 'Docker', 'GitHub Actions', 'Vercel'] },
-  { category: 'Databases', items: ['PostgreSQL', 'DynamoDB', 'Redis', 'Prisma', 'TypeORM'] },
-  { category: 'Practices', items: ['TDD', 'Domain-Driven Design', 'Microservices', 'Monorepo', 'CI/CD'] },
-  { category: 'GenAI', items: ['OpenAI API', 'LangChain', 'RAG pipelines', 'Claude API'] },
-] as const
-
-const BIO = [
-  "Senior full-stack engineer with nine years' experience building production-grade web applications across fintech, e-commerce, and enterprise SaaS.",
-  "I specialise in TypeScript and React on the frontend, Node.js and AWS on the backend — always with an eye on performance, accessibility, and developer experience.",
-  "Currently at EPAM Systems, where I lead frontend architecture on a large-scale client portal used by thousands of enterprise customers across Europe.",
-  "Outside client work I maintain several open-source tools and contribute to the wider TypeScript ecosystem.",
-]
-
-// ─── Layout ───────────────────────────────────────────────────────────────────
-
-const AboutSection = styled.section`
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-`
-
-const TwoColGrid = styled.div`
-  display: grid;
-  gap: 3rem;
-
-  @media (min-width: 1024px) {
-    grid-template-columns: 0.8fr 1.2fr;
-    align-items: start;
-  }
-`
-
-const ImagePlaceholder = styled.div`
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  background: ${({ theme }) => theme.colors.surface};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: 0.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: ${({ theme }) => theme.colors.mutedForeground};
-  font-family: ${({ theme }) => theme.fonts.mono};
-  font-size: 0.75rem;
-`
+import Image from "next/image";
+import styled from "@emotion/styled";
+import { useTranslations } from "next-intl";
+import { Container, Section } from "@/components/layout";
+import { Reveal } from "@/components/Reveal";
+import { SectionHeader, StackList } from "@/components/ui";
+import { LANGUAGE_IDS, SKILL_GROUPS } from "@/data/skills";
+import { type } from "@/styles/typography";
+import aboutPortrait from "@/assets/photos/portrait-about.jpg";
 
 // ─── Bio ──────────────────────────────────────────────────────────────────────
 
-const BioParagraph = styled.p`
-  font-family: ${({ theme }) => theme.fonts.sans};
-  color: ${({ theme }) => theme.colors.mutedForeground};
-  line-height: 1.7;
-  margin: 0;
-
-  & + & {
-    margin-top: 1rem;
-  }
-`
-
-const LanguageList = styled.dl`
+const BioGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  margin-top: 2rem;
-`
+  gap: 2.5rem;
+  margin-top: clamp(3rem, 2rem + 3vw, 4.5rem);
 
-const LanguageItem = styled.div`
-  border-left: 2px solid ${({ theme }) => theme.colors.primary};
-  padding-left: 0.75rem;
-`
-
-const LanguageTerm = styled.dt`
-  font-family: ${({ theme }) => theme.fonts.mono};
-  font-size: 0.75rem;
-  color: ${({ theme }) => theme.colors.foreground};
-  font-weight: 600;
-`
-
-const LanguageDesc = styled.dd`
-  font-family: ${({ theme }) => theme.fonts.sans};
-  font-size: 0.875rem;
-  color: ${({ theme }) => theme.colors.mutedForeground};
-  margin-top: 0.25rem;
-  margin-left: 0;
-`
-
-// ─── Skills ───────────────────────────────────────────────────────────────────
-
-const StackHeading = styled.p`
-  font-family: ${({ theme }) => theme.fonts.mono};
-  font-size: 0.75rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.primary};
-  margin: 0;
-`
-
-const SkillGroupRow = styled.div`
-  border-top: 1px solid ${({ theme }) => theme.colors.border};
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  display: grid;
-  gap: 1rem;
-
-  @media (min-width: 768px) {
-    grid-template-columns: 180px 1fr;
+  ${({ theme }) => theme.mq.md} {
+    grid-template-columns: 5fr 7fr;
+    gap: 4rem;
+    align-items: start;
   }
-`
+`;
 
-const SkillCategoryHeading = styled.p`
-  font-family: ${({ theme }) => theme.fonts.display};
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.foreground};
-  font-size: 0.9rem;
-  margin: 0;
-`
+/** 4:5 candid photo — deliberately a different shot from the hero headshot. */
+const Portrait = styled.div`
+  position: relative;
+  aspect-ratio: 4 / 5;
+  max-width: 28rem;
+  border-radius: ${({ theme }) => theme.radius.md};
+  overflow: hidden;
+  background: ${({ theme }) => theme.colors.surface};
 
-const SkillItems = styled.div`
+  img {
+    object-fit: cover;
+  }
+
+  /* Dark mode only: ease the bright wall down so it doesn't outshine the text. */
+  html:not([data-theme="light"]) & img {
+    filter: brightness(0.9);
+  }
+`;
+
+const Bio = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  max-width: 40rem;
+`;
+
+const Lede = styled.p`
+  ${type.bodyL}
+  color: ${({ theme }) => theme.colors.fg};
+`;
+
+const Paragraph = styled.p`
+  ${type.bodyM}
+  color: ${({ theme }) => theme.colors.fgSecondary};
+`;
+
+const SubHeading = styled.h3`
+  ${type.monoEyebrow}
+  color: ${({ theme }) => theme.colors.fgTertiary};
+`;
+
+const Languages = styled.dl`
   display: flex;
   flex-wrap: wrap;
+  gap: 1rem 3rem;
+  margin-top: 0.75rem;
+
+  div {
+    padding-left: 0.875rem;
+    border-left: 1px solid ${({ theme }) => theme.colors.accent};
+  }
+  dt {
+    ${type.label}
+    color: ${({ theme }) => theme.colors.fg};
+  }
+  dd {
+    ${type.bodyS}
+    color: ${({ theme }) => theme.colors.fgTertiary};
+    margin-top: 0.125rem;
+  }
+`;
+
+const LanguagesBlock = styled.div`
+  margin-top: 1rem;
+  padding-top: 0.25rem;
+`;
+
+// ─── Stack table ──────────────────────────────────────────────────────────────
+
+const StackBlock = styled.div`
+  margin-top: clamp(4rem, 3rem + 3vw, 6rem);
+`;
+
+const StackTitle = styled.h3`
+  ${type.titleL}
+  color: ${({ theme }) => theme.colors.fg};
+  margin-bottom: 1.5rem;
+`;
+
+const StackRows = styled.dl`
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+`;
+
+const StackRow = styled.div`
+  display: grid;
   gap: 0.5rem;
-  align-items: flex-start;
-`
+  padding-block: 1.25rem;
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
+
+  ${({ theme }) => theme.mq.md} {
+    grid-template-columns: 2fr 10fr;
+    gap: 2rem;
+    align-items: baseline;
+  }
+
+  dt {
+    ${type.titleS}
+    color: ${({ theme }) => theme.colors.fg};
+  }
+`;
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export function About() {
-  const t = useTranslations('about')
+  const t = useTranslations("about");
 
   return (
-    <AboutSection id="about">
+    <Section id="about" aria-labelledby="about-title">
       <Container>
-        <Box $py={24}>
-          <Reveal delay={0}>
-            <SectionHeading
-              index={t('index')}
-              slug={t('slug')}
-              title={t('heading')}
-            />
+        <Reveal>
+          <SectionHeader
+            index={t("index")}
+            label={t("slug")}
+            title={t("heading")}
+            titleId="about-title"
+          />
+        </Reveal>
+
+        <BioGrid>
+          <Reveal delay={80}>
+            <Portrait>
+              <Image
+                src={aboutPortrait}
+                alt={t("portraitLabel")}
+                fill
+                placeholder="blur"
+                sizes="(min-width: 56.25em) 28rem, 100vw"
+              />
+            </Portrait>
           </Reveal>
 
-          <Spacer $size={16} />
+          <Reveal delay={160}>
+            <Bio>
+              <Lede>{t("bio.lede")}</Lede>
+              <Paragraph>{t("bio.p2")}</Paragraph>
+              <Paragraph>{t("bio.p3")}</Paragraph>
 
-          <TwoColGrid>
-            <Reveal delay={100}>
-              <ImagePlaceholder aria-label="Workspace image placeholder">
-                workspace
-              </ImagePlaceholder>
-            </Reveal>
-
-            <div>
-              <Reveal delay={100}>
-                {BIO.map((paragraph, i) => (
-                  <BioParagraph key={i}>{paragraph}</BioParagraph>
-                ))}
-              </Reveal>
-
-              <Reveal delay={200}>
-                <LanguageList aria-label={t('languagesHeading')}>
-                  {LANGUAGES.map((lang) => (
-                    <LanguageItem key={lang.name}>
-                      <LanguageTerm>{lang.name}</LanguageTerm>
-                      <LanguageDesc>{lang.level}</LanguageDesc>
-                    </LanguageItem>
+              <LanguagesBlock>
+                <SubHeading>{t("languagesHeading")}</SubHeading>
+                <Languages>
+                  {LANGUAGE_IDS.map((id) => (
+                    <div key={id}>
+                      <dt>{t(`languages.${id}.name`)}</dt>
+                      <dd>{t(`languages.${id}.level`)}</dd>
+                    </div>
                   ))}
-                </LanguageList>
-              </Reveal>
-            </div>
-          </TwoColGrid>
-
-          <Spacer $size={20} />
-
-          <Reveal delay={100}>
-            <StackHeading>{t('stackHeading')}</StackHeading>
+                </Languages>
+              </LanguagesBlock>
+            </Bio>
           </Reveal>
+        </BioGrid>
 
-          <Spacer $size={8} />
-
-          {SKILL_GROUPS.map((group, i) => (
-            <Reveal key={group.category} delay={100 + i * 100}>
-              <SkillGroupRow>
-                <SkillCategoryHeading>{group.category}</SkillCategoryHeading>
-                <SkillItems>
-                  {group.items.map((item) => (
-                    <Tag key={item}>{item}</Tag>
-                  ))}
-                </SkillItems>
-              </SkillGroupRow>
-            </Reveal>
-          ))}
-        </Box>
+        <StackBlock>
+          <Reveal>
+            <StackTitle>{t("stackHeading")}</StackTitle>
+          </Reveal>
+          <Reveal delay={80}>
+            <StackRows>
+              {SKILL_GROUPS.map((group) => {
+                const items = group.items.map((item) =>
+                  typeof item === "string"
+                    ? item
+                    : t(`skills.items.${item.key}`),
+                );
+                return (
+                  <StackRow key={group.id}>
+                    <dt>{t(`skills.categories.${group.id}`)}</dt>
+                    <dd>
+                      <StackList items={items} tone="secondary" />
+                    </dd>
+                  </StackRow>
+                );
+              })}
+            </StackRows>
+          </Reveal>
+        </StackBlock>
       </Container>
-    </AboutSection>
-  )
+    </Section>
+  );
 }

@@ -2,208 +2,158 @@
 
 import styled from '@emotion/styled'
 import { useTranslations } from 'next-intl'
-import { Container, Box, Spacer } from '@/components/layout'
+import { Container, Section } from '@/components/layout'
 import { Reveal } from '@/components/Reveal'
-import { SectionHeading } from '@/components/SectionHeading'
+import { SectionHeader, StackList } from '@/components/ui'
+import { EXPERIENCE } from '@/data/experience'
+import { type } from '@/styles/typography'
 
-// ─── Data types ───────────────────────────────────────────────────────────────
-
-interface Project {
-  name: string
-  role: string
-  description?: string
-  stack: string[]
-}
-
-interface Role {
-  company: string
-  position: string
-  period: string
-  projects: Project[]
-}
-
-const EXPERIENCE: Role[] = [
-  {
-    company: 'EPAM Systems',
-    position: 'Senior Software Engineer',
-    period: '2022 — Present',
-    projects: [
-      {
-        name: 'Client Portal Platform',
-        role: 'Lead frontend engineer',
-        description:
-          'Large-scale enterprise portal serving thousands of users across Europe. Led migration from legacy Angular to React + TypeScript.',
-        stack: ['TypeScript', 'React', 'Node.js', 'AWS', 'PostgreSQL'],
-      },
-      {
-        name: 'Data Pipeline Dashboard',
-        role: 'Lead full-stack engineer',
-        description:
-          'Real-time monitoring dashboard for complex ETL pipelines with 200+ data sources.',
-        stack: ['React', 'TypeScript', 'Python', 'AWS', 'DynamoDB'],
-      },
-      {
-        name: 'DevOps Automation Tooling',
-        role: 'Contributing engineer',
-        description:
-          'Internal developer platform for infrastructure provisioning and deployment automation.',
-        stack: ['Node.js', 'AWS', 'Terraform', 'Docker'],
-      },
-    ],
-  },
-  {
-    company: "Starky's Club",
-    position: 'Lead Frontend Developer',
-    period: '2019 — 2022',
-    projects: [
-      {
-        name: 'E-commerce Platform',
-        role: 'Lead frontend developer',
-        description:
-          'Full e-commerce replatform for a major Czech retailer. Built product discovery, checkout, and account management.',
-        stack: ['React', 'TypeScript', 'GraphQL', 'Node.js', 'PostgreSQL'],
-      },
-      {
-        name: 'Mobile App',
-        role: 'Lead mobile developer',
-        description:
-          'Cross-platform mobile app for loyalty programme management. Published on App Store and Play Store.',
-        stack: ['React Native', 'TypeScript', 'Node.js', 'REST API'],
-      },
-    ],
-  },
-  {
-    company: 'Etnetera a.s.',
-    position: 'Frontend Developer',
-    period: '2017 — 2019',
-    projects: [
-      {
-        name: 'Banking Portal',
-        role: 'Frontend developer',
-        description:
-          'Digital banking portal for a major Czech bank. Built account overview, transaction history, and payment flows.',
-        stack: ['React', 'TypeScript', 'Java', 'REST API'],
-      },
-      {
-        name: 'CMS Migration',
-        role: 'Contributing engineer',
-        description:
-          'Migrated marketing sites from a legacy CMS to a modern headless stack.',
-        stack: ['Next.js', 'TypeScript', 'Contentful'],
-      },
-    ],
-  },
-]
-
-// ─── Styled components ────────────────────────────────────────────────────────
-
-const ExperienceSection = styled.section`
-  background: ${({ theme }) => theme.colors.surface};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-`
+// ─── Timeline ─────────────────────────────────────────────────────────────────
 
 const Timeline = styled.ol`
   position: relative;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  border-left: 2px solid ${({ theme }) => theme.colors.primary};
-  padding-left: ${({ theme }) => theme.space[8]};
-  display: flex;
-  flex-direction: column;
-  gap: 3.5rem;
-`
+  margin-top: clamp(3rem, 2rem + 3vw, 4.5rem);
+  padding-left: 2rem;
 
-const RoleItem = styled.li`
-  position: relative;
-`
-
-const BulletDot = styled.span`
-  position: absolute;
-  left: calc(-${({ theme }) => theme.space[8]} - 5px);
-  top: 0.375rem;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: ${({ theme }) => theme.colors.primary};
-`
-
-const CompanyRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-`
-
-const CompanyName = styled.h3`
-  font-family: ${({ theme }) => theme.fonts.display};
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: ${({ theme }) => theme.colors.foreground};
-  margin: 0;
-`
-
-const PeriodBadge = styled.span`
-  font-family: ${({ theme }) => theme.fonts.mono};
-  font-size: 0.75rem;
-  color: ${({ theme }) => theme.colors.primary};
-  white-space: nowrap;
-`
-
-const PositionText = styled.p`
-  font-family: ${({ theme }) => theme.fonts.sans};
-  font-size: 0.875rem;
-  color: ${({ theme }) => theme.colors.mutedForeground};
-  margin: 0.25rem 0 0;
-`
-
-const ProjectsList = styled.ul`
-  list-style: none;
-  padding: 0;
-  margin: 1.5rem 0 0;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  border-left: 1px solid ${({ theme }) => theme.colors.border};
-  padding-left: 1.25rem;
-`
-
-const ProjectItem = styled.li``
-
-const ProjectName = styled.h4`
-  font-family: ${({ theme }) => theme.fonts.display};
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.foreground};
-  font-size: 1rem;
-  margin: 0;
-
+  /* The rail */
   &::before {
-    content: '› ';
-    color: ${({ theme }) => theme.colors.primary};
-    font-family: ${({ theme }) => theme.fonts.mono};
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 0.75rem;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(
+      to bottom,
+      ${({ theme }) => theme.colors.accent},
+      ${({ theme }) => theme.colors.border} 40%
+    );
+  }
+
+  ${({ theme }) => theme.mq.md} {
+    padding-left: 2.5rem;
   }
 `
 
+const Employer = styled.li`
+  position: relative;
+
+  & + & {
+    margin-top: clamp(3rem, 2.5rem + 2vw, 4rem);
+  }
+`
+
+const Dot = styled.span<{ $current: boolean }>`
+  position: absolute;
+  left: calc(-2rem + 0px);
+  top: 0.6rem;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: ${({ theme, $current }) => ($current ? theme.colors.accent : theme.colors.canvas)};
+  border: 1px solid ${({ theme }) => theme.colors.accent};
+  box-shadow: ${({ theme, $current }) => ($current ? `0 0 0 5px ${theme.colors.accentSubtle}` : 'none')};
+
+  ${({ theme }) => theme.mq.md} {
+    left: -2.5rem;
+  }
+`
+
+const EmployerHeader = styled.div`
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 0.375rem;
+
+  ${({ theme }) => theme.mq.md} {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 2rem;
+  }
+`
+
+const Company = styled.h3`
+  ${type.titleL}
+  color: ${({ theme }) => theme.colors.fg};
+`
+
+const Title = styled.p`
+  ${type.bodyM}
+  color: ${({ theme }) => theme.colors.fgSecondary};
+  margin-top: 0.25rem;
+`
+
+const Period = styled.p`
+  ${type.monoS}
+  color: ${({ theme }) => theme.colors.accent};
+  white-space: nowrap;
+`
+
+// ─── Projects ─────────────────────────────────────────────────────────────────
+
+const Projects = styled.ul`
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.5rem;
+
+  ${({ theme }) => theme.mq.lg} {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+`
+
+/* Fills its grid cell, so cards in the same row share a height; the stack line pins to the bottom. */
+const Project = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  height: 100%;
+  padding: 1.25rem 1.5rem 1.375rem;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.radius.md};
+  transition: border-color ${({ theme }) => theme.motion.fast} ease;
+
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.borderStrong};
+  }
+`
+
+const Client = styled.h4`
+  ${type.titleM}
+  color: ${({ theme }) => theme.colors.fg};
+
+  span[aria-hidden] {
+    font-family: ${({ theme }) => theme.fonts.mono};
+    font-weight: 400;
+    color: ${({ theme }) => theme.colors.accent};
+    margin-right: 0.5rem;
+  }
+`
+
+const CurrentTag = styled.span`
+  ${type.monoEyebrow}
+  align-self: center;
+  margin-left: 0.75rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: ${({ theme }) => theme.radius.sm};
+  background: ${({ theme }) => theme.colors.accentSubtle};
+  /* accent-hover keeps 4.5:1 on the tinted fill in both themes */
+  color: ${({ theme }) => theme.colors.accentHover};
+  vertical-align: middle;
+`
+
 const ProjectRole = styled.p`
-  font-family: ${({ theme }) => theme.fonts.sans};
-  font-size: 0.875rem;
-  color: ${({ theme }) => theme.colors.mutedForeground};
-  margin: 0.25rem 0 0;
+  ${type.label}
+  color: ${({ theme }) => theme.colors.fg};
 `
 
 const ProjectDescription = styled.p`
-  font-family: ${({ theme }) => theme.fonts.sans};
-  font-size: 0.875rem;
-  color: ${({ theme }) => theme.colors.mutedForeground};
-  margin: 0.25rem 0 0;
+  ${type.bodyS}
+  color: ${({ theme }) => theme.colors.fgSecondary};
 `
 
-const StackTags = styled.p`
-  font-family: ${({ theme }) => theme.fonts.mono};
-  font-size: 0.75rem;
-  color: ${({ theme }) => theme.colors.mutedForeground};
-  margin: 0.5rem 0 0;
+const ProjectStack = styled.div`
+  margin-top: auto;
+  padding-top: 0.75rem;
 `
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -212,47 +162,62 @@ export function Experience() {
   const t = useTranslations('experience')
 
   return (
-    <ExperienceSection id="experience">
+    <Section id="experience" aria-labelledby="experience-title">
       <Container>
-        <Box $py={24}>
-          <SectionHeading
+        <Reveal>
+          <SectionHeader
             index={t('index')}
-            slug={t('slug')}
+            label={t('slug')}
             title={t('heading')}
+            titleId="experience-title"
             lead={t('lead')}
           />
+        </Reveal>
 
-          <Spacer $size={16} />
-
-          <Timeline>
-            {EXPERIENCE.map((role, i) => (
-              <Reveal key={role.company} as={RoleItem} delay={i * 100}>
-                <BulletDot aria-hidden="true" />
-
-                <CompanyRow>
-                  <CompanyName>{role.company}</CompanyName>
-                  <PeriodBadge>{role.period}</PeriodBadge>
-                </CompanyRow>
-
-                <PositionText>{role.position}</PositionText>
-
-                <ProjectsList>
-                  {role.projects.map((project) => (
-                    <ProjectItem key={project.name}>
-                      <ProjectName>{project.name}</ProjectName>
-                      <ProjectRole>{project.role}</ProjectRole>
-                      {project.description && (
-                        <ProjectDescription>{project.description}</ProjectDescription>
-                      )}
-                      <StackTags>{project.stack.join(' · ')}</StackTags>
-                    </ProjectItem>
-                  ))}
-                </ProjectsList>
+        <Timeline role="list">
+          {EXPERIENCE.map((employer) => (
+            <Employer key={employer.id}>
+              <Dot $current={employer.end === null} aria-hidden="true" />
+              <Reveal>
+                <EmployerHeader>
+                  <div>
+                    <Company>{employer.company}</Company>
+                    <Title>{t(`employers.${employer.id}.role`)}</Title>
+                  </div>
+                  <Period>
+                    {employer.start} — {employer.end ?? t('present')}
+                  </Period>
+                </EmployerHeader>
               </Reveal>
-            ))}
-          </Timeline>
-        </Box>
+
+              {employer.projects.length > 0 && (
+                <Projects role="list">
+                  {employer.projects.map((project, i) => (
+                    <Reveal key={project.id} as="li" delay={i * 70}>
+                      <Project>
+                        <Client>
+                          <span aria-hidden="true">&gt;</span>
+                          {project.client}
+                          {project.current && <CurrentTag>{t('current')}</CurrentTag>}
+                        </Client>
+                        <ProjectRole>{t(`projects.${project.id}.role`)}</ProjectRole>
+                        {t.has(`projects.${project.id}.description`) && (
+                          <ProjectDescription>{t(`projects.${project.id}.description`)}</ProjectDescription>
+                        )}
+                        {project.stack.length > 0 && (
+                          <ProjectStack>
+                            <StackList items={project.stack} label={t('stackLabel')} />
+                          </ProjectStack>
+                        )}
+                      </Project>
+                    </Reveal>
+                  ))}
+                </Projects>
+              )}
+            </Employer>
+          ))}
+        </Timeline>
       </Container>
-    </ExperienceSection>
+    </Section>
   )
 }
