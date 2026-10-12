@@ -178,23 +178,25 @@ export function Experience() {
                 </EmployerHeader>
               </Reveal>
 
-              <Projects role="list">
-                {employer.projects.map((project, i) => (
-                  <Reveal key={project.id} as="li" delay={i * 70}>
-                    <Project>
-                      <Client>
-                        <span aria-hidden="true">&gt;</span>
-                        {project.client}
-                      </Client>
-                      <ProjectRole>{t(`projects.${project.id}.role`)}</ProjectRole>
-                      <ProjectDescription>{t(`projects.${project.id}.description`)}</ProjectDescription>
-                      <ProjectStack>
-                        <StackList items={project.stack} label={t('stackLabel')} />
-                      </ProjectStack>
-                    </Project>
-                  </Reveal>
-                ))}
-              </Projects>
+              {employer.projects.length > 0 && (
+                <Projects role="list">
+                  {employer.projects.map((project, i) => (
+                    <Reveal key={project.id} as="li" delay={i * 70}>
+                      <Project>
+                        <Client>
+                          <span aria-hidden="true">&gt;</span>
+                          {project.client}
+                        </Client>
+                        <ProjectRole>{t(`projects.${project.id}.role`)}</ProjectRole>
+                        <ProjectDescription>{t(`projects.${project.id}.description`)}</ProjectDescription>
+                        <ProjectStack>
+                          <StackList items={project.stack} label={t('stackLabel')} />
+                        </ProjectStack>
+                      </Project>
+                    </Reveal>
+                  ))}
+                </Projects>
+              )}
             </Employer>
           ))}
         </Timeline>

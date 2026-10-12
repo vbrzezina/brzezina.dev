@@ -341,7 +341,7 @@ export function Contact() {
                     <SubmitError role="alert">
                       {t.rich('form.error', {
                         link: (chunks) => (
-                          <a href={site.githubUrl} target="_blank" rel="noopener noreferrer">
+                          <a href={site.linkedinUrl} target="_blank" rel="noopener noreferrer">
                             {chunks}
                           </a>
                         ),

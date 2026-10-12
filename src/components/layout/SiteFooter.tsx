@@ -2,7 +2,7 @@
 
 import styled from '@emotion/styled';
 import { useTranslations } from 'next-intl';
-import { Icon, LocaleSwitch, Logo } from '@/components/ui';
+import { Icon, Logo } from '@/components/ui';
 import { SECTION_IDS, site } from '@/data/site';
 import { type } from '@/styles/typography';
 import { Container } from './Container';
@@ -107,6 +107,12 @@ export function SiteFooter() {
                   {site.githubLabel}
                 </FooterLink>
               </li>
+              <li>
+                <FooterLink href={site.linkedinUrl} target="_blank" rel="noopener noreferrer">
+                  <Icon name="linkedin" size={16} />
+                  {site.linkedinLabel}
+                </FooterLink>
+              </li>
             </LinkList>
           </div>
         </Top>
@@ -114,7 +120,6 @@ export function SiteFooter() {
         <Bottom>
           <Copyright>{t('copyright')}</Copyright>
           <BottomActions>
-            <LocaleSwitch />
             <FooterLink href="#top">
               {t('backToTop')}
               <Icon name="arrowUp" size={16} />

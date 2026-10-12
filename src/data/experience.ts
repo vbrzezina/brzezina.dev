@@ -17,10 +17,18 @@ export interface Employer {
 
 export const EXPERIENCE: readonly Employer[] = [
   {
+    id: 'sap',
+    company: 'SAP',
+    start: 2026,
+    end: null,
+    // Product details not public yet — add projects here when they can be shared.
+    projects: [],
+  },
+  {
     id: 'epam',
     company: 'EPAM Systems',
     start: 2022,
-    end: null,
+    end: 2026,
     projects: [
       { id: 'burberry', client: 'Burberry', stack: ['TypeScript', 'React', 'MobX', 'NestJS', 'Express', 'AWS'] },
       { id: 'walmart', client: 'Walmart', stack: ['React', 'TypeScript', 'Redux', 'SWR', 'Ant Design', 'Cypress'] },

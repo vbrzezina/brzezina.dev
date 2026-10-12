@@ -6,6 +6,8 @@ export type SectionId = (typeof SECTION_IDS)[number];
 export const site = {
   githubUrl: 'https://github.com/vbrzezina',
   githubLabel: 'github.com/vbrzezina',
+  linkedinUrl: 'https://www.linkedin.com/in/vaclav-brzezina/',
+  linkedinLabel: 'linkedin.com/in/vaclav-brzezina',
   repoUrl: 'https://github.com/vbrzezina/brzezina.dev',
   // The PDF itself still needs adding to public/ (see redesign spec §8).
   cvUrl: '/cv.pdf',
