@@ -144,6 +144,14 @@ Running record of decisions, alternatives considered, and wrong turns for the br
 
 ---
 
+### 2026-10-12 — One photo, one place per link
+
+**Decision:** Hero keeps the only photo; the About slot became an "At a glance" panel (years, companies, client projects) computed from `src/data/experience.ts`. GitHub appears only in the footer, the CV only in the nav and Contact, the theme toggle only in the header.
+**Alternatives considered:** A second (candid) photo in About; keeping GitHub + CV in both the Contact sidebar and the footer.
+**Why:** A second photo repeats identity; the slot works harder carrying information a skimmer wants. Deriving the figures from the CV data means they can't drift from the Experience section. The link duplication was visible on one screen (Contact sidebar directly above the footer) — the original brief already assigned GitHub to the footer and the CV to Contact, so it was resolved by following the brief.
+
+---
+
 ### 2026-10-12 — Theme reset on locale switch: React owns `<html>`
 
 **Decision:** Removed `data-theme` from the server-rendered `<html>`; dark is the CSS default on `:root`. The colour-scheme provider re-applies the stored theme in a layout effect on every mount.

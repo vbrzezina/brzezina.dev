@@ -107,12 +107,6 @@ export function SiteFooter() {
                   {site.githubLabel}
                 </FooterLink>
               </li>
-              <li>
-                <FooterLink href={site.cvUrl} download>
-                  <Icon name="download" size={16} />
-                  {t('downloadCv')}
-                </FooterLink>
-              </li>
             </LinkList>
           </div>
         </Top>

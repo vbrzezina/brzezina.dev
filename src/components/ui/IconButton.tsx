@@ -14,12 +14,11 @@ export const IconButton = styled.button`
   color: ${({ theme }) => theme.colors.fgSecondary};
   cursor: pointer;
   transition:
-    background-color ${({ theme }) => theme.motion.fast} ease,
     color ${({ theme }) => theme.motion.fast} ease,
     transform 100ms ease-out;
 
+  /* Colour-only hover, same as the language switch segments. */
   &:hover {
-    background: ${({ theme }) => theme.colors.raised};
     color: ${({ theme }) => theme.colors.fg};
   }
 

@@ -215,19 +215,6 @@ const Aside = styled.dl`
   }
 `
 
-const AsideLink = styled.a`
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  min-height: 2.75rem;
-  color: ${({ theme }) => theme.colors.fg};
-  transition: color ${({ theme }) => theme.motion.fast} ease;
-
-  &:hover {
-    color: ${({ theme }) => theme.colors.accent};
-  }
-`
-
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export function Contact() {
@@ -383,15 +370,6 @@ export function Contact() {
               <div>
                 <dt>{t('sidebar.basedLabel')}</dt>
                 <dd>{t('sidebar.basedValue')}</dd>
-              </div>
-              <div>
-                <dt>{t('sidebar.elsewhereLabel')}</dt>
-                <dd>
-                  <AsideLink href={site.githubUrl} target="_blank" rel="noopener noreferrer">
-                    <Icon name="github" size={18} />
-                    {site.githubLabel}
-                  </AsideLink>
-                </dd>
               </div>
               <div>
                 <dt>{t('sidebar.cvLabel')}</dt>

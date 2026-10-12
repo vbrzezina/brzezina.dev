@@ -121,7 +121,7 @@ Only `transform` and `opacity` are animated for movement. No looping animation a
 
 | Component | Spec |
 |-----------|------|
-| **Button** | Variants `primary` (accent fill), `secondary` (transparent, `border-strong`, hover → `raised`), `ghost` (no border, `fg-secondary`, hover → `accent-subtle`). Sizes `md` (48px, 4px radius) and `sm` (40px, 6px radius — nav CV, matching the icon button and locale switch). Variant `subtle` (hairline border, `fg-secondary`, hover → `raised` + `fg`) mirrors IconButton exactly — used for the nav CV button so every nav control reacts the same. Optional leading/trailing icon. Focus: 2px accent outline, 2px offset. `asChild` for links. One primary button per view. |
+| **Button** | Variants `primary` (accent fill), `secondary` (transparent, `border-strong`, hover → `raised`), `ghost` (no border, `fg-secondary`, hover → `accent-subtle`). Sizes `md` (48px, 4px radius) and `sm` (40px, 6px radius — nav CV, matching the icon button and locale switch). Variant `subtle` (hairline border, `fg-secondary`, hover → `fg`, colour only) mirrors IconButton exactly — used for the nav CV button so every nav control reacts the same. Optional leading/trailing icon. Focus: 2px accent outline, 2px offset. `asChild` for links. One primary button per view. |
 | **SectionHeader** | `NN —— LABEL` eyebrow (number + rule in accent, label in `fg-secondary`) → h2 `displayL`. Optional lead directly below the heading (max 40rem). One left-aligned reading column at every width — eyebrow → heading → lead — so the eye never jumps across the page. |
 | **StatusPill** | `accent-subtle` fill, success dot with soft glow, `monoS` label. Static — no pulse. |
 | **StackList** | Mono, dot-separated (`TypeScript · React · NestJS`), wraps naturally, rendered as `<ul role="list">` with CSS separators — the explicit role keeps Safari/VoiceOver announcing it after the `list-style: none` reset (same on every styled list). Replaces boxed tags everywhere. |
@@ -129,7 +129,7 @@ Only `transform` and `opacity` are animated for movement. No looping animation a
 | **LocaleSwitch** | Segmented control (`EN | CS`) — selected segment on `raised`. Real `<a>` links to the locale route with `aria-current`, `hreflang`. |
 | **ThemeToggle** | 40px icon button, SVG sun/moon, label states the action ("Switch to light theme"). Persists to `localStorage`; inline head script applies the theme before first paint. |
 | **Field** | Label above (never floating), 48px control on `canvas` with `border-strong`; focus → accent border + 3px `accent-subtle` halo; error → error border + message (`aria-invalid`, `aria-describedby`). Validated on blur, then live. |
-| **IconButton** | 44px square on mobile (touch target), 40px from `md` up so every nav control shares one height; hairline border, `md` radius; hover → `raised`; press → `scale(0.97)`, same as buttons (off under reduced motion). Shared by the theme toggle and the menu open/close buttons. |
+| **IconButton** | 44px square on mobile (touch target), 40px from `md` up so every nav control shares one height; hairline border, `md` radius; hover → `fg` text/icon colour only (no fill — same as the locale switch segments); press → `scale(0.97)`, same as buttons (off under reduced motion). Shared by the theme toggle and the menu open/close buttons. |
 | **Icons** | Inline SVG, 20px, 1.75 stroke, `currentColor` (Lucide geometry): sun, moon, menu, close, arrow-right, arrow-up-right, download, github, check. |
 
 ---
@@ -167,7 +167,7 @@ Only `transform` and `opacity` are animated for movement. No looping animation a
 - **Proof strip** (bottom of hero, no rule): `WORKED ON PROJECTS FOR` eyebrow + `Burberry · Walmart · PSA · Veolia · Carvago · Logio` in `monoBody`. Worded as *projects for* because these were clients of EPAM, Starky's Club and Etnetera, not direct engagements — the big names stay, the claim stays accurate.
 
 ### 01 About — "Hands-on senior engineer"
-- 5/7 split. Left: 4:5 portrait placeholder (surface, grid texture, `VB` monogram, `role="img"` with descriptive label). Right: first paragraph in `bodyL` fg (the lede), then two `bodyM` fg-secondary paragraphs, then a languages `<dl>`: **English** Fluent · **Czech** Native.
+- 5/7 split. Left: an **At a glance** panel (surface, grid texture) with three figures computed from `src/data/experience.ts` — years shipping (current year − earliest start), companies, client projects — big `displayL` numbers over accent mono labels, ICU-pluralised in EN/CS. The hero carries the one photo; this slot adds information instead of repeating a face (a second, candid photo can replace it later). Right: first paragraph in `bodyL` fg (the lede), then two `bodyM` fg-secondary paragraphs, then a languages `<dl>`: **English** Fluent · **Czech** Native.
 - **Stack & tooling** (h3): a six-row table. Category in `titleM` on the left (3 cols), StackList on the right (9 cols), hairline between rows. Content from the brief: Frontend, Backend, Cloud, Databases, Practices, GenAI.
 
 ### 02 Experience — "Nine years, shipped"
@@ -189,10 +189,11 @@ Replace the three TBD cards with **real, honest content**:
 ### 05 Contact — "Available for freelance and contract engagements"
 - Lead: "Tell me about the product, the stack and the timeline. I reply within 1–2 business days." (matches the brief; replaces "48 hours")
 - **Form panel (8 cols, surface):** Name + Email side by side (stacked on mobile), Message (min 8 rows). Footer row: "All fields are required." on the left, **Send message** primary on the right. Inline validation. After submit the panel swaps to a success state with a check icon and the reply-time promise.
-- **Aside (4 cols):** `<dl>` with mono labels — Response time · Based in · Elsewhere (GitHub) · Curriculum vitae (secondary button "Download PDF").
+- **Aside (4 cols):** `<dl>` with mono labels — Response time · Based in · Curriculum vitae (secondary button "Download PDF"). GitHub lives in the footer only.
 
 ### Footer
-- Logo + a two-sentence description (role, stack, years, location, availability) · Sections column · Elsewhere column.
+- Logo + a two-sentence description (role, stack, years, location, availability) · Sections column · Elsewhere (GitHub only — CV is in the nav and Contact).
+- Theme toggle lives in the header only (sticky, so always one click away); the language switch also appears in the footer bar, per the brief.
 - Bottom bar: `© 2026 Václav Brzezina` · LocaleSwitch · "Back to top ↑".
 
 ---
@@ -218,5 +219,5 @@ Replace the three TBD cards with **real, honest content**:
 
 - **Contact submission backend** — the form POSTs JSON `{ name, email, message }` to `site.contactEndpoint` (`/api/contact`). The handler doesn't exist yet (tickets 08/10), so submissions currently show the error state — message kept, GitHub offered — never a fake success.
 - **CV file** — every CV link points at `/cv.pdf` with `download`; the PDF still needs adding to `public/`.
-- **Real photography** — both portrait slots are placeholders sized for real photos (1:1 hero, 4:5 about).
+- **Real photography** — the hero portrait is a 1:1 placeholder for a real headshot.
 - **Figma parity** — finish the screens in the Figma file once MCP calls are available again (Pro plan or next month's quota).

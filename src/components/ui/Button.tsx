@@ -69,7 +69,7 @@ const StyledButton = styled('button', {
           background: transparent;
           color: ${c.fgSecondary};
           border-color: ${c.border};
-          &:hover:not(:disabled) { background: ${c.raised}; color: ${c.fg}; }
+          &:hover:not(:disabled) { color: ${c.fg}; }
         `
       case 'ghost':
         return `

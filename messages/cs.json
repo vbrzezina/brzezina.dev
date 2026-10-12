@@ -46,7 +46,12 @@
     "index": "01",
     "slug": "O mně",
     "heading": "Senior inženýr, který pořád programuje",
-    "portraitLabel": "Portrét Václava Brzeziny při práci (zástupný obrázek)",
+    "facts": {
+      "label": "Ve zkratce",
+      "years": "{count, plural, one {rok} few {roky} other {let}} s JavaScriptem v produkci",
+      "companies": "{count, plural, one {firma} few {firmy} other {firem}}, vždy hands-on",
+      "projects": "{count, plural, one {klientský projekt} few {klientské projekty} other {klientských projektů}}"
+    },
     "bio": {
       "lede": "Stavím JavaScriptové produkty od začátku do konce — TypeScript a React na frontendu, Node.js a NestJS na backendu, AWS serverless v cloudu.",
       "p2": "Po devíti letech se moje práce pohybuje tam, kde se architektura potkává s dodávkou: návrh systémů, standardy kódu, code review — a vlastní produkční kód. Vedu technicky, ne z povzdálí. Aktuálně jsem Tech Lead na O2O clientelling platformě pro Burberry v EPAM Systems.",
@@ -194,7 +199,6 @@
       "responseValue": "Do 1–2 pracovních dnů",
       "basedLabel": "Sídlo",
       "basedValue": "Česko · SEČ (UTC+1)",
-      "elsewhereLabel": "Jinde",
       "cvLabel": "Životopis",
       "cvCta": "Stáhnout PDF"
     }
@@ -203,7 +207,6 @@
     "tagline": "Senior full-stack inženýr — TypeScript a React na frontendu, Node.js a AWS za ním. Devět let dodávám produkty; žiju v Česku a jsem k dispozici pro freelance a kontraktorskou spolupráci.",
     "sectionsLabel": "Sekce",
     "elsewhereLabel": "Jinde",
-    "downloadCv": "Stáhnout CV",
     "copyright": "© 2026 Václav Brzezina",
     "backToTop": "Zpět nahoru"
   }

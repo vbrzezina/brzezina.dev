@@ -46,7 +46,12 @@
     "index": "01",
     "slug": "About",
     "heading": "Hands-on senior engineer",
-    "portraitLabel": "Portrait of Václav Brzezina at work (placeholder)",
+    "facts": {
+      "label": "At a glance",
+      "years": "{count, plural, one {year} other {years}} shipping JavaScript",
+      "companies": "{count, plural, one {company} other {companies}}, hands-on throughout",
+      "projects": "client {count, plural, one {project} other {projects}}"
+    },
     "bio": {
       "lede": "I build JavaScript products end to end — TypeScript and React on the frontend, Node.js and NestJS on the backend, AWS serverless in the cloud.",
       "p2": "Nine years in, my work sits where architecture meets delivery: designing systems, setting code standards, reviewing pull requests — and writing production code myself. I lead technically rather than from a distance. Right now I’m Tech Lead on Burberry’s O2O clientelling platform at EPAM Systems.",
@@ -194,7 +199,6 @@
       "responseValue": "Within 1–2 business days",
       "basedLabel": "Based in",
       "basedValue": "Czech Republic · CET (UTC+1)",
-      "elsewhereLabel": "Elsewhere",
       "cvLabel": "Curriculum vitae",
       "cvCta": "Download PDF"
     }
@@ -203,7 +207,6 @@
     "tagline": "Senior full-stack engineer — TypeScript and React on the frontend, Node.js and AWS behind it. Nine years of shipping products; based in the Czech Republic and available for freelance and contract work.",
     "sectionsLabel": "Sections",
     "elsewhereLabel": "Elsewhere",
-    "downloadCv": "Download CV",
     "copyright": "© 2026 Václav Brzezina",
     "backToTop": "Back to top"
   }
