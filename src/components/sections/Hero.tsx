@@ -295,8 +295,6 @@ export function Hero() {
                 <Facts aria-label={t('whoami.label')}>
                   <dt>{t('whoami.role')}</dt>
                   <dd>{t('whoami.roleValue')}</dd>
-                  <dt>{t('whoami.client')}</dt>
-                  <dd>{t('whoami.clientValue')}</dd>
                   <dt>{t('whoami.stack')}</dt>
                   <dd>{WHOAMI.stack.join(' · ')}</dd>
                   <dt>{t('whoami.based')}</dt>

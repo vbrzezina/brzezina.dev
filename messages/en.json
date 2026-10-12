@@ -32,9 +32,7 @@
     "whoami": {
       "label": "Profile summary",
       "role": "role",
-      "roleValue": "Software Engineer · EPAM Systems",
-      "client": "client",
-      "clientValue": "SAP",
+      "roleValue": "Lead Software Engineer · EPAM Systems",
       "stack": "stack",
       "based": "based",
       "basedValue": "Czech Republic · CET",

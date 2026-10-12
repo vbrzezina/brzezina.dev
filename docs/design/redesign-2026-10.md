@@ -157,8 +157,7 @@ Only `transform` and `opacity` are animated for movement. No looping animation a
 - **Right:** circular portrait (`src/assets/photos/portrait-hero.jpg`, accent ring, 1px gap) with a **`whoami` card** overlapping its lower-left edge. The card uses the nav material and blur. It turns the old "Currently Tech Lead…" sentence into scannable facts:
   ```
   ~ $ whoami
-  role     Software Engineer · EPAM Systems
-  client   SAP
+  role     Lead Software Engineer · EPAM Systems
   stack    TypeScript · React · NestJS · AWS
   based    Czech Republic · CET
   speaks   EN · CS
