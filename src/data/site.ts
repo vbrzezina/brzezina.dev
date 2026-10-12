@@ -19,5 +19,5 @@ export const CLIENTS = ['Burberry', 'Walmart', 'PSA', 'Veolia', 'Carvago', 'Logi
 /** Values for the hero `whoami` card; labels are translated. */
 export const WHOAMI = {
   stack: ['TypeScript', 'React', 'NestJS', 'AWS'],
-  speaks: ['EN', 'CS', 'SK'],
+  speaks: ['EN', 'CS'],
 } as const;

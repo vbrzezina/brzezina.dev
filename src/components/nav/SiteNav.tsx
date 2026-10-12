@@ -302,7 +302,7 @@ export function SiteNav() {
               </DesktopOnly>
               <ThemeToggle />
               <DesktopOnly>
-                <Button $variant="secondary" $size="sm" asChild>
+                <Button $variant="subtle" $size="sm" asChild>
                   <a href={site.cvUrl} download aria-label={t('downloadCv')}>
                     {t('cv')}
                     <Icon name="download" size={16} />

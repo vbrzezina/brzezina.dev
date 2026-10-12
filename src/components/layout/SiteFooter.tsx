@@ -23,8 +23,8 @@ const Top = styled.div`
 const Tagline = styled.p`
   ${type.bodyS}
   color: ${({ theme }) => theme.colors.fgSecondary};
-  margin-top: 0.75rem;
-  max-width: 22rem;
+  margin-top: 1rem;
+  max-width: 28rem;
 `;
 
 const ColumnHeading = styled.h2`

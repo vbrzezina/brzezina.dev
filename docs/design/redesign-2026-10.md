@@ -110,7 +110,6 @@ Implemented as Emotion `css` mixins in `src/styles/typography.ts`. Body text mea
 | Nav material | border + background fade in after 8px of scroll, 200ms | Same |
 | Mobile sheet | enters **from the trigger edge** (top): translateY(−0.75rem)+opacity, 320ms; exits along the same path, 200ms; scrim fades | Opacity only |
 | Theme switch | `background-color`/`color` cross-fade 300ms on the root — no abrupt brightness jump | Instant |
-| Logo cursor | Static — no blink (an endless blink distracts in peripheral vision; WCAG 2.2.2 would require a pause control) | — |
 
 Only `transform` and `opacity` are animated for movement. No looping animation anywhere. CSS transitions only — ADR-007 stands; nothing on the page is gesture-driven enough to need springs.
 
@@ -122,15 +121,15 @@ Only `transform` and `opacity` are animated for movement. No looping animation a
 
 | Component | Spec |
 |-----------|------|
-| **Button** | Variants `primary` (accent fill), `secondary` (transparent, `border-strong`, hover → `raised`), `ghost` (no border, `fg-secondary`, hover → `accent-subtle`). Sizes `md` (48px, 4px radius) and `sm` (40px, 6px radius — nav CV, matching the icon button and locale switch). Optional leading/trailing icon. Focus: 2px accent outline, 2px offset. `asChild` for links. One primary button per view. |
+| **Button** | Variants `primary` (accent fill), `secondary` (transparent, `border-strong`, hover → `raised`), `ghost` (no border, `fg-secondary`, hover → `accent-subtle`). Sizes `md` (48px, 4px radius) and `sm` (40px, 6px radius — nav CV, matching the icon button and locale switch). Variant `subtle` (hairline border, `fg-secondary`, hover → `raised` + `fg`) mirrors IconButton exactly — used for the nav CV button so every nav control reacts the same. Optional leading/trailing icon. Focus: 2px accent outline, 2px offset. `asChild` for links. One primary button per view. |
 | **SectionHeader** | `NN —— LABEL` eyebrow (number + rule in accent, label in `fg-secondary`) → h2 `displayL`. Optional lead directly below the heading (max 40rem). One left-aligned reading column at every width — eyebrow → heading → lead — so the eye never jumps across the page. |
 | **StatusPill** | `accent-subtle` fill, success dot with soft glow, `monoS` label. Static — no pulse. |
 | **StackList** | Mono, dot-separated (`TypeScript · React · NestJS`), wraps naturally, rendered as `<ul role="list">` with CSS separators — the explicit role keeps Safari/VoiceOver announcing it after the `list-style: none` reset (same on every styled list). Replaces boxed tags everywhere. |
-| **Logo** | `$` accent + `brzezina.dev` + 0.5em static block cursor. |
+| **Logo** | `$` accent + `brzezina.dev` in `monoBody`. No cursor — the prompt alone carries the terminal reference. |
 | **LocaleSwitch** | Segmented control (`EN | CS`) — selected segment on `raised`. Real `<a>` links to the locale route with `aria-current`, `hreflang`. |
 | **ThemeToggle** | 40px icon button, SVG sun/moon, label states the action ("Switch to light theme"). Persists to `localStorage`; inline head script applies the theme before first paint. |
 | **Field** | Label above (never floating), 48px control on `canvas` with `border-strong`; focus → accent border + 3px `accent-subtle` halo; error → error border + message (`aria-invalid`, `aria-describedby`). Validated on blur, then live. |
-| **IconButton** | 44px square on mobile (touch target), 40px from `md` up so every nav control shares one height; hairline border, `md` radius; hover → `raised`; press → `scale(0.94)` (off under reduced motion). Shared by the theme toggle and the menu open/close buttons. |
+| **IconButton** | 44px square on mobile (touch target), 40px from `md` up so every nav control shares one height; hairline border, `md` radius; hover → `raised`; press → `scale(0.97)`, same as buttons (off under reduced motion). Shared by the theme toggle and the menu open/close buttons. |
 | **Icons** | Inline SVG, 20px, 1.75 stroke, `currentColor` (Lucide geometry): sun, moon, menu, close, arrow-right, arrow-up-right, download, github, check. |
 
 ---
@@ -162,13 +161,13 @@ Only `transform` and `opacity` are animated for movement. No looping animation a
   client   Burberry — O2O clientelling
   stack    TypeScript · React · NestJS · AWS
   based    Czech Republic · CET
-  speaks   EN · CS · SK
+  speaks   EN · CS
   ```
 - **Backdrop:** the 72px technical grid, masked with a radial fade so it dissolves before the edges, plus one soft accent glow top-right (decorative, `aria-hidden`).
 - **Proof strip** (bottom of hero, no rule): `WORKED ON PROJECTS FOR` eyebrow + `Burberry · Walmart · PSA · Veolia · Carvago · Logio` in `monoBody`. Worded as *projects for* because these were clients of EPAM, Starky's Club and Etnetera, not direct engagements — the big names stay, the claim stays accurate.
 
 ### 01 About — "Hands-on senior engineer"
-- 5/7 split. Left: 4:5 portrait placeholder (surface, grid texture, `VB` monogram, `role="img"` with descriptive label). Right: first paragraph in `bodyL` fg (the lede), then two `bodyM` fg-secondary paragraphs, then a languages `<dl>`: **English** Fluent · **Czech** Native · **Slovak** Native.
+- 5/7 split. Left: 4:5 portrait placeholder (surface, grid texture, `VB` monogram, `role="img"` with descriptive label). Right: first paragraph in `bodyL` fg (the lede), then two `bodyM` fg-secondary paragraphs, then a languages `<dl>`: **English** Fluent · **Czech** Native.
 - **Stack & tooling** (h3): a six-row table. Category in `titleM` on the left (3 cols), StackList on the right (9 cols), hairline between rows. Content from the brief: Frontend, Backend, Cloud, Databases, Practices, GenAI.
 
 ### 02 Experience — "Nine years, shipped"
@@ -193,7 +192,7 @@ Replace the three TBD cards with **real, honest content**:
 - **Aside (4 cols):** `<dl>` with mono labels — Response time · Based in · Elsewhere (GitHub) · Curriculum vitae (secondary button "Download PDF").
 
 ### Footer
-- Logo + tagline · Sections column · Elsewhere column.
+- Logo + a two-sentence description (role, stack, years, location, availability) · Sections column · Elsewhere column.
 - Bottom bar: `© 2026 Václav Brzezina` · LocaleSwitch · "Back to top ↑".
 
 ---

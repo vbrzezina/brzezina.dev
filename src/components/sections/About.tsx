@@ -68,9 +68,9 @@ const SubHeading = styled.h3`
 `
 
 const Languages = styled.dl`
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 3rem;
   margin-top: 0.75rem;
 
   div {

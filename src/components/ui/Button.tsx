@@ -5,7 +5,7 @@ import styled from '@emotion/styled'
 import { Slot } from '@radix-ui/react-slot'
 import { type } from '@/styles/typography'
 
-type Variant = 'primary' | 'secondary' | 'ghost'
+type Variant = 'primary' | 'secondary' | 'ghost' | 'subtle'
 type Size = 'md' | 'sm'
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -62,6 +62,14 @@ const StyledButton = styled('button', {
           color: ${c.fg};
           border-color: ${c.borderStrong};
           &:hover:not(:disabled) { background: ${c.raised}; border-color: ${c.fgTertiary}; }
+        `
+      // Same treatment as IconButton, for buttons that sit beside it in the nav.
+      case 'subtle':
+        return `
+          background: transparent;
+          color: ${c.fgSecondary};
+          border-color: ${c.border};
+          &:hover:not(:disabled) { background: ${c.raised}; color: ${c.fg}; }
         `
       case 'ghost':
         return `

@@ -55,8 +55,7 @@
     "languagesHeading": "Jazyky",
     "languages": {
       "en": { "name": "Angličtina", "level": "Plynně" },
-      "cs": { "name": "Čeština", "level": "Rodilý mluvčí" },
-      "sk": { "name": "Slovenština", "level": "Rodilý mluvčí" }
+      "cs": { "name": "Čeština", "level": "Rodilý mluvčí" }
     },
     "stackHeading": "Stack a nástroje",
     "skills": {
@@ -201,7 +200,7 @@
     }
   },
   "footer": {
-    "tagline": "9 let stavím JavaScriptové produkty napříč celým stackem.",
+    "tagline": "Senior full-stack inženýr — TypeScript a React na frontendu, Node.js a AWS za ním. Devět let dodávám produkty; žiju v Česku a jsem k dispozici pro freelance a kontraktorskou spolupráci.",
     "sectionsLabel": "Sekce",
     "elsewhereLabel": "Jinde",
     "downloadCv": "Stáhnout CV",

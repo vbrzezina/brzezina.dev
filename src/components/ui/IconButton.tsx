@@ -25,7 +25,7 @@ export const IconButton = styled.button`
 
   /* Feedback on pointer-down, not release. */
   &:active {
-    transform: scale(0.94);
+    transform: scale(0.97);
   }
 
   ${({ theme }) => theme.mq.md} {

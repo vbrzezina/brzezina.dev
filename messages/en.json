@@ -55,8 +55,7 @@
     "languagesHeading": "Languages",
     "languages": {
       "en": { "name": "English", "level": "Fluent" },
-      "cs": { "name": "Czech", "level": "Native" },
-      "sk": { "name": "Slovak", "level": "Native" }
+      "cs": { "name": "Czech", "level": "Native" }
     },
     "stackHeading": "Stack & tooling",
     "skills": {
@@ -201,7 +200,7 @@
     }
   },
   "footer": {
-    "tagline": "9 years building JavaScript products across the full stack.",
+    "tagline": "Senior full-stack engineer — TypeScript and React on the frontend, Node.js and AWS behind it. Nine years of shipping products; based in the Czech Republic and available for freelance and contract work.",
     "sectionsLabel": "Sections",
     "elsewhereLabel": "Elsewhere",
     "downloadCv": "Download CV",

@@ -32,4 +32,4 @@ export const SKILL_GROUPS: readonly SkillGroup[] = [
   { id: 'genai', items: ['Claude', 'Claude Code', { key: 'promptEngineering' }] },
 ];
 
-export const LANGUAGE_IDS = ['en', 'cs', 'sk'] as const;
+export const LANGUAGE_IDS = ['en', 'cs'] as const;
