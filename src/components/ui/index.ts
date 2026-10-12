@@ -1,5 +1,6 @@
 export { Button } from './Button'
 export { Icon, type IconName } from './Icon'
+export { IconButton } from './IconButton'
 export { LocaleSwitch } from './LocaleSwitch'
 export { Logo } from './Logo'
 export { SectionHeader } from './SectionHeader'

@@ -124,11 +124,12 @@ Only `transform` and `opacity` are animated for movement. No looping animation b
 | **Button** | Variants `primary` (accent fill), `secondary` (transparent, `border-strong`, hover → `raised`), `ghost` (no border, `fg-secondary`, hover → `accent-subtle`). Sizes `md` (48px) and `sm` (40px; nav CV). Optional leading/trailing icon. Focus: 2px accent outline, 2px offset. `asChild` for links. One primary button per view. |
 | **SectionHeader** | `NN —— LABEL` eyebrow (number + rule in accent, label in `fg-secondary`) → h2 `displayL`. Optional lead sits in the right 5 columns, bottom-aligned with the heading, from `lg` up (editorial split); stacked below that. |
 | **StatusPill** | `accent-subtle` fill, success dot with soft glow, `monoS` label. Static — no pulse. |
-| **StackList** | Mono, dot-separated (`TypeScript · React · NestJS`), wraps naturally, rendered as `<ul>` with CSS separators so screen readers hear a list. Replaces boxed tags everywhere. |
+| **StackList** | Mono, dot-separated (`TypeScript · React · NestJS`), wraps naturally, rendered as `<ul role="list">` with CSS separators — the explicit role keeps Safari/VoiceOver announcing it after the `list-style: none` reset (same on every styled list). Replaces boxed tags everywhere. |
 | **Logo** | `$` accent + `brzezina.dev` + 0.5em block cursor. |
 | **LocaleSwitch** | Segmented control (`EN | CS`) — selected segment on `raised`. Real `<a>` links to the locale route with `aria-current`, `hreflang`. |
 | **ThemeToggle** | 40px icon button, SVG sun/moon, label states the action ("Switch to light theme"). Persists to `localStorage`; inline head script applies the theme before first paint. |
 | **Field** | Label above (never floating), 48px control on `canvas` with `border-strong`; focus → accent border + 3px `accent-subtle` halo; error → error border + message (`aria-invalid`, `aria-describedby`). Validated on blur, then live. |
+| **IconButton** | 44px square, hairline border, `md` radius; hover → `raised`; press → `scale(0.94)` (off under reduced motion). Shared by the theme toggle and the menu open/close buttons. |
 | **Icons** | Inline SVG, 20px, 1.75 stroke, `currentColor` (Lucide geometry): sun, moon, menu, close, arrow-right, arrow-up-right, download, github, check. |
 
 ---
@@ -140,7 +141,8 @@ Only `transform` and `opacity` are animated for movement. No looping animation b
 - **Centre (≥900px):** About · Experience · Services · Work · Contact. Active section → `fg` + 4px accent dot underneath (`aria-current="location"`).
 - **Right:** LocaleSwitch · ThemeToggle · `CV` secondary `sm` button with download icon.
 - **Material:** transparent at the top of the page; after 8px of scroll it becomes `--color-material` + `backdrop-filter: blur(20px) saturate(180%)` with a hairline bottom edge. The edge exists only when content is actually under the bar.
-- **< 900px:** Logo · ThemeToggle · 44px menu button. Menu = Radix Dialog sheet anchored to the top edge: large `titleL` links with mono counters (`01 About`), LocaleSwitch, CV + "Get in touch" buttons. Focus trap, Escape, scrim click, return focus to the trigger.
+- **< 900px:** Logo · ThemeToggle · 44px menu button. Menu = Radix Dialog sheet anchored to the top edge: large `titleL` links with mono counters (`01 About`), LocaleSwitch, CV + "Get in touch" buttons. Focus trap, Escape, scrim click. Dismissing returns focus to the trigger; choosing a section moves focus to that section instead.
+- **Active section:** the section the reading line (35% down the viewport) passes through; none while on the hero; the last section at the very bottom of the page.
 - Skip link ("Skip to content") as the first focusable element.
 
 ### 00 Hero
@@ -214,7 +216,7 @@ Replace the three TBD cards with **real, honest content**:
 
 ## 8. Out of scope / follow-ups
 
-- **Contact submission backend** — still the client-side stub; depends on ticket 10 (static export vs Vercel SSG) and ticket 08 (mailer).
-- **CV file** — `site.cvUrl` is a placeholder until the PDF is added to `public/`.
+- **Contact submission backend** — the form POSTs JSON `{ name, email, message }` to `site.contactEndpoint` (`/api/contact`). The handler doesn't exist yet (tickets 08/10), so submissions currently show the error state — message kept, GitHub offered — never a fake success.
+- **CV file** — every CV link points at `/cv.pdf` with `download`; the PDF still needs adding to `public/`.
 - **Real photography** — both portrait slots are placeholders sized for real photos (1:1 hero, 4:5 about).
 - **Figma parity** — finish the screens in the Figma file once MCP calls are available again (Pro plan or next month's quota).

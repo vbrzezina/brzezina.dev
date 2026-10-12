@@ -7,8 +7,10 @@ export const site = {
   githubUrl: 'https://github.com/vbrzezina',
   githubLabel: 'github.com/vbrzezina',
   repoUrl: 'https://github.com/vbrzezina/brzezina.dev',
-  // TODO: point at the PDF once it is added to public/ (see redesign spec §8).
-  cvUrl: '#',
+  // The PDF itself still needs adding to public/ (see redesign spec §8).
+  cvUrl: '/cv.pdf',
+  // Route handler not implemented yet (tickets 08/10) — until then submissions fail visibly.
+  contactEndpoint: '/api/contact',
 } as const;
 
 /** Past clients shown in the hero proof strip. */

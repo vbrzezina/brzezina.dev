@@ -6,6 +6,7 @@ import { Container } from '@/components/layout'
 import { Reveal } from '@/components/Reveal'
 import { Button, Icon, StatusPill } from '@/components/ui'
 import { CLIENTS, WHOAMI } from '@/data/site'
+import { gridBackdrop } from '@/styles/backdrop'
 import { type } from '@/styles/typography'
 
 // ─── Backdrop ─────────────────────────────────────────────────────────────────
@@ -22,10 +23,7 @@ const Grid = styled.div`
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background-image:
-    linear-gradient(to right, ${({ theme }) => theme.colors.grid} 1px, transparent 1px),
-    linear-gradient(to bottom, ${({ theme }) => theme.colors.grid} 1px, transparent 1px);
-  background-size: 72px 72px;
+  ${gridBackdrop(72)}
   background-position: center top;
   mask-image: radial-gradient(ellipse 80% 70% at 60% 35%, #000 30%, transparent 75%);
   -webkit-mask-image: radial-gradient(ellipse 80% 70% at 60% 35%, #000 30%, transparent 75%);
@@ -306,7 +304,7 @@ export function Hero() {
 
         <Proof>
           <ProofLabel>{t('shippedFor')}</ProofLabel>
-          <ClientList>
+          <ClientList role="list">
             {CLIENTS.map((client) => (
               <li key={client}>{client}</li>
             ))}

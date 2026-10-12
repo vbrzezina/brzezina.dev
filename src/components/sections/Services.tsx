@@ -114,7 +114,7 @@ export function Services() {
           />
         </Reveal>
 
-        <Cards>
+        <Cards role="list">
           {SERVICES.map((service, i) => (
             <CardItem key={service.id} as="li" delay={i * 80}>
               <Card>
@@ -131,7 +131,7 @@ export function Services() {
         </Cards>
 
         <Reveal delay={120}>
-          <Facts>
+          <Facts role="list">
             {ENGAGEMENT_FACTS.map((fact) => (
               <Fact key={fact.id}>
                 <Icon name={fact.icon} size={18} />

@@ -101,7 +101,7 @@ const Projects = styled.ul`
   }
 `
 
-const Project = styled.li`
+const Project = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.375rem;
@@ -156,7 +156,7 @@ export function Experience() {
           />
         </Reveal>
 
-        <Timeline>
+        <Timeline role="list">
           {EXPERIENCE.map((employer) => (
             <Employer key={employer.id}>
               <Dot $current={employer.end === null} aria-hidden="true" />
@@ -172,10 +172,10 @@ export function Experience() {
                 </EmployerHeader>
               </Reveal>
 
-              <Projects>
+              <Projects role="list">
                 {employer.projects.map((project, i) => (
                   <Reveal key={project.id} as="li" delay={i * 70}>
-                    <Project as="div">
+                    <Project>
                       <Client>
                         <span aria-hidden="true">&gt;</span>
                         {project.client}

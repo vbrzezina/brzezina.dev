@@ -72,7 +72,8 @@
         "ciCd": "CI/CD",
         "codeReview": "Code review",
         "codeStandards": "Standardy kódu",
-        "accessibility": "Přístupnost"
+        "accessibility": "Přístupnost",
+        "promptEngineering": "Prompt engineering"
       }
     }
   },
@@ -184,7 +185,7 @@
         "email": "Zadejte platný e-mail, např. jana@firma.cz.",
         "message": "Připište prosím krátkou zprávu."
       },
-      "error": "Něco se pokazilo. Zkuste to prosím znovu.",
+      "error": "Zprávu se nepodařilo odeslat — zůstala ve formuláři, takže to můžete zkusit znovu, nebo mě najdete na <link>GitHubu</link>.",
       "successTitle": "Zpráva odeslána",
       "successBody": "Děkuji — odpovím do 1–2 pracovních dnů.",
       "sendAnother": "Poslat další zprávu"

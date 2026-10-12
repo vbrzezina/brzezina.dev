@@ -117,3 +117,12 @@ Running record of decisions, alternatives considered, and wrong turns for the br
 **Why:** The previous build shipped invented projects ("Data Pipeline Dashboard", "Banking Portal"), skills (LangChain, tRPC, Terraform) and claims (open-source maintainer, fintech). For a site aimed at headhunters, believable-but-false content is worse than an empty section.
 
 ---
+
+### 2026-10-12 — Code review on the redesign PR: no fake success, CV regression caught
+
+**Decision:** The contact form now POSTs to `/api/contact` and shows an honest error (message kept, GitHub offered) when that fails, which it does until the route handler exists. The `setTimeout` "Message sent" stub is gone.
+**Alternatives considered:** Keep the stub until tickets 08/10 resolve; hide the form entirely.
+**Why:** A fake success silently throws away a recruiter's message while telling them it arrived — the worst possible outcome for a portfolio. Failing visibly costs nothing and the code path is already the real one.
+**Wrong turn / lesson:** The redesign also regressed the CV links from `/cv.pdf` (with `download`) to `#` because the spec was written from the nav button, the one place that was already `#`. Review the diff against the base branch, not against your memory of it. Other review fixes: mobile-menu focus now lands on the chosen section, explicit `role="list"` on styled lists (Safari/VoiceOver), active-section detection rewritten to use geometry instead of intersection ratios.
+
+---

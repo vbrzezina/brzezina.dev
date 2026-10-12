@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { keyframes } from '@emotion/react';
 import * as Dialog from '@radix-ui/react-dialog';
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import { useTranslations } from 'next-intl';
 import { Container } from '@/components/layout';
-import { Button, Icon, LocaleSwitch, Logo, ThemeToggle } from '@/components/ui';
+import { Button, Icon, IconButton, LocaleSwitch, Logo, ThemeToggle } from '@/components/ui';
 import { SECTION_IDS, site } from '@/data/site';
 import { useActiveSection } from '@/hooks/useActiveSection';
 import { useScrolled } from '@/hooks/useScrolled';
@@ -132,22 +132,8 @@ const DesktopOnly = styled.div`
   }
 `;
 
-const MenuButton = styled.button`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.75rem;
-  height: 2.75rem;
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.radius.md};
-  background: transparent;
+const MenuButton = styled(IconButton)`
   color: ${({ theme }) => theme.colors.fg};
-  cursor: pointer;
-  transition: transform 100ms ease-out;
-
-  &:active {
-    transform: scale(0.94);
-  }
 
   ${({ theme }) => theme.mq.md} {
     display: none;
@@ -260,6 +246,24 @@ export function SiteNav() {
   const activeSection = useActiveSection(SECTION_IDS);
   const scrolled = useScrolled();
   const [open, setOpen] = useState(false);
+  // In-page target picked from the sheet; focus goes there instead of back to the trigger.
+  const pendingTarget = useRef<string | null>(null);
+
+  function navigateFromSheet(id: string) {
+    pendingTarget.current = id;
+    setOpen(false);
+  }
+
+  function handleCloseAutoFocus(event: Event) {
+    const id = pendingTarget.current;
+    pendingTarget.current = null;
+    const target = id ? document.getElementById(id) : null;
+    if (!target) return; // Escape / close button / scrim: Radix returns focus to the trigger.
+
+    event.preventDefault();
+    if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+    target.focus({ preventScroll: true });
+  }
 
   const links = SECTION_IDS.map((id, i) => ({
     id,
@@ -277,7 +281,7 @@ export function SiteNav() {
             <Logo />
 
             <NavRoot aria-label={a11y('mainNav')}>
-              <NavList>
+              <NavList role="list">
                 {links.map(({ id, label, href }) => (
                   <NavigationMenu.Item key={id}>
                     <NavLink href={href} active={activeSection === id}>
@@ -295,7 +299,7 @@ export function SiteNav() {
               <ThemeToggle />
               <DesktopOnly>
                 <Button $variant="secondary" $size="sm" asChild>
-                  <a href={site.cvUrl} aria-label={t('downloadCv')}>
+                  <a href={site.cvUrl} download aria-label={t('downloadCv')}>
                     {t('cv')}
                     <Icon name="download" size={16} />
                   </a>
@@ -310,11 +314,11 @@ export function SiteNav() {
                 </Dialog.Trigger>
                 <Dialog.Portal>
                   <Scrim />
-                  <Sheet aria-describedby={undefined}>
+                  <Sheet aria-describedby={undefined} onCloseAutoFocus={handleCloseAutoFocus}>
                     <SheetTitle>{a11y('menu')}</SheetTitle>
                     <Container>
                       <Inner>
-                        <Logo onClick={() => setOpen(false)} />
+                        <Logo onClick={() => navigateFromSheet('top')} />
                         <Dialog.Close asChild>
                           <MenuButton type="button" aria-label={a11y('closeMenu')}>
                             <Icon name="close" />
@@ -322,14 +326,14 @@ export function SiteNav() {
                         </Dialog.Close>
                       </Inner>
                       <nav aria-label={a11y('mainNav')}>
-                        <SheetLinks>
+                        <SheetLinks role="list">
                           {links.map(({ id, index, label, href }) => (
                             <li key={id}>
                               <SheetLink
                                 href={href}
                                 $active={activeSection === id}
                                 aria-current={activeSection === id ? 'location' : undefined}
-                                onClick={() => setOpen(false)}
+                                onClick={() => navigateFromSheet(id)}
                               >
                                 <span aria-hidden="true">{index}</span>
                                 {label}
@@ -342,13 +346,13 @@ export function SiteNav() {
                         <LocaleSwitch />
                         <SheetActions>
                           <Button $variant="secondary" asChild>
-                            <a href={site.cvUrl}>
+                            <a href={site.cvUrl} download>
                               {t('downloadCv')}
                               <Icon name="download" size={16} />
                             </a>
                           </Button>
                           <Button asChild>
-                            <a href="#contact" onClick={() => setOpen(false)}>
+                            <a href="#contact" onClick={() => navigateFromSheet('contact')}>
                               {t('getInTouch')}
                             </a>
                           </Button>

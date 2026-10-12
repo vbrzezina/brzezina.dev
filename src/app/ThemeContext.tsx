@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { THEME_STORAGE_KEY } from '@/app/themeScript';
 
 export type ColorScheme = 'dark' | 'light';
@@ -18,6 +18,7 @@ export const ThemeContext = createContext<ThemeContextValue>({
 
 export function ColorSchemeProvider({ children }: { children: React.ReactNode }) {
   const [scheme, setScheme] = useState<ColorScheme | null>(null);
+  const fadeTimer = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     setScheme(document.documentElement.dataset.theme === 'light' ? 'light' : 'dark');
@@ -29,8 +30,10 @@ export function ColorSchemeProvider({ children }: { children: React.ReactNode })
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (!reduceMotion) {
+      // A rapid second toggle restarts the fade instead of having it cut off by the first timer.
+      window.clearTimeout(fadeTimer.current);
       root.classList.add('theme-switching');
-      window.setTimeout(() => root.classList.remove('theme-switching'), 320);
+      fadeTimer.current = window.setTimeout(() => root.classList.remove('theme-switching'), 320);
     }
 
     root.dataset.theme = next;

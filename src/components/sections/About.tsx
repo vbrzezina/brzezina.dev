@@ -6,6 +6,7 @@ import { Container, Section } from '@/components/layout'
 import { Reveal } from '@/components/Reveal'
 import { SectionHeader, StackList } from '@/components/ui'
 import { LANGUAGE_IDS, SKILL_GROUPS } from '@/data/skills'
+import { gridBackdrop } from '@/styles/backdrop'
 import { type } from '@/styles/typography'
 
 // ─── Bio ──────────────────────────────────────────────────────────────────────
@@ -30,10 +31,7 @@ const Portrait = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radius.md};
   background-color: ${({ theme }) => theme.colors.surface};
-  background-image:
-    linear-gradient(to right, ${({ theme }) => theme.colors.grid} 1px, transparent 1px),
-    linear-gradient(to bottom, ${({ theme }) => theme.colors.grid} 1px, transparent 1px);
-  background-size: 36px 36px;
+  ${gridBackdrop(36)}
   display: grid;
   place-items: center;
   overflow: hidden;
@@ -177,9 +175,9 @@ export function About() {
           <Reveal delay={80}>
             <StackRows>
               {SKILL_GROUPS.map((group) => {
-                const items = group.translate
-                  ? group.items.map((key) => t(`skills.items.${key}`))
-                  : group.items
+                const items = group.items.map((item) =>
+                  typeof item === 'string' ? item : t(`skills.items.${item.key}`),
+                )
                 return (
                   <StackRow key={group.id}>
                     <dt>{t(`skills.categories.${group.id}`)}</dt>

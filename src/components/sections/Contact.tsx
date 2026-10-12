@@ -118,6 +118,24 @@ const ErrorText = styled.p`
   color: ${({ theme }) => theme.colors.error};
 `
 
+const SubmitError = styled.p`
+  ${type.bodyS}
+  padding: 0.75rem 1rem;
+  border: 1px solid ${({ theme }) => theme.colors.error};
+  border-radius: ${({ theme }) => theme.radius.sm};
+  color: ${({ theme }) => theme.colors.fg};
+
+  ${({ theme }) => theme.mq.sm} {
+    grid-column: 1 / -1;
+  }
+
+  a {
+    color: ${({ theme }) => theme.colors.accent};
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+`
+
 const FormFooter = styled.div`
   display: flex;
   flex-direction: column-reverse;
@@ -237,7 +255,7 @@ export function Contact() {
     return () => setTouched((prev) => ({ ...prev, [field]: true }))
   }
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setTouched({ name: true, email: true, message: true })
 
@@ -247,12 +265,24 @@ export function Contact() {
       return
     }
 
-    // Submission backend is pending tickets 08/10 — simulated for now.
     setStatus('sending')
-    setTimeout(() => {
+    try {
+      const res = await fetch(site.contactEndpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: values.name.trim(),
+          email: values.email.trim(),
+          message: values.message.trim(),
+        }),
+      })
+      if (!res.ok) throw new Error(`Contact endpoint responded ${res.status}`)
       setStatus('success')
       requestAnimationFrame(() => successRef.current?.focus())
-    }, 900)
+    } catch {
+      // Never claim success we can't confirm; the typed message stays in the form.
+      setStatus('error')
+    }
   }
 
   function reset() {
@@ -320,6 +350,18 @@ export function Contact() {
                     {errors.message && <ErrorText id={`${uid}-message-error`}>{errors.message}</ErrorText>}
                   </FieldRoot>
 
+                  {status === 'error' && (
+                    <SubmitError role="alert">
+                      {t.rich('form.error', {
+                        link: (chunks) => (
+                          <a href={site.githubUrl} target="_blank" rel="noopener noreferrer">
+                            {chunks}
+                          </a>
+                        ),
+                      })}
+                    </SubmitError>
+                  )}
+
                   <FormFooter>
                     <Hint>{t('form.required')}</Hint>
                     <Button type="submit" disabled={status === 'sending'}>
@@ -355,7 +397,7 @@ export function Contact() {
                 <dt>{t('sidebar.cvLabel')}</dt>
                 <dd>
                   <Button $variant="secondary" asChild>
-                    <a href={site.cvUrl}>
+                    <a href={site.cvUrl} download>
                       {t('sidebar.cvCta')}
                       <Icon name="download" size={16} />
                     </a>

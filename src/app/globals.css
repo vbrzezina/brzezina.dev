@@ -95,7 +95,8 @@ kbd {
   }
 }
 
-/* <main> receives programmatic focus from the skip link — no ring needed there. */
-main:focus {
+/* <main> and sections receive programmatic focus (skip link, mobile menu) — no ring needed there. */
+main:focus,
+section[tabindex='-1']:focus {
   outline: none;
 }

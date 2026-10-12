@@ -27,7 +27,7 @@ interface StackListProps {
 
 export function StackList({ items, tone = 'tertiary', label }: StackListProps) {
   return (
-    <List $tone={tone} aria-label={label}>
+    <List role="list" $tone={tone} aria-label={label}>
       {items.map((item) => (
         <li key={item}>{item}</li>
       ))}

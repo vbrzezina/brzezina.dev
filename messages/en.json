@@ -72,7 +72,8 @@
         "ciCd": "CI/CD",
         "codeReview": "Code review",
         "codeStandards": "Code standards",
-        "accessibility": "Accessibility"
+        "accessibility": "Accessibility",
+        "promptEngineering": "Prompt engineering"
       }
     }
   },
@@ -184,7 +185,7 @@
         "email": "Enter a valid email address, e.g. jane@company.com.",
         "message": "Please add a short message."
       },
-      "error": "Something went wrong. Please try again.",
+      "error": "Your message couldn’t be sent — it’s still here, so you can try again, or reach me on <link>GitHub</link>.",
       "successTitle": "Message sent",
       "successBody": "Thanks — I’ll reply within 1–2 business days.",
       "sendAnother": "Send another message"

@@ -90,7 +90,7 @@ export function SiteFooter() {
 
           <nav aria-labelledby="footer-sections">
             <ColumnHeading id="footer-sections">{t('sectionsLabel')}</ColumnHeading>
-            <LinkList>
+            <LinkList role="list">
               {SECTION_IDS.map((id) => (
                 <li key={id}>
                   <FooterLink href={`#${id}`}>{nav(id)}</FooterLink>
@@ -101,7 +101,7 @@ export function SiteFooter() {
 
           <div>
             <ColumnHeading>{t('elsewhereLabel')}</ColumnHeading>
-            <LinkList>
+            <LinkList role="list">
               <li>
                 <FooterLink href={site.githubUrl} target="_blank" rel="noopener noreferrer">
                   <Icon name="github" size={16} />
@@ -109,7 +109,7 @@ export function SiteFooter() {
                 </FooterLink>
               </li>
               <li>
-                <FooterLink href={site.cvUrl}>
+                <FooterLink href={site.cvUrl} download>
                   <Icon name="download" size={16} />
                   {t('downloadCv')}
                 </FooterLink>

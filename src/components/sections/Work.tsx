@@ -6,6 +6,7 @@ import { Container, Section } from '@/components/layout'
 import { Reveal } from '@/components/Reveal'
 import { Button, Icon, SectionHeader, StackList } from '@/components/ui'
 import { FEATURED_PROJECT } from '@/data/work'
+import { gridBackdrop } from '@/styles/backdrop'
 import { type } from '@/styles/typography'
 
 const Grid = styled.div`
@@ -39,10 +40,7 @@ const Thumb = styled.div`
   min-height: 15rem;
   padding: 2rem 0 0 2rem;
   background-color: ${({ theme }) => theme.colors.canvas};
-  background-image:
-    linear-gradient(to right, ${({ theme }) => theme.colors.grid} 1px, transparent 1px),
-    linear-gradient(to bottom, ${({ theme }) => theme.colors.grid} 1px, transparent 1px);
-  background-size: 24px 24px;
+  ${gridBackdrop(24)}
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   overflow: hidden;
 
