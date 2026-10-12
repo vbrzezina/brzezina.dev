@@ -84,3 +84,9 @@ During implementation the user noted: *"I think we'll eventually still have to r
 ## Immediate action
 
 No changes needed now. Revisit when a second instance of a pattern appears (the "rule of three"), when TypeScript casting in `Button` causes a real problem, or when the `Text`/`Heading` duplication across sections becomes editing friction.
+
+---
+
+## Update — 2026-10-12
+
+The redesign took **Option A in part**: typography is now shared as Emotion `css` mixins in `src/styles/typography.ts` (not a `Text` component), and the cross-section atoms moved into `src/components/ui/`: `Button`, `Icon`, `SectionHeader` (replaces `SectionHeading`), `StackList` (replaces `Tag`), `StatusPill`, `Logo`, `LocaleSwitch`, `ThemeToggle`. `Section` joined the layout primitives. Form fields remain section-local in `Contact`. The `asChild` cast is still there; the real bug behind it (`as` being forwarded) is fixed — see the case-study log.

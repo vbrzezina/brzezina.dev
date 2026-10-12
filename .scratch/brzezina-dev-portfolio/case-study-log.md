@@ -77,3 +77,43 @@ Running record of decisions, alternatives considered, and wrong turns for the br
 **Why:** Emotion's default `styled.button` filters `$`-prefixed props when the render target is a string (`'button'`). But when `as={Slot}` is set (a React component, not a string), Emotion forwards all props — including `$variant` — to Slot. Radix Slot then merges them onto the child `<a>` element, producing an invalid HTML attribute and a React hydration mismatch error. `shouldForwardProp` applies regardless of what the `as` target is, fixing the leak at the source.
 
 ---
+
+### 2026-10-12 — Redesign attempted in Figma via MCP, abandoned for a written spec
+
+**Decision:** Write the redesign as a spec (`docs/design/redesign-2026-10.md`) and implement it directly in the Next.js app, instead of producing full Figma screens first.
+**Alternatives considered:** Full Figma screens via the Figma MCP server; an HTML mockup importable into Figma later.
+**Why:** The Figma Starter plan caps the MCP server at 20 tool calls per month, files at 3 pages, and variable collections at 1 mode (so Dark/Light needed two parallel collections). The budget ran out after tokens + part of the component library were built.
+**Wrong turn / lesson:** For a solo project on the Starter plan, Figma-via-agent is a poor primary design surface — the code is the cheaper, faster prototype. The partial Figma file (tokens, buttons, fields, icons) still exists for reference.
+
+---
+
+### 2026-10-12 — MUI re-confirmed as rejected
+
+**Decision:** Keep Emotion `styled` + Radix Primitives; do not adopt MUI.
+**Alternatives considered:** Switching to MUI during the redesign.
+**Why:** On review, the remembered "switch to MUI" was the move *away from Tailwind*; ticket 05 had already rejected MUI and the codebase has never used it. Emotion-styled components would map onto MUI's `styled()` if that ever changes.
+
+---
+
+### 2026-10-12 — Colour tokens moved to CSS custom properties with `html[data-theme]`
+
+**Decision:** All colours live in `src/styles/tokens.css`; the Emotion theme references `var(--color-*)`. The toggle flips `data-theme`, persists to `localStorage`, and an inline `<head>` script applies the stored theme before first paint.
+**Alternatives considered:** Keep two Emotion theme objects swapped through `ThemeProvider` (previous approach).
+**Why:** Swapping theme objects re-serialised every style, required the `ThemeRoot` workaround for SSR `<Global>` rules (2026-08-19 entry), broke wherever a component imported `darkTheme` statically (Services), and could not persist the choice without a dark flash on reload. CSS variables remove the whole class of problems.
+
+---
+
+### 2026-10-12 — `asChild` never worked: custom `shouldForwardProp` swallowed Emotion's `as`
+
+**Decision:** `shouldForwardProp: (prop) => prop !== 'as' && !prop.startsWith('$')`.
+**Why:** Emotion only treats `as` as "change the rendered element" when `shouldForwardProp('as')` is false. The 2026-08-19 fix returned true for `as`, so every `<Button asChild><a/></Button>` rendered `<button as="…"><a>…</a></button>` — nested interactive content, invalid HTML. Found because button icons wrapped onto a second line in screenshots.
+**Wrong turn / lesson:** The earlier fix solved the visible symptom (`$variant` leaking) and silently created a worse one. Check the rendered DOM, not just the absence of console errors.
+
+---
+
+### 2026-10-12 — Placeholder content replaced with the real CV
+
+**Decision:** All experience, skills and bio copy now come from the original brief; data in `src/data/`, strings in `messages/*.json`.
+**Why:** The previous build shipped invented projects ("Data Pipeline Dashboard", "Banking Portal"), skills (LangChain, tRPC, Terraform) and claims (open-source maintainer, fintech). For a site aimed at headhunters, believable-but-false content is worse than an empty section.
+
+---
