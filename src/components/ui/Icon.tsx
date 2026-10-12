@@ -24,9 +24,8 @@ const PATHS = {
   check: <path d="M20 6 9 17l-5-5" />,
   linkedin: (
     <>
-      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6Z" />
-      <rect x="2" y="9" width="4" height="12" />
-      <circle cx="4" cy="4" r="2" />
+      <rect x="3" y="3" width="18" height="18" rx="2.5" />
+      <path d="M8 10.5V16M8 7.75v.01M12 16v-5.5M12 13a2.5 2.5 0 0 1 5 0v3" />
     </>
   ),
   briefcase: (

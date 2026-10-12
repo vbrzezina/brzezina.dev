@@ -16,7 +16,7 @@ export const site = {
 } as const;
 
 /** Past clients shown in the hero proof strip. */
-export const CLIENTS = ['Burberry', 'Walmart', 'PSA', 'Veolia', 'Carvago', 'Logio'] as const;
+export const CLIENTS = ['SAP', 'Burberry', 'Walmart', 'PSA', 'Veolia', 'Carvago', 'Logio'] as const;
 
 /** Values for the hero `whoami` card; labels are translated. */
 export const WHOAMI = {

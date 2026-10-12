@@ -32,7 +32,9 @@
     "whoami": {
       "label": "Profile summary",
       "role": "role",
-      "roleValue": "Software Engineer · SAP",
+      "roleValue": "Software Engineer · EPAM Systems",
+      "client": "client",
+      "clientValue": "SAP",
       "stack": "stack",
       "based": "based",
       "basedValue": "Czech Republic · CET",
@@ -47,7 +49,7 @@
     "portraitLabel": "Václav Brzezina smiling, in a navy blazer",
     "bio": {
       "lede": "I build JavaScript products end to end — TypeScript and React on the frontend, Node.js and NestJS on the backend, AWS serverless in the cloud.",
-      "p2": "Nine years in, my work sits where architecture meets delivery: designing systems, setting code standards, reviewing pull requests — and writing production code myself. I lead technically rather than from a distance. Right now I’m a Software Engineer at SAP; before that I was Tech Lead on Burberry’s O2O clientelling platform at EPAM Systems.",
+      "p2": "Nine years in, my work sits where architecture meets delivery: designing systems, setting code standards, reviewing pull requests — and writing production code myself. I lead technically rather than from a distance. At EPAM Systems I’m currently a Software Engineer on an SAP project; before that I was Tech Lead on Burberry’s O2O clientelling platform.",
       "p3": "Based in the Czech Republic, bilingual in English and Czech, and available for freelance and contract engagements."
     },
     "languagesHeading": "Languages",
@@ -80,14 +82,17 @@
     "heading": "Nine years, shipped",
     "lead": "Enterprise platforms, retail systems and internal tooling — mostly TypeScript, mostly end to end.",
     "present": "Present",
+    "current": "Current",
     "stackLabel": "Stack",
     "employers": {
-      "sap": { "role": "Software Engineer" },
       "epam": { "role": "Lead Software Engineer" },
       "starkys": { "role": "Frontend Lead" },
       "etnetera": { "role": "Frontend Developer" }
     },
     "projects": {
+      "sap": {
+        "role": "Software Engineer"
+      },
       "burberry": {
         "role": "Tech Lead",
         "description": "O2O clientelling platform — architecture design, technical team lead, cross-stream coordination."
@@ -183,7 +188,7 @@
         "email": "Enter a valid email address",
         "message": "Please add a short message"
       },
-      "error": "Your message couldn’t be sent — it’s still here, so you can try again, or message me on <link>LinkedIn</link>.",
+      "error": "Your message couldn’t be sent — it’s still here, so you can try again, or reach me on <link>GitHub</link>.",
       "successTitle": "Message sent",
       "successBody": "Thanks — I’ll reply within 1–2 business days.",
       "sendAnother": "Send another message"

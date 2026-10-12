@@ -121,12 +121,31 @@ const Client = styled.h4`
   ${type.titleM}
   color: ${({ theme }) => theme.colors.fg};
 
-  span {
+  span[aria-hidden] {
     font-family: ${({ theme }) => theme.fonts.mono};
     font-weight: 400;
     color: ${({ theme }) => theme.colors.accent};
     margin-right: 0.5rem;
   }
+`
+
+/* The current project spans the full row, so a sparse card never leaves a half-empty pair. */
+const ProjectItem = styled(Reveal)<{ $current?: boolean }>`
+  ${({ theme }) => theme.mq.lg} {
+    grid-column: ${({ $current }) => ($current ? '1 / -1' : 'auto')};
+  }
+`
+
+const CurrentTag = styled.span`
+  ${type.monoEyebrow}
+  align-self: center;
+  margin-left: 0.75rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: ${({ theme }) => theme.radius.sm};
+  background: ${({ theme }) => theme.colors.accentSubtle};
+  /* accent-hover keeps 4.5:1 on the tinted fill in both themes */
+  color: ${({ theme }) => theme.colors.accentHover};
+  vertical-align: middle;
 `
 
 const ProjectRole = styled.p`
@@ -181,19 +200,24 @@ export function Experience() {
               {employer.projects.length > 0 && (
                 <Projects role="list">
                   {employer.projects.map((project, i) => (
-                    <Reveal key={project.id} as="li" delay={i * 70}>
+                    <ProjectItem key={project.id} as="li" delay={i * 70} $current={project.current}>
                       <Project>
                         <Client>
                           <span aria-hidden="true">&gt;</span>
                           {project.client}
+                          {project.current && <CurrentTag>{t('current')}</CurrentTag>}
                         </Client>
                         <ProjectRole>{t(`projects.${project.id}.role`)}</ProjectRole>
-                        <ProjectDescription>{t(`projects.${project.id}.description`)}</ProjectDescription>
-                        <ProjectStack>
-                          <StackList items={project.stack} label={t('stackLabel')} />
-                        </ProjectStack>
+                        {t.has(`projects.${project.id}.description`) && (
+                          <ProjectDescription>{t(`projects.${project.id}.description`)}</ProjectDescription>
+                        )}
+                        {project.stack.length > 0 && (
+                          <ProjectStack>
+                            <StackList items={project.stack} label={t('stackLabel')} />
+                          </ProjectStack>
+                        )}
                       </Project>
-                    </Reveal>
+                    </ProjectItem>
                   ))}
                 </Projects>
               )}

@@ -32,7 +32,9 @@
     "whoami": {
       "label": "Shrnutí profilu",
       "role": "role",
-      "roleValue": "Software Engineer · SAP",
+      "roleValue": "Software Engineer · EPAM Systems",
+      "client": "klient",
+      "clientValue": "SAP",
       "stack": "stack",
       "based": "sídlo",
       "basedValue": "Česko · SEČ",
@@ -47,7 +49,7 @@
     "portraitLabel": "Usměvavý Václav Brzezina v tmavomodrém saku",
     "bio": {
       "lede": "Stavím JavaScriptové produkty od začátku do konce — TypeScript a React na frontendu, Node.js a NestJS na backendu, AWS serverless v cloudu.",
-      "p2": "Po devíti letech se moje práce pohybuje tam, kde se architektura potkává s dodávkou: návrh systémů, standardy kódu, code review — a vlastní produkční kód. Vedu technicky, ne z povzdálí. Aktuálně pracuji jako Software Engineer v SAP; předtím jsem byl Tech Lead na O2O clientelling platformě pro Burberry v EPAM Systems.",
+      "p2": "Po devíti letech se moje práce pohybuje tam, kde se architektura potkává s dodávkou: návrh systémů, standardy kódu, code review — a vlastní produkční kód. Vedu technicky, ne z povzdálí. V EPAM Systems teď pracuji jako Software Engineer na projektu pro SAP; předtím jsem byl Tech Lead na O2O clientelling platformě pro Burberry.",
       "p3": "Žiju v Česku, mluvím anglicky i česky a jsem k dispozici pro freelance a kontraktorskou spolupráci."
     },
     "languagesHeading": "Jazyky",
@@ -80,14 +82,17 @@
     "heading": "Devět let v produkci",
     "lead": "Enterprise platformy, retailové systémy a interní nástroje — většinou TypeScript, většinou end to end.",
     "present": "Současnost",
+    "current": "Aktuálně",
     "stackLabel": "Stack",
     "employers": {
-      "sap": { "role": "Software Engineer" },
       "epam": { "role": "Lead Software Engineer" },
       "starkys": { "role": "Frontend Lead" },
       "etnetera": { "role": "Frontend vývojář" }
     },
     "projects": {
+      "sap": {
+        "role": "Software Engineer"
+      },
       "burberry": {
         "role": "Tech Lead",
         "description": "O2O clientelling platforma — návrh architektury, technické vedení týmu, koordinace napříč streamy."
@@ -183,7 +188,7 @@
         "email": "Zadejte platný e-mail",
         "message": "Připište prosím krátkou zprávu"
       },
-      "error": "Zprávu se nepodařilo odeslat — zůstala ve formuláři, takže to můžete zkusit znovu, nebo mi napište přes <link>LinkedIn</link>.",
+      "error": "Zprávu se nepodařilo odeslat — zůstala ve formuláři, takže to můžete zkusit znovu, nebo mě najdete na <link>GitHubu</link>.",
       "successTitle": "Zpráva odeslána",
       "successBody": "Děkuji — odpovím do 1–2 pracovních dnů.",
       "sendAnother": "Poslat další zprávu"
