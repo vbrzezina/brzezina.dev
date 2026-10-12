@@ -175,7 +175,7 @@ Only `transform` and `opacity` are animated for movement. No looping animation a
 - **Company header:** name in `titleL`, title in `bodyM` fg-secondary; period in `monoS` accent, right-aligned on desktop and above the name on mobile.
 - **Current project** (`current: true` in the data) gets a small `CURRENT` tag and otherwise looks like every other project card; description and stack are optional, so a project can appear before its details are shareable.
 - **Projects:** two-column grid from `lg` up (cuts the section height roughly in half). Cards in the same row share a height, with the stack line pinned to the bottom, so rows read as clean bands; across rows heights follow content (forcing one global height would pad short cards with empty space). Each project: `> Client` (`titleM`, accent `>`), role (`bodyS` fg), description (`bodyS` fg-secondary), StackList.
-- Content is the real CV: EPAM (SAP — current project, Burberry, Walmart), Starky's Club (Carvago/Omnitec DMS, 3G Project Guide Manager, Inventi/Summit Media — PSA), Etnetera (Logio, Veolia).
+- Content is the real CV: EPAM (SAP — current project, Burberry, Walmart), Starky's Club (Carvago/Omnetic DMS, 3G Project Guide Manager, Inventi/Summit Media — PSA), Etnetera (Logio, Veolia).
 
 ### 03 Services — "What I take on"
 - 3 equal cards (`surface`, hairline, 6px radius): `01` counter, title `titleL`, description `bodyS`, hairline, `TYPICAL STACK` eyebrow + StackList. Hover → `border-strong`, card lifts 2px.

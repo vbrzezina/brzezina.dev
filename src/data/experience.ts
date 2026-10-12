@@ -36,7 +36,7 @@ export const EXPERIENCE: readonly Employer[] = [
     start: 2019,
     end: 2022,
     projects: [
-      { id: 'carvago', client: 'Carvago / Omnitec DMS', stack: ['React', 'TypeScript', 'Redux', 'Next.js'] },
+      { id: 'carvago', client: 'Carvago / Omnetic DMS', stack: ['React', 'TypeScript', 'Redux', 'Next.js'] },
       { id: 'pgm', client: '3G Project Guide Manager', stack: ['React', 'TypeScript', 'NestJS', 'Postgres', 'TypeORM', 'AWS'] },
       { id: 'inventi', client: 'Inventi / Summit Media', stack: ['React', 'TypeScript', 'Redux', 'Next.js'] },
     ],
