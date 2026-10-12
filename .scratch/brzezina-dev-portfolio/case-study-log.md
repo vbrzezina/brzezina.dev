@@ -144,11 +144,12 @@ Running record of decisions, alternatives considered, and wrong turns for the br
 
 ---
 
-### 2026-10-12 — One photo, one place per link
+### 2026-10-12 — One place per link; About keeps a (second) photo
 
-**Decision:** Hero keeps the only photo; the About slot became an "At a glance" panel (years, companies, client projects) computed from `src/data/experience.ts`. GitHub appears only in the footer, the CV only in the nav and Contact, the theme toggle only in the header.
-**Alternatives considered:** A second (candid) photo in About; keeping GitHub + CV in both the Contact sidebar and the footer.
-**Why:** A second photo repeats identity; the slot works harder carrying information a skimmer wants. Deriving the figures from the CV data means they can't drift from the Experience section. The link duplication was visible on one screen (Contact sidebar directly above the footer) — the original brief already assigned GitHub to the footer and the CV to Contact, so it was resolved by following the brief.
+**Decision:** GitHub appears only in the footer, the CV only in the nav and Contact, the theme toggle only in the header. About keeps a 4:5 photo slot for a candid at-work shot, different from the hero headshot.
+**Alternatives considered:** Keeping GitHub + CV in both the Contact sidebar and the footer; replacing the About photo with an "At a glance" figures panel (years / companies / client projects computed from the CV data); a text-led About with no visual.
+**Why:** The link duplication was visible on one screen (Contact sidebar directly above the footer) — the original brief already assigned GitHub to the footer and the CV to Contact, so it was resolved by following the brief. For About, two *different* photos (headshot vs. at work) carry the human voice the brief asked for.
+**Wrong turn / lesson:** The figures panel was built and shipped, then reverted — a tall bordered box of giant numbers read as a dashboard widget, a different visual language from the rest of the page, sitting exactly where the eye expects a face. "Add information instead of repeating a face" was right in principle but wrong in form; asking with previews before the second attempt got to the answer in one step.
 
 ---
 

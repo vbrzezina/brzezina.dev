@@ -167,7 +167,7 @@ Only `transform` and `opacity` are animated for movement. No looping animation a
 - **Proof strip** (bottom of hero, no rule): `WORKED ON PROJECTS FOR` eyebrow + `Burberry · Walmart · PSA · Veolia · Carvago · Logio` in `monoBody`. Worded as *projects for* because these were clients of EPAM, Starky's Club and Etnetera, not direct engagements — the big names stay, the claim stays accurate.
 
 ### 01 About — "Hands-on senior engineer"
-- 5/7 split. Left: an **At a glance** panel (surface, grid texture) with three figures computed from `src/data/experience.ts` — years shipping (current year − earliest start), companies, client projects — big `displayL` numbers over accent mono labels, ICU-pluralised in EN/CS. The hero carries the one photo; this slot adds information instead of repeating a face (a second, candid photo can replace it later). Right: first paragraph in `bodyL` fg (the lede), then two `bodyM` fg-secondary paragraphs, then a languages `<dl>`: **English** Fluent · **Czech** Native.
+- 5/7 split. Left: 4:5 photo slot for a **candid shot at work** — deliberately different from the hero headshot (surface + grid texture + `VB` monogram as the placeholder, `role="img"` with a descriptive label). Right: first paragraph in `bodyL` fg (the lede), then two `bodyM` fg-secondary paragraphs, then a languages `<dl>`: **English** Fluent · **Czech** Native.
 - **Stack & tooling** (h3): a six-row table. Category in `titleM` on the left (3 cols), StackList on the right (9 cols), hairline between rows. Content from the brief: Frontend, Backend, Cloud, Databases, Practices, GenAI.
 
 ### 02 Experience — "Nine years, shipped"
@@ -219,5 +219,5 @@ Replace the three TBD cards with **real, honest content**:
 
 - **Contact submission backend** — the form POSTs JSON `{ name, email, message }` to `site.contactEndpoint` (`/api/contact`). The handler doesn't exist yet (tickets 08/10), so submissions currently show the error state — message kept, GitHub offered — never a fake success.
 - **CV file** — every CV link points at `/cv.pdf` with `download`; the PDF still needs adding to `public/`.
-- **Real photography** — the hero portrait is a 1:1 placeholder for a real headshot.
+- **Real photography** — two placeholders: a 1:1 headshot (hero) and a 4:5 candid at-work photo (About). Use two different photos.
 - **Figma parity** — finish the screens in the Figma file once MCP calls are available again (Pro plan or next month's quota).

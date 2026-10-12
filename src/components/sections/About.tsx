@@ -5,7 +5,6 @@ import { useTranslations } from 'next-intl'
 import { Container, Section } from '@/components/layout'
 import { Reveal } from '@/components/Reveal'
 import { SectionHeader, StackList } from '@/components/ui'
-import { EXPERIENCE } from '@/data/experience'
 import { LANGUAGE_IDS, SKILL_GROUPS } from '@/data/skills'
 import { gridBackdrop } from '@/styles/backdrop'
 import { type } from '@/styles/typography'
@@ -24,57 +23,25 @@ const BioGrid = styled.div`
   }
 `
 
-// Derived from the CV data so the figures can never drift from the Experience section.
-const CAREER_START = Math.min(...EXPERIENCE.map((e) => e.start))
-const FACTS = [
-  { id: 'years', value: new Date().getFullYear() - CAREER_START },
-  { id: 'companies', value: EXPERIENCE.length },
-  { id: 'projects', value: EXPERIENCE.reduce((n, e) => n + e.projects.length, 0) },
-] as const
-
-/** The hero carries the photo; this slot adds information instead of repeating a face. */
-const FactsPanel = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+/** Rectangular 4:5 slot sized for the real photo that replaces it. */
+const Portrait = styled.div`
+  position: relative;
+  aspect-ratio: 4 / 5;
   max-width: 28rem;
-  padding: clamp(1.5rem, 1rem + 2vw, 2.25rem);
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radius.md};
   background-color: ${({ theme }) => theme.colors.surface};
   ${gridBackdrop(36)}
-`
+  display: grid;
+  place-items: center;
+  overflow: hidden;
 
-const FactsLabel = styled.p`
-  ${type.monoEyebrow}
-  color: ${({ theme }) => theme.colors.fgTertiary};
-`
-
-const FactsList = styled.dl`
-  display: flex;
-  flex-direction: column;
-  gap: 1.75rem;
-
-  div {
-    display: flex;
-    flex-direction: column-reverse; /* number reads first; dt stays first in the DOM */
-    gap: 0.375rem;
-    padding-top: 1.75rem;
-    border-top: 1px solid ${({ theme }) => theme.colors.border};
-  }
-  div:first-of-type {
-    padding-top: 0;
-    border-top: none;
-  }
-  dd {
-    ${type.displayL}
-    font-size: clamp(3rem, 2.4rem + 2.4vw, 4.5rem);
-    line-height: 1;
-    color: ${({ theme }) => theme.colors.fg};
-  }
-  dt {
-    ${type.monoEyebrow}
-    color: ${({ theme }) => theme.colors.accent};
+  span {
+    font-family: ${({ theme }) => theme.fonts.display};
+    font-weight: 700;
+    font-size: clamp(4rem, 3rem + 4vw, 7rem);
+    letter-spacing: -0.05em;
+    color: ${({ theme }) => theme.colors.borderStrong};
   }
 `
 
@@ -175,17 +142,9 @@ export function About() {
 
         <BioGrid>
           <Reveal delay={80}>
-            <FactsPanel>
-              <FactsLabel>{t('facts.label')}</FactsLabel>
-              <FactsList>
-                {FACTS.map((fact) => (
-                  <div key={fact.id}>
-                    <dt>{t(`facts.${fact.id}`, { count: fact.value })}</dt>
-                    <dd>{fact.value}</dd>
-                  </div>
-                ))}
-              </FactsList>
-            </FactsPanel>
+            <Portrait role="img" aria-label={t('portraitLabel')}>
+              <span aria-hidden="true">VB</span>
+            </Portrait>
           </Reveal>
 
           <Reveal delay={160}>
