@@ -2,24 +2,12 @@
 
 import { useServerInsertedHTML } from "next/navigation";
 import { CacheProvider, ThemeProvider } from "@emotion/react";
-import styled from "@emotion/styled";
 import createCache from "@emotion/cache";
 import { useState } from "react";
-import { darkTheme, lightTheme } from "@/app/theme";
-import { GlobalStyles } from "@/app/GlobalStyles";
-import { ThemeContext } from "@/app/ThemeContext";
-
-const ThemeRoot = styled.div`
-  background-color: ${({ theme }) => theme.colors.background};
-  color: ${({ theme }) => theme.colors.foreground};
-  min-height: 100vh;
-`;
+import { theme } from "@/app/theme";
+import { ColorSchemeProvider } from "@/app/ThemeContext";
 
 export function ThemeRegistry({ children }: { children: React.ReactNode }) {
-  const [isDark, setIsDark] = useState(true);
-  const toggleTheme = () => setIsDark((prev) => !prev);
-  const activeTheme = isDark ? darkTheme : lightTheme;
-
   const [{ cache, flush }] = useState(() => {
     const cache = createCache({ key: "css" });
     cache.compat = true;
@@ -57,13 +45,10 @@ export function ThemeRegistry({ children }: { children: React.ReactNode }) {
   });
 
   return (
-    <ThemeContext.Provider value={{ isDark, toggleTheme }}>
+    <ColorSchemeProvider>
       <CacheProvider value={cache}>
-        <ThemeProvider theme={activeTheme}>
-          <GlobalStyles />
-          <ThemeRoot>{children}</ThemeRoot>
-        </ThemeProvider>
+        <ThemeProvider theme={theme}>{children}</ThemeProvider>
       </CacheProvider>
-    </ThemeContext.Provider>
+    </ColorSchemeProvider>
   );
 }

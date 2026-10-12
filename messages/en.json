@@ -1,72 +1,210 @@
 {
+  "a11y": {
+    "skip": "Skip to content",
+    "mainNav": "Main",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "menu": "Menu",
+    "language": "Language",
+    "toggleTheme": "Toggle colour theme",
+    "toLight": "Switch to light theme",
+    "toDark": "Switch to dark theme"
+  },
   "nav": {
     "about": "About",
     "experience": "Experience",
     "services": "Services",
     "work": "Work",
-    "contact": "Contact"
+    "contact": "Contact",
+    "cv": "CV",
+    "downloadCv": "Download CV",
+    "getInTouch": "Get in touch"
   },
   "hero": {
-    "eyebrow": "00 / BASED IN THE CZECH REPUBLIC",
+    "status": "Available for contract work",
     "heading": "Václav Brzezina",
     "role": "Software Engineer",
-    "tagline": "9 years building JavaScript products across the full stack",
-    "intro": "TypeScript and React on the frontend, Node.js and NestJS on the backend, AWS serverless in the cloud. Comfortable taking technical ownership of architecture, code quality and direction while staying hands-on with code.",
-    "current": "Currently Tech Lead on Burberry's O2O Clientelling platform at EPAM Systems.",
+    "tagline": "9 years building JavaScript products across the full stack.",
+    "intro": "TypeScript and React on the frontend, Node.js and NestJS on the backend, AWS serverless in the cloud. I take technical ownership of architecture, code quality and direction — and stay hands-on with the code.",
     "cta": "See my work",
-    "ctaSecondary": "Get in touch"
+    "ctaSecondary": "Get in touch",
+    "portraitLabel": "Portrait of Václav Brzezina (placeholder)",
+    "whoami": {
+      "label": "Profile summary",
+      "role": "role",
+      "roleValue": "Tech Lead · EPAM Systems",
+      "client": "client",
+      "clientValue": "Burberry — O2O clientelling",
+      "stack": "stack",
+      "based": "based",
+      "basedValue": "Czech Republic · CET",
+      "speaks": "speaks"
+    },
+    "shippedFor": "Shipped for"
   },
   "about": {
     "index": "01",
-    "slug": "ABOUT",
+    "slug": "About",
     "heading": "Hands-on senior engineer",
+    "portraitLabel": "Portrait of Václav Brzezina at work (placeholder)",
+    "bio": {
+      "lede": "I build JavaScript products end to end — TypeScript and React on the frontend, Node.js and NestJS on the backend, AWS serverless in the cloud.",
+      "p2": "Nine years in, my work sits where architecture meets delivery: designing systems, setting code standards, reviewing pull requests — and writing production code myself. I lead technically rather than from a distance. Right now I’m Tech Lead on Burberry’s O2O clientelling platform at EPAM Systems.",
+      "p3": "Based in the Czech Republic, bilingual in English and Czech, and available for freelance and contract engagements."
+    },
+    "languagesHeading": "Languages",
+    "languages": {
+      "en": { "name": "English", "level": "Fluent" },
+      "cs": { "name": "Czech", "level": "Native" },
+      "sk": { "name": "Slovak", "level": "Native" }
+    },
     "stackHeading": "Stack & tooling",
-    "languagesHeading": "Languages"
+    "skills": {
+      "categories": {
+        "frontend": "Frontend",
+        "backend": "Backend",
+        "cloud": "Cloud",
+        "databases": "Databases",
+        "practices": "Practices",
+        "genai": "GenAI"
+      },
+      "items": {
+        "ciCd": "CI/CD",
+        "codeReview": "Code review",
+        "codeStandards": "Code standards",
+        "accessibility": "Accessibility"
+      }
+    }
   },
   "experience": {
     "index": "02",
-    "slug": "EXPERIENCE",
+    "slug": "Experience",
     "heading": "Nine years, shipped",
-    "lead": "Enterprise platforms, agency projects, and greenfield products."
+    "lead": "Enterprise platforms, retail systems and internal tooling — mostly TypeScript, mostly end to end.",
+    "present": "Present",
+    "stackLabel": "Stack",
+    "employers": {
+      "epam": { "role": "Lead Software Engineer" },
+      "starkys": { "role": "Frontend Lead" },
+      "etnetera": { "role": "Frontend Developer" }
+    },
+    "projects": {
+      "burberry": {
+        "role": "Tech Lead",
+        "description": "O2O clientelling platform — architecture design, technical team lead, cross-stream coordination."
+      },
+      "walmart": {
+        "role": "Key developer",
+        "description": "Software reliability engineering tool."
+      },
+      "carvago": {
+        "role": "Senior frontend developer",
+        "description": "Car dealer management system — frontend architecture and team lead."
+      },
+      "pgm": {
+        "role": "Full-stack developer",
+        "description": "Internal work-reporting tool integrated with Giriton."
+      },
+      "inventi": {
+        "role": "Senior technological leader",
+        "description": "PSA online car configurator — new architecture and team leading."
+      },
+      "logio": {
+        "role": "Frontend / backend developer",
+        "description": "Pricing and promotion tool for food retail."
+      },
+      "veolia": {
+        "role": "Frontend developer",
+        "description": "Customer self-care portal."
+      }
+    }
   },
   "services": {
     "index": "03",
-    "slug": "SERVICES",
+    "slug": "Services",
     "heading": "What I take on",
-    "lead": "Contract engagements where technical ownership matters as much as throughput."
+    "lead": "Contract engagements where technical ownership matters as much as throughput.",
+    "stackLabel": "Typical stack",
+    "items": {
+      "fullstack": {
+        "title": "Full-stack TypeScript / React",
+        "description": "Frontend architecture, component systems, performance optimisation and accessibility. Next.js App Router, React, Emotion / MUI."
+      },
+      "backend": {
+        "title": "Backend & APIs",
+        "description": "Node.js backends, REST and GraphQL APIs with NestJS and TypeORM, database design and optimisation."
+      },
+      "serverless": {
+        "title": "AWS Serverless",
+        "description": "Lambda, Step Functions, API Gateway, Cognito, S3 and CDK. End-to-end cloud architecture for serverless products."
+      }
+    },
+    "facts": {
+      "engagement": "Freelance & contract",
+      "remote": "Remote-first, CET time zone",
+      "languages": "English & Czech"
+    }
   },
   "work": {
     "index": "04",
-    "slug": "WORK",
+    "slug": "Work",
     "heading": "Selected work",
-    "comingSoon": "Projects coming soon"
-  },
-  "footer": {
-    "tagline": "9 years building JavaScript products across the full stack",
-    "sectionsLabel": "Sections",
-    "elsewhereLabel": "Elsewhere",
-    "downloadCv": "Download CV",
-    "copyright": "© 2026 Václav Brzezina"
+    "lead": "Projects coming soon — currently building this site.",
+    "featured": {
+      "status": "In progress",
+      "description": "This site — designed and built in the open as the first case study. Bilingual, accessible, dark-first.",
+      "link": "View source",
+      "thumbLabel": "Preview of the brzezina.dev home page"
+    },
+    "open": {
+      "label": "Next case study",
+      "title": "This slot is open",
+      "description": "The next case study could be your product.",
+      "cta": "Start a project"
+    }
   },
   "contact": {
     "index": "05",
-    "slug": "CONTACT",
+    "slug": "Contact",
     "heading": "Available for freelance and contract engagements",
-    "lead": "Tell me about the product, the stack, and the timeline. I will get back to you within 48 hours.",
+    "lead": "Tell me about the product, the stack and the timeline. I reply within 1–2 business days.",
     "form": {
+      "label": "Contact form",
       "name": "Name",
-      "email": "Email address",
+      "email": "Email",
       "message": "Message",
+      "namePlaceholder": "Jane Novák",
+      "emailPlaceholder": "jane@company.com",
+      "messagePlaceholder": "What are you building, and where could I help?",
+      "required": "All fields are required.",
       "submit": "Send message",
       "sending": "Sending…",
-      "success": "Message sent.",
-      "error": "Something went wrong. Please try again."
+      "errors": {
+        "name": "Please enter your name.",
+        "email": "Enter a valid email address, e.g. jane@company.com.",
+        "message": "Please add a short message."
+      },
+      "error": "Something went wrong. Please try again.",
+      "successTitle": "Message sent",
+      "successBody": "Thanks — I’ll reply within 1–2 business days.",
+      "sendAnother": "Send another message"
     },
     "sidebar": {
       "responseLabel": "Response time",
-      "responseValue": "Within 48 hours",
+      "responseValue": "Within 1–2 business days",
+      "basedLabel": "Based in",
+      "basedValue": "Czech Republic · CET (UTC+1)",
+      "elsewhereLabel": "Elsewhere",
       "cvLabel": "Curriculum vitae",
       "cvCta": "Download PDF"
     }
+  },
+  "footer": {
+    "tagline": "9 years building JavaScript products across the full stack.",
+    "sectionsLabel": "Sections",
+    "elsewhereLabel": "Elsewhere",
+    "downloadCv": "Download CV",
+    "copyright": "© 2026 Václav Brzezina",
+    "backToTop": "Back to top"
   }
 }

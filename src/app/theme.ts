@@ -1,4 +1,29 @@
-const base = {
+/**
+ * Emotion theme. Colours are CSS custom properties from `src/styles/tokens.css`,
+ * so switching dark/light only flips `html[data-theme]` — no style re-serialisation.
+ */
+
+const colors = {
+  canvas: 'var(--color-canvas)',
+  surface: 'var(--color-surface)',
+  raised: 'var(--color-raised)',
+  material: 'var(--color-material)',
+  fg: 'var(--color-fg)',
+  fgSecondary: 'var(--color-fg-secondary)',
+  fgTertiary: 'var(--color-fg-tertiary)',
+  accent: 'var(--color-accent)',
+  accentHover: 'var(--color-accent-hover)',
+  onAccent: 'var(--color-on-accent)',
+  accentSubtle: 'var(--color-accent-subtle)',
+  border: 'var(--color-border)',
+  borderStrong: 'var(--color-border-strong)',
+  grid: 'var(--color-grid)',
+  success: 'var(--color-success)',
+  error: 'var(--color-error)',
+} as const;
+
+export const theme = {
+  colors,
   space: {
     1: '0.25rem',
     2: '0.5rem',
@@ -12,81 +37,40 @@ const base = {
     16: '4rem',
     20: '5rem',
     24: '6rem',
+    32: '8rem',
   },
   radius: {
-    sm: '0.125rem',
-    base: '0.25rem',
+    sm: '0.25rem',
     md: '0.375rem',
-    lg: '0.5rem',
   },
   fonts: {
-    display: 'var(--font-display)',
-    sans: 'var(--font-sans)',
-    mono: 'var(--font-mono)',
+    display: 'var(--font-display), ui-sans-serif, system-ui, sans-serif',
+    sans: 'var(--font-sans), ui-sans-serif, system-ui, sans-serif',
+    mono: 'var(--font-mono), ui-monospace, SFMono-Regular, monospace',
   },
-  nav: {
-    height: '4rem',
+  layout: {
+    maxWidth: '75rem',
+    gutter: 'clamp(1.25rem, 4vw, 2.5rem)',
+    sectionPadding: 'clamp(5rem, 3rem + 6vw, 8rem)',
+    navHeight: '4rem',
+  },
+  mq: {
+    sm: '@media (min-width: 40em)',
+    md: '@media (min-width: 56.25em)',
+    lg: '@media (min-width: 68.75em)',
+    reducedMotion: '@media (prefers-reduced-motion: reduce)',
+  },
+  motion: {
+    ease: 'cubic-bezier(0.22, 1, 0.36, 1)',
+    fast: '150ms',
+    reveal: '700ms',
   },
 } as const;
 
-const darkColors = {
-  background:           '#050e19',
-  foreground:           '#f0f4f7',
-  surface:              '#0f1926',
-  surfaceForeground:    '#f0f4f7',
-  card:                 '#0f1926',
-  cardForeground:       '#f0f4f7',
-  popover:              '#0f1926',
-  popoverForeground:    '#f0f4f7',
-  primary:              '#00e2da',
-  primaryForeground:    '#050e19',
-  primaryHover:         '#67f1e9',
-  secondary:            '#1a2532',
-  secondaryForeground:  '#f0f4f7',
-  muted:                '#1a2532',
-  mutedForeground:      '#9fa9b4',
-  accent:               '#00e2da',
-  accentForeground:     '#050e19',
-  destructive:          '#f0555b',
-  destructiveForeground:'#050e19',
-  border:               '#fcfcfc1f',
-  input:                '#0f1926',
-  ring:                 '#00e2da',
-} as const;
-
-const lightColors = {
-  background:           '#f8f8f3',
-  foreground:           '#091521',
-  surface:              '#f1f0ea',
-  surfaceForeground:    '#091521',
-  card:                 '#fefefb',
-  cardForeground:       '#091521',
-  popover:              '#fefefb',
-  popoverForeground:    '#091521',
-  primary:              '#008493',
-  primaryForeground:    '#fcfcf8',
-  primaryHover:         '#007183',
-  secondary:            '#e3e8ee',
-  secondaryForeground:  '#101c28',
-  muted:                '#e7ecf0',
-  mutedForeground:      '#555f69',
-  accent:               '#008493',
-  accentForeground:     '#fcfcf8',
-  destructive:          '#cc2827',
-  destructiveForeground:'#fcfcf8',
-  border:               '#d3d8de',
-  input:                '#d3d8de',
-  ring:                 '#008493',
-} as const;
-
-export const darkTheme = { ...base, colors: darkColors };
-export const lightTheme = { ...base, colors: lightColors };
-
-export type AppTheme = Omit<typeof darkTheme, 'colors'> & {
-  colors: Record<keyof typeof darkColors, string>;
-};
+export type AppTheme = typeof theme;
 export type SpaceKey = keyof AppTheme['space'];
 
 declare module '@emotion/react' {
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   interface Theme extends AppTheme {}
 }

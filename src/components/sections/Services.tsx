@@ -2,117 +2,144 @@
 
 import styled from '@emotion/styled';
 import { useTranslations } from 'next-intl';
-import { Container, Box, Spacer } from '@/components/layout';
+import { Container, Section } from '@/components/layout';
 import { Reveal } from '@/components/Reveal';
-import { SectionHeading } from '@/components/SectionHeading';
-import { darkTheme as theme } from '@/app/theme';
+import { Icon, SectionHeader, StackList } from '@/components/ui';
+import { ENGAGEMENT_FACTS, SERVICES } from '@/data/services';
+import { type } from '@/styles/typography';
 
-const { colors, fonts, radius } = theme;
-
-const SERVICES = [
-  {
-    number: '01',
-    title: 'Full-stack TypeScript / React',
-    description:
-      'Frontend architecture, component systems, performance optimisation, accessibility. Next.js App Router, React, Emotion/MUI.',
-  },
-  {
-    number: '02',
-    title: 'Backend & APIs',
-    description:
-      'Node.js backends, REST and GraphQL APIs, NestJS, TypeORM, database design and optimisation.',
-  },
-  {
-    number: '03',
-    title: 'AWS Serverless',
-    description:
-      'Lambda, Step Functions, API Gateway, Cognito, S3, CDK. End-to-end cloud architecture for serverless products.',
-  },
-] as const;
-
-const Section = styled.section`
-  border-bottom: 1px solid ${colors.border};
-`;
-
-const CardsGrid = styled.div`
-  background: ${colors.border};
-  gap: 1px;
+const Cards = styled.ul`
   display: grid;
-  grid-template-columns: 1fr;
-  border: 1px solid ${colors.border};
-  border-radius: ${radius.base};
-  overflow: hidden;
+  gap: 1rem;
+  margin-top: clamp(3rem, 2rem + 3vw, 4.5rem);
 
-  @media (min-width: 768px) {
-    grid-template-columns: repeat(3, 1fr);
+  ${({ theme }) => theme.mq.md} {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
   }
 `;
 
-const ServiceCard = styled.div`
-  background: ${colors.background};
-  padding: 2rem;
-  transition: background 200ms;
+const CardItem = styled(Reveal)`
+  display: flex;
+`;
+
+const Card = styled.article`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  height: 100%;
+  width: 100%;
+  padding: 1.75rem 1.75rem 2rem;
+  background: ${({ theme }) => theme.colors.surface};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.radius.md};
+  transition:
+    border-color ${({ theme }) => theme.motion.fast} ease,
+    transform 250ms ${({ theme }) => theme.motion.ease};
 
   &:hover {
-    background: ${colors.surface};
+    border-color: ${({ theme }) => theme.colors.borderStrong};
+    transform: translateY(-2px);
+  }
+
+  ${({ theme }) => theme.mq.reducedMotion} {
+    &:hover {
+      transform: none;
+    }
   }
 `;
 
-const ServiceNumber = styled.span`
-  font-family: ${fonts.mono};
-  font-size: 0.75rem;
-  color: ${colors.primary};
-  letter-spacing: 0.1em;
+const Counter = styled.p`
+  ${type.monoS}
+  color: ${({ theme }) => theme.colors.accent};
 `;
 
-const ServiceTitle = styled.h3`
-  font-family: ${fonts.display};
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: ${colors.foreground};
-  margin: 0;
+const Title = styled.h3`
+  ${type.titleL}
+  color: ${({ theme }) => theme.colors.fg};
+  margin-top: 2.5rem;
 `;
 
-const ServiceDescription = styled.p`
-  font-family: ${fonts.sans};
-  font-size: 0.9375rem;
-  color: ${colors.mutedForeground};
-  line-height: 1.65;
-  margin: 0;
+const Description = styled.p`
+  ${type.bodyS}
+  color: ${({ theme }) => theme.colors.fgSecondary};
+  margin-top: 0.75rem;
+  flex: 1;
 `;
 
-const REVEAL_DELAYS = [0, 100, 200] as const;
+const StackBlock = styled.div`
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+
+const StackLabel = styled.p`
+  ${type.monoEyebrow}
+  color: ${({ theme }) => theme.colors.fgTertiary};
+`;
+
+const Facts = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2.5rem;
+  margin-top: 2.5rem;
+`;
+
+const Fact = styled.li`
+  ${type.label}
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  color: ${({ theme }) => theme.colors.fgSecondary};
+
+  svg {
+    color: ${({ theme }) => theme.colors.accent};
+  }
+`;
 
 export function Services() {
   const t = useTranslations('services');
 
   return (
-    <Section id="services">
+    <Section id="services" aria-labelledby="services-title">
       <Container>
-        <Box $py={24}>
-          <SectionHeading
+        <Reveal>
+          <SectionHeader
             index={t('index')}
-            slug={t('slug')}
+            label={t('slug')}
             title={t('heading')}
+            titleId="services-title"
             lead={t('lead')}
           />
-          <Spacer $size={16} />
-          <CardsGrid>
-            {SERVICES.map((service, i) => (
-              <Reveal key={service.number} delay={REVEAL_DELAYS[i]}>
-                <ServiceCard>
-                  <ServiceNumber>{service.number}</ServiceNumber>
-                  <ServiceTitle>{service.title}</ServiceTitle>
-                  <ServiceDescription>{service.description}</ServiceDescription>
-                </ServiceCard>
-              </Reveal>
+        </Reveal>
+
+        <Cards>
+          {SERVICES.map((service, i) => (
+            <CardItem key={service.id} as="li" delay={i * 80}>
+              <Card>
+                <Counter aria-hidden="true">{String(i + 1).padStart(2, '0')}</Counter>
+                <Title>{t(`items.${service.id}.title`)}</Title>
+                <Description>{t(`items.${service.id}.description`)}</Description>
+                <StackBlock>
+                  <StackLabel>{t('stackLabel')}</StackLabel>
+                  <StackList items={service.stack} />
+                </StackBlock>
+              </Card>
+            </CardItem>
+          ))}
+        </Cards>
+
+        <Reveal delay={120}>
+          <Facts>
+            {ENGAGEMENT_FACTS.map((fact) => (
+              <Fact key={fact.id}>
+                <Icon name={fact.icon} size={18} />
+                {t(`facts.${fact.id}`)}
+              </Fact>
             ))}
-          </CardsGrid>
-        </Box>
+          </Facts>
+        </Reveal>
       </Container>
     </Section>
   );

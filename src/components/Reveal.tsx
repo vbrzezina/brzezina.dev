@@ -7,28 +7,30 @@ interface RevealProps {
   children: React.ReactNode
   delay?: number
   as?: React.ElementType
+  className?: string
 }
 
 const Wrapper = styled.div<{ $visible: boolean; $delay: number }>`
   opacity: ${({ $visible }) => ($visible ? 1 : 0)};
-  transform: ${({ $visible }) => ($visible ? 'none' : 'translateY(1.25rem)')};
+  transform: ${({ $visible }) => ($visible ? 'none' : 'translateY(1rem)')};
   transition:
-    opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+    opacity ${({ theme }) => `${theme.motion.reveal} ${theme.motion.ease}`},
+    transform ${({ theme }) => `${theme.motion.reveal} ${theme.motion.ease}`};
   transition-delay: ${({ $delay }) => $delay}ms;
 
-  @media (prefers-reduced-motion: reduce) {
-    opacity: 1;
+  /* Reduced motion: keep the fade (non-vestibular), drop the movement. */
+  ${({ theme }) => theme.mq.reducedMotion} {
     transform: none;
-    transition: none;
+    transition: opacity 200ms ease;
+    transition-delay: 0ms;
   }
 `
 
-export function Reveal({ children, delay, as }: RevealProps) {
+export function Reveal({ children, delay, as, className }: RevealProps) {
   const [ref, visible] = useReveal<HTMLDivElement>()
 
   return (
-    <Wrapper as={as} ref={ref} $visible={visible} $delay={delay ?? 0}>
+    <Wrapper as={as} ref={ref} className={className} $visible={visible} $delay={delay ?? 0}>
       {children}
     </Wrapper>
   )

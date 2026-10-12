@@ -1,137 +1,134 @@
-'use client'
+'use client';
 
-import styled from '@emotion/styled'
-import { useTranslations } from 'next-intl'
-import { Container } from '@/components/layout'
+import styled from '@emotion/styled';
+import { useTranslations } from 'next-intl';
+import { Icon, LocaleSwitch, Logo } from '@/components/ui';
+import { SECTION_IDS, site } from '@/data/site';
+import { type } from '@/styles/typography';
+import { Container } from './Container';
 
-const FooterRoot = styled.footer`
-  background: ${({ theme }) => theme.colors.surface};
+const Footer = styled.footer`
   border-top: 1px solid ${({ theme }) => theme.colors.border};
-`
+  padding-block: 4rem 2rem;
+`;
 
-const FooterInner = styled.div`
+const Top = styled.div`
   display: grid;
-  grid-template-columns: 1fr;
   gap: 2.5rem;
-  padding: 3rem 0 2rem;
 
-  @media (min-width: 768px) {
-    grid-template-columns: 1.5fr 1fr 1fr;
-    gap: 2rem;
+  ${({ theme }) => theme.mq.md} {
+    grid-template-columns: 6fr 3fr 3fr;
   }
-`
+`;
 
-const BrandCol = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-`
-
-const BrandName = styled.p`
-  font-family: ${({ theme }) => theme.fonts.display};
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: ${({ theme }) => theme.colors.foreground};
-  margin: 0;
-`
-
-const BrandTagline = styled.p`
-  font-family: ${({ theme }) => theme.fonts.sans};
-  font-size: 0.875rem;
-  color: ${({ theme }) => theme.colors.mutedForeground};
-  line-height: 1.5;
-  margin: 0;
+const Tagline = styled.p`
+  ${type.bodyS}
+  color: ${({ theme }) => theme.colors.fgSecondary};
+  margin-top: 0.75rem;
   max-width: 22rem;
-`
+`;
 
-const LinkCol = styled.div`
+const ColumnHeading = styled.h2`
+  ${type.monoEyebrow}
+  color: ${({ theme }) => theme.colors.fgTertiary};
+  margin-bottom: 0.75rem;
+`;
+
+const LinkList = styled.ul`
   display: flex;
   flex-direction: column;
-  gap: 0.875rem;
-`
-
-const ColLabel = styled.p`
-  font-family: ${({ theme }) => theme.fonts.mono};
-  font-size: 0.6875rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.primary};
-  margin: 0 0 0.25rem;
-`
+`;
 
 const FooterLink = styled.a`
-  font-family: ${({ theme }) => theme.fonts.sans};
-  font-size: 0.9375rem;
-  color: ${({ theme }) => theme.colors.mutedForeground};
-  text-decoration: none;
-  transition: color 150ms ease;
+  ${type.bodyS}
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.25rem;
+  color: ${({ theme }) => theme.colors.fgSecondary};
+  transition: color ${({ theme }) => theme.motion.fast} ease;
 
   &:hover {
-    color: ${({ theme }) => theme.colors.foreground};
+    color: ${({ theme }) => theme.colors.fg};
   }
+`;
 
-  &:focus-visible {
-    outline: 2px solid ${({ theme }) => theme.colors.ring};
-    outline-offset: 2px;
-    border-radius: 2px;
-  }
-`
-
-const Copyright = styled.div`
+const Bottom = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 3.5rem;
+  padding-top: 1.5rem;
   border-top: 1px solid ${({ theme }) => theme.colors.border};
-  padding: 1.25rem 0;
-`
+`;
 
-const CopyrightText = styled.p`
-  font-family: ${({ theme }) => theme.fonts.mono};
-  font-size: 0.75rem;
-  color: ${({ theme }) => theme.colors.mutedForeground};
-  margin: 0;
-`
+const Copyright = styled.p`
+  ${type.monoS}
+  color: ${({ theme }) => theme.colors.fgTertiary};
+`;
 
-const SECTION_IDS = ['about', 'experience', 'services', 'work', 'contact'] as const
+const BottomActions = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+`;
 
 export function SiteFooter() {
-  const t = useTranslations('footer')
-  const nav = useTranslations('nav')
+  const t = useTranslations('footer');
+  const nav = useTranslations('nav');
 
   return (
-    <FooterRoot>
+    <Footer>
       <Container>
-        <FooterInner>
-          <BrandCol>
-            <BrandName>Václav Brzezina</BrandName>
-            <BrandTagline>{t('tagline')}</BrandTagline>
-          </BrandCol>
+        <Top>
+          <div>
+            <Logo />
+            <Tagline>{t('tagline')}</Tagline>
+          </div>
 
-          <LinkCol>
-            <ColLabel>{t('sectionsLabel')}</ColLabel>
-            {SECTION_IDS.map((id) => (
-              <FooterLink key={id} href={`#${id}`}>
-                {nav(id)}
-              </FooterLink>
-            ))}
-          </LinkCol>
+          <nav aria-labelledby="footer-sections">
+            <ColumnHeading id="footer-sections">{t('sectionsLabel')}</ColumnHeading>
+            <LinkList>
+              {SECTION_IDS.map((id) => (
+                <li key={id}>
+                  <FooterLink href={`#${id}`}>{nav(id)}</FooterLink>
+                </li>
+              ))}
+            </LinkList>
+          </nav>
 
-          <LinkCol>
-            <ColLabel>{t('elsewhereLabel')}</ColLabel>
-            <FooterLink
-              href="https://github.com/vbrzezina"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              github.com/vbrzezina
+          <div>
+            <ColumnHeading>{t('elsewhereLabel')}</ColumnHeading>
+            <LinkList>
+              <li>
+                <FooterLink href={site.githubUrl} target="_blank" rel="noopener noreferrer">
+                  <Icon name="github" size={16} />
+                  {site.githubLabel}
+                </FooterLink>
+              </li>
+              <li>
+                <FooterLink href={site.cvUrl}>
+                  <Icon name="download" size={16} />
+                  {t('downloadCv')}
+                </FooterLink>
+              </li>
+            </LinkList>
+          </div>
+        </Top>
+
+        <Bottom>
+          <Copyright>{t('copyright')}</Copyright>
+          <BottomActions>
+            <LocaleSwitch />
+            <FooterLink href="#top">
+              {t('backToTop')}
+              <Icon name="arrowUp" size={16} />
             </FooterLink>
-            <FooterLink href="/cv.pdf" download>
-              {t('downloadCv')}
-            </FooterLink>
-          </LinkCol>
-        </FooterInner>
-
-        <Copyright>
-          <CopyrightText>{t('copyright')}</CopyrightText>
-        </Copyright>
+          </BottomActions>
+        </Bottom>
       </Container>
-    </FooterRoot>
-  )
+    </Footer>
+  );
 }

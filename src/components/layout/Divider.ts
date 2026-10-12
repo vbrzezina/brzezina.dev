@@ -9,6 +9,6 @@ export const Divider = styled.div<DividerProps>`
     $orientation === 'vertical'
       ? `width: 1px; height: 100%;`
       : `width: 100%; height: 1px;`}
-  background: var(--border);
+  background: var(--color-border);
   flex-shrink: 0;
 `;

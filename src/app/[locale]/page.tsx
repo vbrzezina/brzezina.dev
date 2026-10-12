@@ -11,7 +11,7 @@ export default function HomePage() {
   return (
     <>
       <SiteNav />
-      <main>
+      <main id="main" tabIndex={-1}>
         <Hero />
         <About />
         <Experience />

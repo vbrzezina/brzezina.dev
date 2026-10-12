@@ -1,14 +1,12 @@
 import styled from '@emotion/styled';
-import type { SpaceKey } from '@/app/theme';
 
 interface ContainerProps {
   $maxWidth?: string;
-  $px?: SpaceKey;
 }
 
 export const Container = styled.div<ContainerProps>`
-  max-width: ${({ $maxWidth }) => $maxWidth ?? '80rem'};
-  margin: 0 auto;
-  padding: 0 ${({ $px, theme }) => theme.space[$px ?? 6]};
   width: 100%;
+  max-width: calc(${({ $maxWidth, theme }) => $maxWidth ?? theme.layout.maxWidth} + 2 * ${({ theme }) => theme.layout.gutter});
+  margin-inline: auto;
+  padding-inline: ${({ theme }) => theme.layout.gutter};
 `;

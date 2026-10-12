@@ -20,5 +20,5 @@ export const Grid = styled.div<GridProps>`
     `grid-template-rows: ${typeof $rows === 'number' ? `repeat(${$rows}, 1fr)` : $rows};`}
   ${({ $gap, theme }) => $gap != null && `gap: ${theme.space[$gap]};`}
   ${({ $columnGap, theme }) => $columnGap != null && `column-gap: ${theme.space[$columnGap]};`}
-  ${({ $rowGap, theme }) => $rowGap != null && `row-row: ${theme.space[$rowGap]};`}
+  ${({ $rowGap, theme }) => $rowGap != null && `row-gap: ${theme.space[$rowGap]};`}
 `;
