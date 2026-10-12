@@ -1,14 +1,14 @@
-'use client'
+"use client";
 
-import Image from 'next/image'
-import styled from '@emotion/styled'
-import { useTranslations } from 'next-intl'
-import { Container, Section } from '@/components/layout'
-import { Reveal } from '@/components/Reveal'
-import { SectionHeader, StackList } from '@/components/ui'
-import { LANGUAGE_IDS, SKILL_GROUPS } from '@/data/skills'
-import { type } from '@/styles/typography'
-import aboutPortrait from '@/assets/photos/portrait-about.jpg'
+import Image from "next/image";
+import styled from "@emotion/styled";
+import { useTranslations } from "next-intl";
+import { Container, Section } from "@/components/layout";
+import { Reveal } from "@/components/Reveal";
+import { SectionHeader, StackList } from "@/components/ui";
+import { LANGUAGE_IDS, SKILL_GROUPS } from "@/data/skills";
+import { type } from "@/styles/typography";
+import aboutPortrait from "@/assets/photos/portrait-about.jpg";
 
 // ─── Bio ──────────────────────────────────────────────────────────────────────
 
@@ -22,7 +22,7 @@ const BioGrid = styled.div`
     gap: 4rem;
     align-items: start;
   }
-`
+`;
 
 /** 4:5 candid photo — deliberately a different shot from the hero headshot. */
 const Portrait = styled.div`
@@ -38,32 +38,32 @@ const Portrait = styled.div`
   }
 
   /* Dark mode only: ease the bright wall down so it doesn't outshine the text. */
-  html:not([data-theme='light']) & img {
+  html:not([data-theme="light"]) & img {
     filter: brightness(0.9);
   }
-`
+`;
 
 const Bio = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
   max-width: 40rem;
-`
+`;
 
 const Lede = styled.p`
   ${type.bodyL}
   color: ${({ theme }) => theme.colors.fg};
-`
+`;
 
 const Paragraph = styled.p`
   ${type.bodyM}
   color: ${({ theme }) => theme.colors.fgSecondary};
-`
+`;
 
 const SubHeading = styled.h3`
   ${type.monoEyebrow}
   color: ${({ theme }) => theme.colors.fgTertiary};
-`
+`;
 
 const Languages = styled.dl`
   display: flex;
@@ -84,29 +84,28 @@ const Languages = styled.dl`
     color: ${({ theme }) => theme.colors.fgTertiary};
     margin-top: 0.125rem;
   }
-`
+`;
 
 const LanguagesBlock = styled.div`
   margin-top: 1rem;
-  padding-top: 1.75rem;
-  border-top: 1px solid ${({ theme }) => theme.colors.border};
-`
+  padding-top: 0.25rem;
+`;
 
 // ─── Stack table ──────────────────────────────────────────────────────────────
 
 const StackBlock = styled.div`
   margin-top: clamp(4rem, 3rem + 3vw, 6rem);
-`
+`;
 
 const StackTitle = styled.h3`
   ${type.titleL}
   color: ${({ theme }) => theme.colors.fg};
   margin-bottom: 1.5rem;
-`
+`;
 
 const StackRows = styled.dl`
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-`
+`;
 
 const StackRow = styled.div`
   display: grid;
@@ -115,27 +114,32 @@ const StackRow = styled.div`
   border-top: 1px solid ${({ theme }) => theme.colors.border};
 
   ${({ theme }) => theme.mq.md} {
-    grid-template-columns: 3fr 9fr;
+    grid-template-columns: 2fr 10fr;
     gap: 2rem;
     align-items: baseline;
   }
 
   dt {
-    ${type.titleM}
+    ${type.titleS}
     color: ${({ theme }) => theme.colors.fg};
   }
-`
+`;
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export function About() {
-  const t = useTranslations('about')
+  const t = useTranslations("about");
 
   return (
     <Section id="about" aria-labelledby="about-title">
       <Container>
         <Reveal>
-          <SectionHeader index={t('index')} label={t('slug')} title={t('heading')} titleId="about-title" />
+          <SectionHeader
+            index={t("index")}
+            label={t("slug")}
+            title={t("heading")}
+            titleId="about-title"
+          />
         </Reveal>
 
         <BioGrid>
@@ -143,7 +147,7 @@ export function About() {
             <Portrait>
               <Image
                 src={aboutPortrait}
-                alt={t('portraitLabel')}
+                alt={t("portraitLabel")}
                 fill
                 placeholder="blur"
                 sizes="(min-width: 56.25em) 28rem, 100vw"
@@ -153,12 +157,12 @@ export function About() {
 
           <Reveal delay={160}>
             <Bio>
-              <Lede>{t('bio.lede')}</Lede>
-              <Paragraph>{t('bio.p2')}</Paragraph>
-              <Paragraph>{t('bio.p3')}</Paragraph>
+              <Lede>{t("bio.lede")}</Lede>
+              <Paragraph>{t("bio.p2")}</Paragraph>
+              <Paragraph>{t("bio.p3")}</Paragraph>
 
               <LanguagesBlock>
-                <SubHeading>{t('languagesHeading')}</SubHeading>
+                <SubHeading>{t("languagesHeading")}</SubHeading>
                 <Languages>
                   {LANGUAGE_IDS.map((id) => (
                     <div key={id}>
@@ -174,14 +178,16 @@ export function About() {
 
         <StackBlock>
           <Reveal>
-            <StackTitle>{t('stackHeading')}</StackTitle>
+            <StackTitle>{t("stackHeading")}</StackTitle>
           </Reveal>
           <Reveal delay={80}>
             <StackRows>
               {SKILL_GROUPS.map((group) => {
                 const items = group.items.map((item) =>
-                  typeof item === 'string' ? item : t(`skills.items.${item.key}`),
-                )
+                  typeof item === "string"
+                    ? item
+                    : t(`skills.items.${item.key}`),
+                );
                 return (
                   <StackRow key={group.id}>
                     <dt>{t(`skills.categories.${group.id}`)}</dt>
@@ -189,12 +195,12 @@ export function About() {
                       <StackList items={items} tone="secondary" />
                     </dd>
                   </StackRow>
-                )
+                );
               })}
             </StackRows>
           </Reveal>
         </StackBlock>
       </Container>
     </Section>
-  )
+  );
 }

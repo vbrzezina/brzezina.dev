@@ -127,7 +127,7 @@
     "stackLabel": "Typický stack",
     "items": {
       "fullstack": {
-        "title": "Full-stack TypeScript / React",
+        "title": "Frontend",
         "description": "Frontendová architektura, komponentové systémy, optimalizace výkonu a přístupnost. Next.js App Router, React, Emotion / MUI."
       },
       "backend": {
@@ -180,9 +180,9 @@
       "submit": "Odeslat zprávu",
       "sending": "Odesílám…",
       "errors": {
-        "name": "Vyplňte prosím jméno.",
-        "email": "Zadejte platný e-mail, např. jana@firma.cz.",
-        "message": "Připište prosím krátkou zprávu."
+        "name": "Vyplňte prosím jméno",
+        "email": "Zadejte platný e-mail",
+        "message": "Připište prosím krátkou zprávu"
       },
       "error": "Zprávu se nepodařilo odeslat — zůstala ve formuláři, takže to můžete zkusit znovu, nebo mě najdete na <link>GitHubu</link>.",
       "successTitle": "Zpráva odeslána",

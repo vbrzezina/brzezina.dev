@@ -127,7 +127,7 @@
     "stackLabel": "Typical stack",
     "items": {
       "fullstack": {
-        "title": "Full-stack TypeScript / React",
+        "title": "Frontend",
         "description": "Frontend architecture, component systems, performance optimisation and accessibility. Next.js App Router, React, Emotion / MUI."
       },
       "backend": {
@@ -180,9 +180,9 @@
       "submit": "Send message",
       "sending": "Sending…",
       "errors": {
-        "name": "Please enter your name.",
-        "email": "Enter a valid email address, e.g. jane@company.com.",
-        "message": "Please add a short message."
+        "name": "Please enter your name",
+        "email": "Enter a valid email address",
+        "message": "Please add a short message"
       },
       "error": "Your message couldn’t be sent — it’s still here, so you can try again, or reach me on <link>GitHub</link>.",
       "successTitle": "Message sent",

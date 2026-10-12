@@ -1,5 +1,5 @@
-import { css } from '@emotion/react';
-import { theme } from '@/app/theme';
+import { css } from "@emotion/react";
+import { theme } from "@/app/theme";
 
 /**
  * Type ramp — size, weight, leading and tracking move together.
@@ -34,6 +34,13 @@ export const type = {
     font-family: ${fonts.display};
     font-weight: 500;
     font-size: 1.25rem;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  `,
+  titleS: css`
+    font-family: ${fonts.display};
+    font-weight: 500;
+    font-size: 1rem;
     line-height: 1.3;
     letter-spacing: -0.01em;
   `,
