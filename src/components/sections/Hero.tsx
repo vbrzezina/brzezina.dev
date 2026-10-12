@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import styled from '@emotion/styled'
 import { useTranslations } from 'next-intl'
 import { Container } from '@/components/layout'
@@ -8,6 +9,7 @@ import { Button, Icon, StatusPill } from '@/components/ui'
 import { CLIENTS, WHOAMI } from '@/data/site'
 import { gridBackdrop } from '@/styles/backdrop'
 import { type } from '@/styles/typography'
+import heroPortrait from '@/assets/photos/portrait-hero.jpg'
 
 // ─── Backdrop ─────────────────────────────────────────────────────────────────
 
@@ -134,18 +136,16 @@ const Portrait = styled.div`
 `
 
 const PortraitFill = styled.div`
+  position: relative;
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  display: grid;
-  place-items: center;
-  background:
-    radial-gradient(circle at 35% 30%, ${({ theme }) => theme.colors.raised}, ${({ theme }) => theme.colors.surface} 70%);
-  color: ${({ theme }) => theme.colors.fgTertiary};
-  font-family: ${({ theme }) => theme.fonts.display};
-  font-weight: 700;
-  font-size: clamp(2.5rem, 2rem + 2vw, 4rem);
-  letter-spacing: -0.04em;
+  overflow: hidden;
+  background: ${({ theme }) => theme.colors.surface};
+
+  img {
+    object-fit: cover;
+  }
 `
 
 /** Floating material card — anchored to the portrait's lower-left edge. */
@@ -274,8 +274,15 @@ export function Hero() {
           <Visual>
             <Reveal delay={120}>
               <Portrait>
-                <PortraitFill role="img" aria-label={t('portraitLabel')}>
-                  VB
+                <PortraitFill>
+                  <Image
+                    src={heroPortrait}
+                    alt={t('portraitLabel')}
+                    fill
+                    priority
+                    placeholder="blur"
+                    sizes="(min-width: 68.75em) 22rem, 11rem"
+                  />
                 </PortraitFill>
               </Portrait>
             </Reveal>

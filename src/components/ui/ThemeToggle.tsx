@@ -6,15 +6,16 @@ import { useThemeToggle } from '@/app/ThemeContext'
 import { Icon } from './Icon'
 import { IconButton } from './IconButton'
 
-/* Icon is driven by the html[data-theme] attribute, so SSR and first paint always agree. */
+/* Icon is driven by the html[data-theme] attribute, so SSR and first paint always agree.
+   Selectors start with `html`, not `:root` — Emotion would glue a leading `:` onto the class. */
 const ToggleButton = styled(IconButton)`
   .icon-moon {
     display: none;
   }
-  :root[data-theme='light'] & .icon-sun {
+  html[data-theme='light'] & .icon-sun {
     display: none;
   }
-  :root[data-theme='light'] & .icon-moon {
+  html[data-theme='light'] & .icon-moon {
     display: block;
   }
 `

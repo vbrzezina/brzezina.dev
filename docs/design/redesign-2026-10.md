@@ -154,7 +154,7 @@ Only `transform` and `opacity` are animated for movement. No looping animation a
   4. Tagline `titleL` fg — "9 years building JavaScript products across the full stack."
   5. One paragraph `bodyL` fg-secondary (the stack sentence + ownership sentence)
   6. CTAs: **See my work** (primary, →) · **Get in touch** (secondary)
-- **Right:** circular portrait placeholder (accent ring, 1px gap) with a **`whoami` card** overlapping its lower-left edge. The card uses the nav material and blur. It turns the old "Currently Tech Lead…" sentence into scannable facts:
+- **Right:** circular portrait (`src/assets/photos/portrait-hero.jpg`, accent ring, 1px gap) with a **`whoami` card** overlapping its lower-left edge. The card uses the nav material and blur. It turns the old "Currently Tech Lead…" sentence into scannable facts:
   ```
   ~ $ whoami
   role     Tech Lead · EPAM Systems
@@ -167,7 +167,7 @@ Only `transform` and `opacity` are animated for movement. No looping animation a
 - **Proof strip** (bottom of hero, no rule): `WORKED ON PROJECTS FOR` eyebrow + `Burberry · Walmart · PSA · Veolia · Carvago · Logio` in `monoBody`. Worded as *projects for* because these were clients of EPAM, Starky's Club and Etnetera, not direct engagements — the big names stay, the claim stays accurate.
 
 ### 01 About — "Hands-on senior engineer"
-- 5/7 split. Left: 4:5 photo slot for a **candid shot at work** — deliberately different from the hero headshot (surface + grid texture + `VB` monogram as the placeholder, `role="img"` with a descriptive label). Right: first paragraph in `bodyL` fg (the lede), then two `bodyM` fg-secondary paragraphs, then a languages `<dl>`: **English** Fluent · **Czech** Native.
+- 5/7 split. Left: 4:5 photo — a different shot from the hero headshot (`src/assets/photos/portrait-about.jpg`, `next/image` with blur-up). In dark mode it's dimmed to 90% brightness so a bright background doesn't outshine the text; light mode shows it untouched. Right: first paragraph in `bodyL` fg (the lede), then two `bodyM` fg-secondary paragraphs, then a languages `<dl>`: **English** Fluent · **Czech** Native.
 - **Stack & tooling** (h3): a six-row table. Category in `titleM` on the left (3 cols), StackList on the right (9 cols), hairline between rows. Content from the brief: Frontend, Backend, Cloud, Databases, Practices, GenAI.
 
 ### 02 Experience — "Nine years, shipped"
@@ -219,5 +219,5 @@ Replace the three TBD cards with **real, honest content**:
 
 - **Contact submission backend** — the form POSTs JSON `{ name, email, message }` to `site.contactEndpoint` (`/api/contact`). The handler doesn't exist yet (tickets 08/10), so submissions currently show the error state — message kept, GitHub offered — never a fake success.
 - **CV file** — every CV link points at `/cv.pdf` with `download`; the PDF still needs adding to `public/`.
-- **Real photography** — two placeholders: a 1:1 headshot (hero) and a 4:5 candid at-work photo (About). Use two different photos.
+- **Photography** — current photos are the best of the available selfies (hero: studio shot, cropped 680² from 800²; About: 1200×1500). A short proper shoot — natural light, plain or dark background, same blazer + glasses look — would lift both. Replace the files in `src/assets/photos/` at the same aspect ratios; no code changes needed.
 - **Figma parity** — finish the screens in the Figma file once MCP calls are available again (Pro plan or next month's quota).

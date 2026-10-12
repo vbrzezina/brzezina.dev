@@ -28,7 +28,7 @@
     "intro": "TypeScript and React on the frontend, Node.js and NestJS on the backend, AWS serverless in the cloud. I take technical ownership of architecture, code quality and direction — and stay hands-on with the code.",
     "cta": "See my work",
     "ctaSecondary": "Get in touch",
-    "portraitLabel": "Portrait of Václav Brzezina (placeholder)",
+    "portraitLabel": "Václav Brzezina in a dark blazer and glasses",
     "whoami": {
       "label": "Profile summary",
       "role": "role",
@@ -46,7 +46,7 @@
     "index": "01",
     "slug": "About",
     "heading": "Hands-on senior engineer",
-    "portraitLabel": "Portrait of Václav Brzezina at work (placeholder)",
+    "portraitLabel": "Václav Brzezina smiling, in a navy blazer",
     "bio": {
       "lede": "I build JavaScript products end to end — TypeScript and React on the frontend, Node.js and NestJS on the backend, AWS serverless in the cloud.",
       "p2": "Nine years in, my work sits where architecture meets delivery: designing systems, setting code standards, reviewing pull requests — and writing production code myself. I lead technically rather than from a distance. Right now I’m Tech Lead on Burberry’s O2O clientelling platform at EPAM Systems.",

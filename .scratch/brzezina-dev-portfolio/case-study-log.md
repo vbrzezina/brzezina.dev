@@ -153,6 +153,14 @@ Running record of decisions, alternatives considered, and wrong turns for the br
 
 ---
 
+### 2026-10-12 — Emotion glues a leading `:root` onto the component class
+
+**Decision:** Theme-scoped selectors inside styled components start with `html[data-theme=…] &`, never `:root[data-theme=…] &`.
+**Why:** Emotion's compiler (stylis) treats a nested selector that begins with `:` as a pseudo-class of the component itself, so `:root[data-theme='light'] & .icon-sun` compiled to `.css-x:root[data-theme="light"] .css-x .icon-sun` — which never matches. The theme toggle had been showing the sun icon in light mode since the first redesign commit; it surfaced only when a new dark-mode image filter visibly failed to apply.
+**Wrong turn / lesson:** Axe and the interaction tests passed throughout — neither checks *which* icon is shown. Asserting computed styles of a visual state (here: `display` of each icon per theme) catches what accessibility and behaviour tests can't.
+
+---
+
 ### 2026-10-12 — Theme reset on locale switch: React owns `<html>`
 
 **Decision:** Removed `data-theme` from the server-rendered `<html>`; dark is the CSS default on `:root`. The colour-scheme provider re-applies the stored theme in a layout effect on every mount.

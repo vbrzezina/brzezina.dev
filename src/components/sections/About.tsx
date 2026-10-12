@@ -1,13 +1,14 @@
 'use client'
 
+import Image from 'next/image'
 import styled from '@emotion/styled'
 import { useTranslations } from 'next-intl'
 import { Container, Section } from '@/components/layout'
 import { Reveal } from '@/components/Reveal'
 import { SectionHeader, StackList } from '@/components/ui'
 import { LANGUAGE_IDS, SKILL_GROUPS } from '@/data/skills'
-import { gridBackdrop } from '@/styles/backdrop'
 import { type } from '@/styles/typography'
+import aboutPortrait from '@/assets/photos/portrait-about.jpg'
 
 // ─── Bio ──────────────────────────────────────────────────────────────────────
 
@@ -23,25 +24,22 @@ const BioGrid = styled.div`
   }
 `
 
-/** Rectangular 4:5 slot sized for the real photo that replaces it. */
+/** 4:5 candid photo — deliberately a different shot from the hero headshot. */
 const Portrait = styled.div`
   position: relative;
   aspect-ratio: 4 / 5;
   max-width: 28rem;
-  border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radius.md};
-  background-color: ${({ theme }) => theme.colors.surface};
-  ${gridBackdrop(36)}
-  display: grid;
-  place-items: center;
   overflow: hidden;
+  background: ${({ theme }) => theme.colors.surface};
 
-  span {
-    font-family: ${({ theme }) => theme.fonts.display};
-    font-weight: 700;
-    font-size: clamp(4rem, 3rem + 4vw, 7rem);
-    letter-spacing: -0.05em;
-    color: ${({ theme }) => theme.colors.borderStrong};
+  img {
+    object-fit: cover;
+  }
+
+  /* Dark mode only: ease the bright wall down so it doesn't outshine the text. */
+  html:not([data-theme='light']) & img {
+    filter: brightness(0.9);
   }
 `
 
@@ -142,8 +140,14 @@ export function About() {
 
         <BioGrid>
           <Reveal delay={80}>
-            <Portrait role="img" aria-label={t('portraitLabel')}>
-              <span aria-hidden="true">VB</span>
+            <Portrait>
+              <Image
+                src={aboutPortrait}
+                alt={t('portraitLabel')}
+                fill
+                placeholder="blur"
+                sizes="(min-width: 56.25em) 28rem, 100vw"
+              />
             </Portrait>
           </Reveal>
 

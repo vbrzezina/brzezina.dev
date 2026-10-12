@@ -28,7 +28,7 @@
     "intro": "TypeScript a React na frontendu, Node.js a NestJS na backendu, AWS serverless v cloudu. Přebírám technickou zodpovědnost za architekturu, kvalitu kódu a směřování — a kód dál píšu sám.",
     "cta": "Moje projekty",
     "ctaSecondary": "Napište mi",
-    "portraitLabel": "Portrét Václava Brzeziny (zástupný obrázek)",
+    "portraitLabel": "Václav Brzezina v tmavém saku a brýlích",
     "whoami": {
       "label": "Shrnutí profilu",
       "role": "role",
@@ -46,7 +46,7 @@
     "index": "01",
     "slug": "O mně",
     "heading": "Senior inženýr, který pořád programuje",
-    "portraitLabel": "Portrét Václava Brzeziny při práci (zástupný obrázek)",
+    "portraitLabel": "Usměvavý Václav Brzezina v tmavomodrém saku",
     "bio": {
       "lede": "Stavím JavaScriptové produkty od začátku do konce — TypeScript a React na frontendu, Node.js a NestJS na backendu, AWS serverless v cloudu.",
       "p2": "Po devíti letech se moje práce pohybuje tam, kde se architektura potkává s dodávkou: návrh systémů, standardy kódu, code review — a vlastní produkční kód. Vedu technicky, ne z povzdálí. Aktuálně jsem Tech Lead na O2O clientelling platformě pro Burberry v EPAM Systems.",
