@@ -129,13 +129,6 @@ const Client = styled.h4`
   }
 `
 
-/* The current project spans the full row, so a sparse card never leaves a half-empty pair. */
-const ProjectItem = styled(Reveal)<{ $current?: boolean }>`
-  ${({ theme }) => theme.mq.lg} {
-    grid-column: ${({ $current }) => ($current ? '1 / -1' : 'auto')};
-  }
-`
-
 const CurrentTag = styled.span`
   ${type.monoEyebrow}
   align-self: center;
@@ -200,7 +193,7 @@ export function Experience() {
               {employer.projects.length > 0 && (
                 <Projects role="list">
                   {employer.projects.map((project, i) => (
-                    <ProjectItem key={project.id} as="li" delay={i * 70} $current={project.current}>
+                    <Reveal key={project.id} as="li" delay={i * 70}>
                       <Project>
                         <Client>
                           <span aria-hidden="true">&gt;</span>
@@ -217,7 +210,7 @@ export function Experience() {
                           </ProjectStack>
                         )}
                       </Project>
-                    </ProjectItem>
+                    </Reveal>
                   ))}
                 </Projects>
               )}

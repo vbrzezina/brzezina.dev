@@ -4,7 +4,7 @@ export interface Project {
   id: string;
   client: string;
   stack: readonly string[];
-  /** The project being worked on now — rendered full-width with a "Current" tag. */
+  /** The project being worked on now — marked with a "Current" tag. */
   current?: boolean;
 }
 
@@ -24,9 +24,8 @@ export const EXPERIENCE: readonly Employer[] = [
     start: 2022,
     end: null,
     projects: [
-      // Current project. Description and stack aren't public yet — add `projects.sap.description`
-      // to the messages files and fill `stack` here when they can be shared.
-      { id: 'sap', client: 'SAP', stack: [], current: true },
+      // Current project. No description yet — add `projects.sap.description` to the messages files when it can be shared.
+      { id: 'sap', client: 'SAP', stack: ['TypeScript', 'NestJS', 'Neo4j'], current: true },
       { id: 'burberry', client: 'Burberry', stack: ['TypeScript', 'React', 'MobX', 'NestJS', 'Express', 'AWS'] },
       { id: 'walmart', client: 'Walmart', stack: ['React', 'TypeScript', 'Redux', 'SWR', 'Ant Design', 'Cypress'] },
     ],
