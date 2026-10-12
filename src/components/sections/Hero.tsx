@@ -123,7 +123,7 @@ const Visual = styled.div`
 
 const Portrait = styled.div`
   position: relative;
-  width: min(45%, 11rem);
+  width: min(75%, 17rem);
   aspect-ratio: 1;
   margin-left: auto;
   border-radius: 50%;
@@ -150,9 +150,10 @@ const PortraitFill = styled.div`
 
 /** Floating material card — anchored to the portrait's lower-left edge. */
 /* Positioning lives on the Reveal wrapper: its transform would otherwise become the containing block mid-animation. */
+/* Below lg the card tucks under the portrait — overlapping the shoulders, never the face. */
 const WhoamiReveal = styled(Reveal)`
   position: relative;
-  margin-top: -2.5rem;
+  margin-top: -4rem;
   width: min(100%, 23.5rem);
 
   ${({ theme }) => theme.mq.lg} {

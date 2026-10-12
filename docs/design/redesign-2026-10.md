@@ -163,6 +163,7 @@ Only `transform` and `opacity` are animated for movement. No looping animation a
   based    Czech Republic · CET
   speaks   EN · CS
   ```
+- **Mobile:** name first; then the portrait at up to 17rem (75% width) with the `whoami` card overlapping its lower ~20% — shoulders, never the face.
 - **Backdrop:** the 72px technical grid, masked with a radial fade so it dissolves before the edges, plus one soft accent glow top-right (decorative, `aria-hidden`).
 - **Proof strip** (bottom of hero, no rule): `WORKED ON PROJECTS FOR` eyebrow + `Burberry · Walmart · PSA · Veolia · Carvago · Logio` in `monoBody`. Worded as *projects for* because these were clients of EPAM, Starky's Club and Etnetera, not direct engagements — the big names stay, the claim stays accurate.
 
