@@ -17,3 +17,4 @@ Decisions made during the brzezina.dev build. Each TDR records what was chosen, 
 | [006](006-contact-form-mailer.md) | Contact form + Resend | open |
 | [007](007-design-system.md) | Design language and visual identity | accepted |
 | [008](008-component-architecture.md) | Shared UI primitives vs section-local components | revisit |
+| [009](009-analytics-consent-privacy.md) | Analytics, cookie consent and privacy policy | accepted |

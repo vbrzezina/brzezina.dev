@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
+import { Analytics } from "@vercel/analytics/next";
 import { getMessages } from "next-intl/server";
 import { Space_Grotesk, DM_Sans, JetBrains_Mono } from "next/font/google";
 import { ThemeRegistry } from "@/app/ThemeRegistry";
+import { ConsentBanner, ConsentProvider } from "@/components/consent";
+import { SkipLink } from "@/components/nav/SkipLink";
 import { themeInitScript } from "@/app/themeScript";
 import "@/styles/tokens.css";
 import "@/app/globals.css";
@@ -53,9 +56,16 @@ export default async function LocaleLayout({
       <body>
         <ThemeRegistry>
           <NextIntlClientProvider messages={messages}>
-            {children}
+            <ConsentProvider>
+              <SkipLink />
+              {/* Early in the DOM so keyboard users reach the banner before the page. */}
+              <ConsentBanner />
+              {children}
+            </ConsentProvider>
           </NextIntlClientProvider>
         </ThemeRegistry>
+        {/* Cookieless, aggregate page views — no consent needed. Active only on Vercel. */}
+        <Analytics />
       </body>
     </html>
   );

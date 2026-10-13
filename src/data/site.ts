@@ -13,7 +13,27 @@ export const site = {
   cvUrl: '/cv.pdf',
   // Route handler not implemented yet (tickets 08/10) — until then submissions fail visibly.
   contactEndpoint: '/api/contact',
+  // Needs a mailbox or forwarding set up on the domain before going live.
+  contactEmail: 'vaclav@brzezina.dev',
+  phone: '+420 604 716 317',
+  phoneHref: 'tel:+420604716317',
 } as const;
+
+/**
+ * Business identification (Czech Civil Code §435 — required on the website of anyone trading under an IČO;
+ * the website as a whole, not every page). Shown in the Contact section and on the privacy page.
+ */
+export const legal = {
+  name: 'Václav Brzezina',
+  ico: '04162358',
+  address: 'Makedonská 629/2, Střížkov, 190 00 Praha 9',
+} as const;
+
+export const hasLegalIdentity = Boolean(legal.ico && legal.address);
+
+/** Google Tag Manager container — set NEXT_PUBLIC_GTM_ID in Vercel. Without it nothing loads and no banner shows. */
+const rawGtmId = process.env.NEXT_PUBLIC_GTM_ID ?? '';
+export const gtmId = /^GTM-[A-Z0-9]+$/.test(rawGtmId) ? rawGtmId : null;
 
 /** Past clients shown in the hero proof strip. */
 export const CLIENTS = ['SAP', 'Burberry', 'Walmart', 'PSA', 'Veolia', 'Carvago', 'Logio'] as const;

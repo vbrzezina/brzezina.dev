@@ -35,7 +35,7 @@
       "roleValue": "Lead Software Engineer · EPAM Systems",
       "stack": "stack",
       "based": "based",
-      "basedValue": "Czech Republic · CET",
+      "basedValue": "Prague, Czech Republic · CET",
       "speaks": "speaks"
     },
     "shippedFor": "Worked on projects for"
@@ -178,7 +178,7 @@
       "namePlaceholder": "Jane Novák",
       "emailPlaceholder": "jane@company.com",
       "messagePlaceholder": "What are you building, and where could I help?",
-      "required": "All fields are required.",
+      "privacy": "I’ll only use your details to reply — <link>privacy policy</link>.",
       "submit": "Send message",
       "sending": "Sending…",
       "errors": {
@@ -192,12 +192,16 @@
       "sendAnother": "Send another message"
     },
     "sidebar": {
+      "emailLabel": "Email",
+      "phoneLabel": "Phone",
       "responseLabel": "Response time",
       "responseValue": "Within 1–2 business days",
       "basedLabel": "Based in",
-      "basedValue": "Czech Republic · CET (UTC+1)",
+      "basedValue": "Prague, Czech Republic · CET (UTC+1)",
       "cvLabel": "Curriculum vitae",
-      "cvCta": "Download PDF"
+      "cvCta": "Download PDF",
+      "businessLabel": "Business details",
+      "ico": "IČO {ico}"
     }
   },
   "footer": {
@@ -205,6 +209,100 @@
     "sectionsLabel": "Sections",
     "elsewhereLabel": "Elsewhere",
     "copyright": "© 2026 Václav Brzezina",
+    "privacy": "Privacy policy",
+    "cookieSettings": "Cookie settings",
     "backToTop": "Back to top"
+  },
+  "consent": {
+    "title": "Analytics cookies",
+    "body": "I’d like to use Google Analytics to see how visitors find and use this site. Nothing is tracked unless you accept. <link>Privacy policy</link>",
+    "accept": "Accept",
+    "reject": "Reject"
+  },
+  "privacy": {
+    "metaTitle": "Privacy policy — Václav Brzezina",
+    "metaDescription": "What personal data brzezina.dev handles, why, and what you can do about it.",
+    "eyebrow": "Legal",
+    "title": "Privacy policy",
+    "updated": "Last updated: 13 October 2026",
+    "intro": "This site is my personal portfolio. It handles as little data as it can — here is exactly what, why, and what you can do about it.",
+    "controller": {
+      "heading": "Who is responsible",
+      "body": "The controller of your personal data is {name}.",
+      "identity": "IČO {ico}, {address}.",
+      "contact": "For anything related to your data, write to <mail>{email}</mail>."
+    },
+    "contact": {
+      "heading": "When you send a message",
+      "paragraphs": [
+        "The contact form asks for your name, email address and message. I use them only to reply to you and, if we decide to work together, to prepare an offer or contract.",
+        "Legal basis: steps taken at your request before entering into a contract (Art. 6(1)(b) GDPR), or my legitimate interest in answering enquiries (Art. 6(1)(f) GDPR).",
+        "I keep the conversation for up to 12 months after our last contact, unless it leads to a contract — then for as long as the law requires business records to be kept.",
+        "Messages are delivered by an email service provider acting on my behalf as a processor."
+      ]
+    },
+    "hosting": {
+      "heading": "Hosting and server logs",
+      "paragraphs": [
+        "The site is hosted by Vercel Inc. Like any web server, it records technical data such as your IP address, browser type and the pages requested, so it can deliver the site and keep it secure (legitimate interest, Art. 6(1)(f) GDPR). The hosting provider keeps these logs only briefly."
+      ]
+    },
+    "analytics": {
+      "heading": "Analytics",
+      "paragraphs": [
+        "Vercel Web Analytics counts page views without cookies and without storing anything that identifies you. It runs for every visitor (legitimate interest).",
+        "Google Analytics 4, loaded through Google Tag Manager, runs only if you click “Accept” in the cookie banner (consent, Art. 6(1)(a) GDPR and §89(3) of the Czech Electronic Communications Act). It shows me how visitors find and use the site. Google Ireland Limited processes this data on my behalf; Google Analytics 4 does not store IP addresses.",
+        "You can change your choice at any time under “Cookie settings” in the footer. Withdrawing consent deletes the Google Analytics cookies from your browser."
+      ]
+    },
+    "storage": {
+      "heading": "Cookies and local storage",
+      "columns": [
+        "Name",
+        "Type",
+        "Purpose",
+        "Duration"
+      ],
+      "rows": [
+        [
+          "theme",
+          "Local storage",
+          "Remembers light or dark mode",
+          "Until you clear it"
+        ],
+        [
+          "consent",
+          "Local storage",
+          "Remembers your analytics choice",
+          "12 months"
+        ],
+        [
+          "_ga, _ga_<ID>",
+          "Cookie (Google)",
+          "Distinguishes visitors in Google Analytics — only after you accept",
+          "Up to 2 years"
+        ]
+      ],
+      "note": "Nothing else is stored. The site sets no cookies unless you accept analytics."
+    },
+    "transfers": {
+      "heading": "Transfers outside the EU",
+      "paragraphs": [
+        "Vercel and Google are based in, or connected to, the United States. Transfers rely on the EU–US Data Privacy Framework and the European Commission’s standard contractual clauses."
+      ]
+    },
+    "rights": {
+      "heading": "Your rights",
+      "paragraphs": [
+        "You have the right to access your data, have it corrected or deleted, restrict or object to its processing, receive it in a portable format, and withdraw consent at any time — write to {email}.",
+        "You can also lodge a complaint with the Czech data protection authority, Úřad pro ochranu osobních údajů (uoou.gov.cz)."
+      ]
+    },
+    "changes": {
+      "heading": "Changes",
+      "paragraphs": [
+        "If this policy changes, the new version will be published here with an updated date."
+      ]
+    }
   }
 }

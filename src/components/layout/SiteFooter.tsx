@@ -3,6 +3,8 @@
 import styled from '@emotion/styled';
 import { useTranslations } from 'next-intl';
 import { Icon, Logo } from '@/components/ui';
+import { useConsent } from '@/components/consent';
+import { Link } from '@/i18n/navigation';
 import { SECTION_IDS, site } from '@/data/site';
 import { type } from '@/styles/typography';
 import { Container } from './Container';
@@ -20,10 +22,16 @@ const Top = styled.div`
   }
 `;
 
+/* The logo keeps its 44px tap target; pulling it up puts its text on the column headings' line. */
+const Brand = styled.div`
+  margin-top: -0.8125rem;
+`;
+
 const Tagline = styled.p`
   ${type.bodyS}
   color: ${({ theme }) => theme.colors.fgSecondary};
-  margin-top: 1rem;
+  /* First line sits level with the first link in the neighbouring columns. */
+  margin-top: 0.1875rem;
   max-width: 28rem;
 `;
 
@@ -68,22 +76,48 @@ const Copyright = styled.p`
   color: ${({ theme }) => theme.colors.fgTertiary};
 `;
 
-const BottomActions = styled.div`
-  display: flex;
+const TextButton = styled.button`
+  ${type.bodyS}
+  display: inline-flex;
   align-items: center;
-  gap: 1.25rem;
+  min-height: 2.25rem;
+  padding: 0;
+  border: none;
+  background: none;
+  color: ${({ theme }) => theme.colors.fgSecondary};
+  cursor: pointer;
+  transition: color ${({ theme }) => theme.motion.fast} ease;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.fg};
+  }
 `;
 
-export function SiteFooter() {
+const BottomActions = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 1.5rem;
+`;
+
+interface SiteFooterProps {
+  /** Prefix for section links — '' on the home page, '/<locale>' on other pages. */
+  homeHref?: string;
+}
+
+export function SiteFooter({ homeHref = '' }: SiteFooterProps) {
   const t = useTranslations('footer');
   const nav = useTranslations('nav');
+  const consent = useConsent();
 
   return (
     <Footer>
       <Container>
         <Top>
           <div>
-            <Logo />
+            <Brand>
+              <Logo href={`${homeHref}#top`} />
+            </Brand>
             <Tagline>{t('tagline')}</Tagline>
           </div>
 
@@ -92,7 +126,7 @@ export function SiteFooter() {
             <LinkList role="list">
               {SECTION_IDS.map((id) => (
                 <li key={id}>
-                  <FooterLink href={`#${id}`}>{nav(id)}</FooterLink>
+                  <FooterLink href={`${homeHref}#${id}`}>{nav(id)}</FooterLink>
                 </li>
               ))}
             </LinkList>
@@ -120,6 +154,14 @@ export function SiteFooter() {
         <Bottom>
           <Copyright>{t('copyright')}</Copyright>
           <BottomActions>
+            <FooterLink as={Link} href="/privacy">
+              {t('privacy')}
+            </FooterLink>
+            {consent.enabled && (
+              <TextButton type="button" onClick={consent.openSettings}>
+                {t('cookieSettings')}
+              </TextButton>
+            )}
             <FooterLink href="#top">
               {t('backToTop')}
               <Icon name="arrowUp" size={16} />

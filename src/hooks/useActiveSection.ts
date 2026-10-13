@@ -9,6 +9,7 @@ const READING_LINE = 0.35;
  * Returns the id of the section that the reading line currently passes through,
  * or '' while it is above the first section (e.g. on the hero). At the very bottom
  * of the page the last section wins, so a short final section can still activate.
+ * Ids not present in the document are ignored.
  *
  * Geometry-based rather than intersection-ratio-based: ratios are relative to each
  * section's own height and only update at thresholds, which made tall sections
@@ -28,12 +29,14 @@ export function useActiveSection(sectionIds: readonly string[]): string {
       const atBottom =
         window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
 
+      // Only sections rendered on this page count — content pages have none, so nothing activates.
+      const present = sectionIds.filter((id) => document.getElementById(id));
+
       let current = '';
-      for (const id of sectionIds) {
-        const el = document.getElementById(id);
-        if (el && el.getBoundingClientRect().top <= line) current = id;
+      for (const id of present) {
+        if (document.getElementById(id)!.getBoundingClientRect().top <= line) current = id;
       }
-      if (atBottom) current = sectionIds[sectionIds.length - 1];
+      if (atBottom && present.length > 0) current = present[present.length - 1];
 
       setActiveId(current);
     };

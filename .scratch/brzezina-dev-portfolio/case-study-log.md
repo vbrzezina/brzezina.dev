@@ -161,6 +161,15 @@ Running record of decisions, alternatives considered, and wrong turns for the br
 
 ---
 
+### 2026-10-13 — GA4 kept, behind opt-in consent; privacy policy; no Terms
+
+**Decision:** GA4 via GTM stays, but GTM loads only after the visitor clicks Accept in a custom, non-modal banner (Consent Mode v2 defaults denied, then granted). Vercel Analytics (cookieless) runs for everyone. `NEXT_LOCALE` cookie disabled so the site sets zero cookies by default. Privacy policy page in EN/CS; no Terms of use. Details in ADR-009.
+**Alternatives considered:** Dropping GA4 to avoid a banner entirely (recommended, owner preferred GA4); Consent Mode "advanced" with pre-consent pings; a third-party CMP.
+**Why:** EU/Czech law requires opt-in for analytics cookies; loading nothing before consent is the simplest defensible pattern and keeps previews tracking-free (no ID → no banner). A custom banner keeps the design system intact and avoids another vendor script.
+**Wrong turn / lesson:** The first audit with the banner showing flagged the skip link — rendering the banner first had demoted the skip link from first focusable element. Moved the skip link into the layout ahead of the banner. Also: an earlier "zero cookies" check came back clean only because the server wasn't running — re-verifying against a live server found `NEXT_LOCALE`.
+
+---
+
 ### 2026-10-12 — Theme reset on locale switch: React owns `<html>`
 
 **Decision:** Removed `data-theme` from the server-rendered `<html>`; dark is the CSS default on `:root`. The colour-scheme provider re-applies the stored theme in a layout effect on every mount.
@@ -168,3 +177,23 @@ Running record of decisions, alternatives considered, and wrong turns for the br
 **Alternatives considered:** A theme cookie read by the server layout — SSR-correct, but makes the route depend on `cookies()`, which conflicts with the still-open static-export option (ticket 10).
 
 ---
+
+### 2026-10-13 — Business identification lives in Contact, not the footer
+
+**Decision:** Email, phone and the sole-trader identification (name, IČO, registered address) sit in the Contact (05) aside; the privacy policy repeats them as the controller. The footer no longer carries an IČO line.
+**Alternatives considered:** IČO line in the footer of every page (the first implementation); contact details in the header.
+**Why:** Civil Code §435 requires the identification to be available on the website, not on every page. People looking for a phone number or invoicing details go to Contact, and a busy footer was already a complaint in earlier review rounds. The header stays navigation-only.
+**Wrong turn / lesson:** The footer placement was copied from the common Czech e-shop pattern, where it exists for convenience rather than legal necessity.
+
+### 2026-10-13 — CV download: home nav + Contact, not on content pages
+
+**Decision:** The nav CV button only appears on the home page. Content pages (privacy now, blog later) drop it from the bar and the mobile sheet. The Contact aside keeps its CV button.
+**Alternatives considered:** CV in the nav everywhere; CV in the nav only (removing it from Contact, which would also have shortened the too-tall aside).
+**Why:** Content pages are for reading, and home is one click away. On home the sticky nav covers desktop, and the Contact aside is where hiring intent peaks. It is also the only CV link mobile visitors see without opening the menu. The aside's height problem was solved with spacing instead: its top padding matches the panel's, and its rhythm is tightened so both columns start and end together.
+
+### 2026-10-13 — One nav for every page (reversing "CV only on home")
+
+**Decision:** Content pages use the same nav as home: section links (pointing back into home), the CV button and "Get in touch". Only the header surface differs. No section is highlighted on a content page.
+**Alternatives considered:** Hiding the CV on content pages (shipped briefly); also dropping "Get in touch"; reducing the content-page menu to a single "Home" link.
+**Why:** A blog post is often the first page a visitor sees, arriving from search or a shared link. For them the header is the way into the portfolio, and a recruiter reading a post is exactly who wants the CV. A different menu per page type means learning two navigations. A "Home"-only menu turns every section into two clicks, and it fits poorly with a Blog link that will need its own place in the nav.
+**Wrong turn / lesson:** "Content pages are a reading context, so strip the actions" sounded tidy but optimised for the privacy page, the least-visited page on the site. Also: scrolling to the bottom of the privacy page highlighted "Contact". The active-section hook's "at the bottom, the last section wins" rule didn't check that the section existed on the page. It now ignores ids that aren't rendered.
