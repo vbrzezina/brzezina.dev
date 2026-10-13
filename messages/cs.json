@@ -34,8 +34,8 @@
       "role": "role",
       "roleValue": "Lead Software Engineer · EPAM Systems",
       "stack": "stack",
-      "based": "sídlo",
-      "basedValue": "Česko · SEČ",
+      "based": "lokalita",
+      "basedValue": "Praha, Česko · SEČ",
       "speaks": "jazyky"
     },
     "shippedFor": "Pracoval jsem na projektech pro"
@@ -196,8 +196,8 @@
       "phoneLabel": "Telefon",
       "responseLabel": "Doba odpovědi",
       "responseValue": "Do 1–2 pracovních dnů",
-      "basedLabel": "Sídlo",
-      "basedValue": "Česko · SEČ (UTC+1)",
+      "basedLabel": "Lokalita",
+      "basedValue": "Praha, Česko · SEČ (UTC+1)",
       "cvLabel": "Životopis",
       "cvCta": "Stáhnout PDF",
       "businessLabel": "Fakturační údaje",

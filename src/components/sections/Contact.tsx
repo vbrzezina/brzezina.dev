@@ -39,7 +39,7 @@ const Layout = styled.div`
 `
 
 const Panel = styled.div`
-  padding: clamp(1.25rem, 1rem + 1.5vw, 2rem);
+  padding: clamp(1.25rem, 1rem + 1.5vw, 2.5rem);
   background: ${({ theme }) => theme.colors.surface};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radius.md};
@@ -210,7 +210,7 @@ const SuccessBody = styled.p`
 
 const Aside = styled.dl`
   display: grid;
-  gap: 1.75rem;
+  gap: 1.25rem 1.75rem;
   align-content: start;
 
   ${({ theme }) => theme.mq.sm} {
@@ -219,13 +219,14 @@ const Aside = styled.dl`
 
   ${({ theme }) => theme.mq.lg} {
     grid-template-columns: 1fr;
-    padding-top: 0.5rem;
+    /* Text tops line up with the panel's first label. */
+    padding-top: clamp(1.25rem, 1rem + 1.5vw, 2.5rem);
   }
 
   dt {
     ${type.monoEyebrow}
     color: ${({ theme }) => theme.colors.fgTertiary};
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.375rem;
   }
 
   dd {
@@ -392,7 +393,7 @@ export function Contact() {
                       {t('form.message')}
                       <RequiredMark aria-hidden="true">*</RequiredMark>
                     </Label>
-                    <Textarea rows={7} {...fieldProps('message')} />
+                    <Textarea rows={8} {...fieldProps('message')} />
                     {errors.message && <ErrorText id={`${uid}-message-error`}>{errors.message}</ErrorText>}
                   </FieldRoot>
 

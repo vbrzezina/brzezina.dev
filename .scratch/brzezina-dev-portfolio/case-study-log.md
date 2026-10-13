@@ -184,3 +184,9 @@ Running record of decisions, alternatives considered, and wrong turns for the br
 **Alternatives considered:** IČO line in the footer of every page (the first implementation); contact details in the header.
 **Why:** Civil Code §435 requires the identification to be available on the website, not on every page. People looking for a phone number or invoicing details go to Contact, and a busy footer was already a complaint in earlier review rounds. The header stays navigation-only.
 **Wrong turn / lesson:** The footer placement was copied from the common Czech e-shop pattern, where it exists for convenience rather than legal necessity.
+
+### 2026-10-13 — CV download: home nav + Contact, not on content pages
+
+**Decision:** The nav CV button only appears on the home page. Content pages (privacy now, blog later) drop it from the bar and the mobile sheet. The Contact aside keeps its CV button.
+**Alternatives considered:** CV in the nav everywhere; CV in the nav only (removing it from Contact, which would also have shortened the too-tall aside).
+**Why:** Content pages are for reading, and home is one click away. On home the sticky nav covers desktop, and the Contact aside is where hiring intent peaks. It is also the only CV link mobile visitors see without opening the menu. The aside's height problem was solved with spacing instead: its top padding matches the panel's, and its rhythm is tightened so both columns start and end together.

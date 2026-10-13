@@ -225,7 +225,8 @@ const SheetFooter = styled.div`
 const SheetActions = styled.div`
   align-self: stretch;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
   gap: 0.75rem;
 `;
 
@@ -234,7 +235,10 @@ const SheetActions = styled.div`
 interface SiteNavProps {
   /** Prefix for section links — '' on the home page, '/<locale>' on other pages. */
   homeHref?: string;
-  /** 'home': transparent until scrolled (sits over the hero). 'page': always solid, for content pages. */
+  /**
+   * 'home': transparent until scrolled (sits over the hero), with the CV download.
+   * 'page': always solid, for content pages — reading context, so no CV button.
+   */
   variant?: 'home' | 'page';
 }
 
@@ -243,6 +247,7 @@ export function SiteNav({ homeHref = '', variant = 'home' }: SiteNavProps) {
   const a11y = useTranslations('a11y');
   const activeSection = useActiveSection(SECTION_IDS);
   const scrolled = useScrolled();
+  const showCv = variant === 'home';
   const [open, setOpen] = useState(false);
   // In-page target picked from the sheet; focus goes there instead of back to the trigger.
   const pendingTarget = useRef<string | null>(null);
@@ -294,14 +299,16 @@ export function SiteNav({ homeHref = '', variant = 'home' }: SiteNavProps) {
                 <LocaleSwitch />
               </DesktopOnly>
               <ThemeToggle />
-              <DesktopOnly>
-                <Button $variant="subtle" $size="sm" asChild>
-                  <a href={site.cvUrl} download aria-label={t('downloadCv')}>
-                    {t('cv')}
-                    <Icon name="download" size={16} />
-                  </a>
-                </Button>
-              </DesktopOnly>
+              {showCv && (
+                <DesktopOnly>
+                  <Button $variant="subtle" $size="sm" asChild>
+                    <a href={site.cvUrl} download aria-label={t('downloadCv')}>
+                      {t('cv')}
+                      <Icon name="download" size={16} />
+                    </a>
+                  </Button>
+                </DesktopOnly>
+              )}
 
               <Dialog.Root open={open} onOpenChange={setOpen}>
                 <Dialog.Trigger asChild>
@@ -342,12 +349,14 @@ export function SiteNav({ homeHref = '', variant = 'home' }: SiteNavProps) {
                       <SheetFooter>
                         <LocaleSwitch />
                         <SheetActions>
-                          <Button $variant="secondary" asChild>
-                            <a href={site.cvUrl} download>
-                              {t('downloadCv')}
-                              <Icon name="download" size={16} />
-                            </a>
-                          </Button>
+                          {showCv && (
+                            <Button $variant="secondary" asChild>
+                              <a href={site.cvUrl} download>
+                                {t('downloadCv')}
+                                <Icon name="download" size={16} />
+                              </a>
+                            </Button>
+                          )}
                           <Button asChild>
                             <a href={`${homeHref}#contact`} onClick={() => navigateFromSheet('contact')}>
                               {t('getInTouch')}

@@ -22,10 +22,16 @@ const Top = styled.div`
   }
 `;
 
+/* The logo keeps its 44px tap target; pulling it up puts its text on the column headings' line. */
+const Brand = styled.div`
+  margin-top: -0.8125rem;
+`;
+
 const Tagline = styled.p`
   ${type.bodyS}
   color: ${({ theme }) => theme.colors.fgSecondary};
-  margin-top: 1rem;
+  /* First line sits level with the first link in the neighbouring columns. */
+  margin-top: 0.1875rem;
   max-width: 28rem;
 `;
 
@@ -109,7 +115,9 @@ export function SiteFooter({ homeHref = '' }: SiteFooterProps) {
       <Container>
         <Top>
           <div>
-            <Logo href={`${homeHref}#top`} />
+            <Brand>
+              <Logo href={`${homeHref}#top`} />
+            </Brand>
             <Tagline>{t('tagline')}</Tagline>
           </div>
 

@@ -139,9 +139,9 @@ Only `transform` and `opacity` are animated for movement. No looping animation a
 ### Nav (sticky, 64px)
 - **Left:** Logo.
 - **Centre (≥900px):** About · Experience · Services · Work · Contact. Active section → `fg` + a 1px accent rule under the label, scaling in from the centre — the same mark as the eyebrow's rule (`aria-current`).
-- **Right:** LocaleSwitch · ThemeToggle · `CV` secondary `sm` button with download icon.
+- **Right:** LocaleSwitch · ThemeToggle · `CV` `subtle` `sm` button with download icon — **home page only**. Content pages (`variant="page"`: privacy, future blog) drop it from the bar and the sheet; they're reading contexts, and home is one click away. On home the CV is reachable from the sticky nav at every scroll position, plus in the Contact aside where the hiring intent peaks (and where mobile visitors meet it without opening the menu).
 - **Material:** transparent at the top of the page; after 8px of scroll it becomes `--color-material` + `backdrop-filter: blur(20px) saturate(180%)` with a hairline bottom edge. The edge exists only when content is actually under the bar.
-- **< 900px:** Logo · ThemeToggle · 44px menu button. Menu = Radix Dialog sheet anchored to the top edge: large `titleL` links with mono counters (`01 About`), LocaleSwitch, CV + "Get in touch" buttons. Focus trap, Escape, scrim click. Dismissing returns focus to the trigger; choosing a section moves focus to that section instead.
+- **< 900px:** Logo · ThemeToggle · 44px menu button. Menu = Radix Dialog sheet anchored to the top edge: large `titleL` links with mono counters (`01 About`), LocaleSwitch, CV (home only) + "Get in touch" buttons — a lone button fills the row. Focus trap, Escape, scrim click. Dismissing returns focus to the trigger; choosing a section moves focus to that section instead.
 - **Active section:** the section the reading line (35% down the viewport) passes through; none while on the hero; the last section at the very bottom of the page.
 - Skip link ("Skip to content") as the first focusable element.
 
@@ -189,8 +189,8 @@ Replace the three TBD cards with **real, honest content**:
 
 ### 05 Contact — "Available for freelance and contract engagements"
 - Lead: "Tell me about the product, the stack and the timeline. I reply within 1–2 business days." (matches the brief; replaces "48 hours")
-- **Form panel (8 cols, surface):** Name + Email side by side (stacked on mobile), Message (min 8 rows). Panel on `--color-surface` (same as the service cards), fields recessed on `--color-band` (the alternate-section tone). Every label carries an accent `*` (aria-hidden; inputs are `required`). Footer row: privacy note on the left, **Send message** primary on the right. Inline validation — an invalid field keeps the error border and gets an error-tinted focus halo (`--color-error-subtle`), never the accent one. After submit the panel swaps to a success state with a check icon and the reply-time promise.
-- **Aside (4 cols):** `<dl>` with mono labels — Email (mailto) · Phone (tel) · Response time · Based in · Curriculum vitae (secondary button "Download PDF") · Business details (name / IČO / registered address — the Civil Code §435 identification; also in the privacy policy, not in the footer). GitHub and LinkedIn live in the footer only.
+- **Form panel (8 cols, surface):** Name + Email side by side (stacked on mobile), Message (min 8 rows). Panel on `--color-surface` (same as the service cards), fields recessed on `--color-band` (the alternate-section tone). At desktop the aside's top padding equals the panel's, so its first label sits level with the form's first label, and its rhythm (1.25rem items, 0.375rem label gap) ends it at the panel's bottom edge. Every label carries an accent `*` (aria-hidden; inputs are `required`). Footer row: privacy note on the left, **Send message** primary on the right. Inline validation — an invalid field keeps the error border and gets an error-tinted focus halo (`--color-error-subtle`), never the accent one. After submit the panel swaps to a success state with a check icon and the reply-time promise.
+- **Aside (4 cols):** `<dl>` with mono labels — Email (mailto) · Phone (tel) · Response time · Based in (CS *Lokalita* — not *Sídlo*, which reads as the registered address) · Curriculum vitae (secondary button "Download PDF") · Business details (name / IČO / registered address — the Civil Code §435 identification; also in the privacy policy, not in the footer). GitHub and LinkedIn live in the footer only.
 
 ### Content pages (privacy policy, future blog)
 - Use `ContentPage` (`src/components/layout/ContentPage.tsx`): `SiteNav variant="page"` + `<main>` + footer, with section links prefixed by `/<locale>`.
@@ -199,7 +199,7 @@ Replace the three TBD cards with **real, honest content**:
 - The home page keeps its transparent-until-scrolled header over the hero.
 
 ### Footer
-- Logo + a two-sentence description (role, stack, years, location, availability) · Sections column · Elsewhere (GitHub + LinkedIn — CV is in the nav and Contact).
+- Logo (pulled up so its text sits on the column eyebrows' line; the tagline's first line sits level with the first links) + a two-sentence description (role, stack, years, location, availability) · Sections column · Elsewhere (GitHub + LinkedIn — CV is in the nav and Contact).
 - Theme toggle and language switch live in the header only (sticky, so always one click away; on mobile both sit in/next to the menu) — no duplicate controls in the footer.
 - Bottom bar: `© 2026 Václav Brzezina` · "Back to top ↑".
 
