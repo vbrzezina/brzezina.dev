@@ -190,3 +190,10 @@ Running record of decisions, alternatives considered, and wrong turns for the br
 **Decision:** The nav CV button only appears on the home page. Content pages (privacy now, blog later) drop it from the bar and the mobile sheet. The Contact aside keeps its CV button.
 **Alternatives considered:** CV in the nav everywhere; CV in the nav only (removing it from Contact, which would also have shortened the too-tall aside).
 **Why:** Content pages are for reading, and home is one click away. On home the sticky nav covers desktop, and the Contact aside is where hiring intent peaks. It is also the only CV link mobile visitors see without opening the menu. The aside's height problem was solved with spacing instead: its top padding matches the panel's, and its rhythm is tightened so both columns start and end together.
+
+### 2026-10-13 — One nav for every page (reversing "CV only on home")
+
+**Decision:** Content pages use the same nav as home: section links (pointing back into home), the CV button and "Get in touch". Only the header surface differs. No section is highlighted on a content page.
+**Alternatives considered:** Hiding the CV on content pages (shipped briefly); also dropping "Get in touch"; reducing the content-page menu to a single "Home" link.
+**Why:** A blog post is often the first page a visitor sees, arriving from search or a shared link. For them the header is the way into the portfolio, and a recruiter reading a post is exactly who wants the CV. A different menu per page type means learning two navigations. A "Home"-only menu turns every section into two clicks, and it fits poorly with a Blog link that will need its own place in the nav.
+**Wrong turn / lesson:** "Content pages are a reading context, so strip the actions" sounded tidy but optimised for the privacy page, the least-visited page on the site. Also: scrolling to the bottom of the privacy page highlighted "Contact". The active-section hook's "at the bottom, the last section wins" rule didn't check that the section existed on the page. It now ignores ids that aren't rendered.
