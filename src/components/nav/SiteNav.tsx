@@ -19,17 +19,21 @@ import { type, visuallyHidden } from '@/styles/typography';
  * Translucent material that only shows its edge once content scrolls under it
  * (scroll-edge effect) — no permanent hard divider.
  */
-const Header = styled.header<{ $scrolled: boolean }>`
+const Header = styled.header<{ $scrolled: boolean; $solid: boolean }>`
   position: sticky;
   top: 0;
   z-index: 50;
-  border-bottom: 1px solid ${({ theme, $scrolled }) => ($scrolled ? theme.colors.border : 'transparent')};
-  background: ${({ theme, $scrolled }) => ($scrolled ? theme.colors.material : 'transparent')};
-  backdrop-filter: ${({ $scrolled }) => ($scrolled ? 'blur(20px) saturate(180%)' : 'none')};
-  -webkit-backdrop-filter: ${({ $scrolled }) => ($scrolled ? 'blur(20px) saturate(180%)' : 'none')};
-  transition:
-    background-color 200ms ease,
-    border-color 200ms ease;
+  border-bottom: 1px solid ${({ theme, $scrolled, $solid }) => ($solid || $scrolled ? theme.colors.border : 'transparent')};
+
+  ${({ theme, $scrolled, $solid }) =>
+    $solid
+      ? /* Content pages: always solid, no transition. */ `background: ${theme.colors.header};`
+      : `
+        background: ${$scrolled ? theme.colors.material : 'transparent'};
+        backdrop-filter: ${$scrolled ? 'blur(20px) saturate(180%)' : 'none'};
+        -webkit-backdrop-filter: ${$scrolled ? 'blur(20px) saturate(180%)' : 'none'};
+        transition: background-color 200ms ease, border-color 200ms ease;
+      `}
 
   @media (prefers-reduced-transparency: reduce) {
     backdrop-filter: none;
@@ -230,9 +234,11 @@ const SheetActions = styled.div`
 interface SiteNavProps {
   /** Prefix for section links — '' on the home page, '/<locale>' on other pages. */
   homeHref?: string;
+  /** 'home': transparent until scrolled (sits over the hero). 'page': always solid, for content pages. */
+  variant?: 'home' | 'page';
 }
 
-export function SiteNav({ homeHref = '' }: SiteNavProps) {
+export function SiteNav({ homeHref = '', variant = 'home' }: SiteNavProps) {
   const t = useTranslations('nav');
   const a11y = useTranslations('a11y');
   const activeSection = useActiveSection(SECTION_IDS);
@@ -266,7 +272,7 @@ export function SiteNav({ homeHref = '' }: SiteNavProps) {
 
   return (
     <>
-      <Header $scrolled={scrolled || open}>
+      <Header $scrolled={scrolled || open} $solid={variant === 'page'}>
         <Container>
           <Inner>
             <Logo href={`${homeHref}#top`} />

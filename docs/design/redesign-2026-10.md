@@ -192,6 +192,12 @@ Replace the three TBD cards with **real, honest content**:
 - **Form panel (8 cols, surface):** Name + Email side by side (stacked on mobile), Message (min 8 rows). Footer row: "All fields are required." on the left, **Send message** primary on the right. Inline validation. After submit the panel swaps to a success state with a check icon and the reply-time promise.
 - **Aside (4 cols):** `<dl>` with mono labels — Response time · Based in · Curriculum vitae (secondary button "Download PDF"). GitHub lives in the footer only.
 
+### Content pages (privacy policy, future blog)
+- Use `ContentPage` (`src/components/layout/ContentPage.tsx`): `SiteNav variant="page"` + `<main>` + footer, with section links prefixed by `/<locale>`.
+- Header is **always solid** — `--color-header` (`#07101f` dark / surface white light) with a hairline bottom border, no scroll transition, no blur.
+- Body sits on `--color-page` (`#0d1723` dark / band grey light) and starts **below** the header — no negative margin, no hero overlap.
+- The home page keeps its transparent-until-scrolled header over the hero.
+
 ### Footer
 - Logo + a two-sentence description (role, stack, years, location, availability) · Sections column · Elsewhere (GitHub + LinkedIn — CV is in the nav and Contact).
 - Theme toggle and language switch live in the header only (sticky, so always one click away; on mobile both sit in/next to the menu) — no duplicate controls in the footer.

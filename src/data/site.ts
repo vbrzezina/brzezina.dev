@@ -23,8 +23,8 @@ export const site = {
  */
 export const legal = {
   name: 'Václav Brzezina',
-  ico: '', // TODO: IČO
-  address: '', // TODO: registered business address (místo podnikání)
+  ico: '04162358',
+  address: 'Makedonská 629/2, Střížkov, 190 00 Praha 9',
 } as const;
 
 export const hasLegalIdentity = Boolean(legal.ico && legal.address);

@@ -9,9 +9,7 @@ import { type } from '@/styles/typography';
 const SECTIONS = ['contact', 'hosting', 'analytics', 'transfers', 'rights', 'changes'] as const;
 
 const Article = styled.article`
-  padding-block: calc(${({ theme }) => theme.layout.navHeight} + 2rem) ${({ theme }) => theme.layout.sectionPadding};
-  margin-top: calc(-1 * ${({ theme }) => theme.layout.navHeight});
-  scroll-margin-top: 0;
+  padding-block: clamp(3rem, 2rem + 3vw, 5rem) ${({ theme }) => theme.layout.sectionPadding};
 `;
 
 const Inner = styled.div`

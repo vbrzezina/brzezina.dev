@@ -9,6 +9,8 @@ const colors = {
   surface: 'var(--color-surface)',
   raised: 'var(--color-raised)',
   material: 'var(--color-material)',
+  header: 'var(--color-header)',
+  page: 'var(--color-page)',
   fg: 'var(--color-fg)',
   fgSecondary: 'var(--color-fg-secondary)',
   fgTertiary: 'var(--color-fg-tertiary)',

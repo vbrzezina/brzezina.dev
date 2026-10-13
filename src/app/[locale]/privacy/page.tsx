@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
-import { SiteNav } from '@/components/nav/SiteNav';
-import { SiteFooter } from '@/components/layout/SiteFooter';
+import { ContentPage } from '@/components/layout/ContentPage';
 import { PrivacyPolicy } from '@/components/legal/PrivacyPolicy';
 
 export async function generateMetadata({
@@ -19,12 +18,8 @@ export default async function PrivacyPage({ params }: { params: Promise<{ locale
   const home = `/${locale}`;
 
   return (
-    <>
-      <SiteNav homeHref={home} />
-      <main id="main" tabIndex={-1}>
-        <PrivacyPolicy />
-      </main>
-      <SiteFooter homeHref={home} />
-    </>
+    <ContentPage homeHref={home}>
+      <PrivacyPolicy />
+    </ContentPage>
   );
 }
