@@ -1,7 +1,6 @@
 /** Site-wide constants. No translatable strings — copy lives in messages/*.json. */
 
 export const SECTION_IDS = ['about', 'experience', 'services', 'work', 'contact'] as const;
-export type SectionId = (typeof SECTION_IDS)[number];
 
 export const site = {
   /** Canonical origin — used for metadataBase, canonical/hreflang URLs, the sitemap and structured data. */

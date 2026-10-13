@@ -216,7 +216,7 @@
     "tagline": "Senior full-stack engineer — TypeScript and React on the frontend, Node.js and AWS behind it. Nine years of shipping products; based in the Czech Republic and available for freelance and contract work.",
     "sectionsLabel": "Sections",
     "elsewhereLabel": "Elsewhere",
-    "copyright": "© 2026 Václav Brzezina",
+    "copyright": "© {year} Václav Brzezina",
     "privacy": "Privacy policy",
     "cookieSettings": "Cookie settings",
     "backToTop": "Back to top"

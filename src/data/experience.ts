@@ -1,7 +1,11 @@
 /** Work history. Roles and descriptions are looked up by id in messages `experience.*`. */
 
+/** Ids double as message keys (`experience.employers.<id>`, `experience.projects.<id>`), so they are typed. */
+export type EmployerId = 'epam' | 'starkys' | 'etnetera';
+export type ProjectId = 'sap' | 'burberry' | 'walmart' | 'carvago' | 'pgm' | 'inventi' | 'logio' | 'veolia';
+
 export interface Project {
-  id: string;
+  id: ProjectId;
   client: string;
   stack: readonly string[];
   /** The project being worked on now — marked with a "Current" tag. */
@@ -9,7 +13,7 @@ export interface Project {
 }
 
 export interface Employer {
-  id: string;
+  id: EmployerId;
   company: string;
   start: number;
   /** `null` = current role. */
@@ -37,7 +41,11 @@ export const EXPERIENCE: readonly Employer[] = [
     end: 2022,
     projects: [
       { id: 'carvago', client: 'Carvago / Omnetic DMS', stack: ['React', 'TypeScript', 'Redux', 'Next.js'] },
-      { id: 'pgm', client: '3G Project Guide Manager', stack: ['React', 'TypeScript', 'NestJS', 'Postgres', 'TypeORM', 'AWS'] },
+      {
+        id: 'pgm',
+        client: '3G Project Guide Manager',
+        stack: ['React', 'TypeScript', 'NestJS', 'Postgres', 'TypeORM', 'AWS'],
+      },
       { id: 'inventi', client: 'Inventi / Summit Media', stack: ['React', 'TypeScript', 'Redux', 'Next.js'] },
     ],
   },

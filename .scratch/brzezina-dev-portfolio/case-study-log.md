@@ -239,3 +239,10 @@ Running record of decisions, alternatives considered, and wrong turns for the br
 **Why:** A four-way review (design, code, accessibility, SEO) agreed on the same root cause: the site looked right in a browser but was built for a visitor with JavaScript and an English locale. Pages were rendered per request, `/cs` carried English metadata, and the hero's largest paint waited for hydration.
 **Wrong turn / lesson:** The 404 template first imported a styled `Container` into a server component, and the prerender of an unrelated page failed with `createContext is not a function`. Emotion-styled modules must only be imported from client components.
 **Measured:** LCP 1136 ms → 316 ms (desktop) and 3472 ms → 1248 ms (mobile, throttled).
+
+### 2026-10-13 — Tooling: tests that fail when the code is wrong, and CI that guards the rendering mode
+
+**Decision:** ESLint (with jsx-a11y), Prettier via lint-staged, Vitest for the contact route and message parity, Playwright + axe against a production build, typed translation keys, GitHub Actions with a check that the pages are still statically pre-rendered, Dependabot, and security headers. See ADR-011.
+**Alternatives considered:** a mass reformat now (rejected: it would conflict with every open PR; formatting converges through lint-staged instead); a full Content-Security-Policy (deferred: nonces would make the pages dynamic again); testing against `next dev` (rejected: the production build is what ships, and is where static rendering and the real middleware show up).
+**Why:** Every serious defect found in the review was invisible to the tooling that existed: pages silently rendering per request, a honeypot named like an autofill target, an origin check tied to the server's host. Each is now a test or a CI assertion.
+**Wrong turn / lesson:** The first e2e run failed six tests, none of them a site bug: a `role="alert"` locator also matched Next's own route announcer, and an axe run started while a section was mid-fade (blended opacity reads as low contrast). Both were test-design mistakes. Mutation-checking the tests (break the code on purpose, watch them fail) is what makes a green suite trustworthy.

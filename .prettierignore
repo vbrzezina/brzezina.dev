@@ -1,0 +1,10 @@
+.next
+node_modules
+.scratch
+public
+package-lock.json
+messages/*.json
+docs
+*.md
+tsconfig.tsbuildinfo
+.vscode

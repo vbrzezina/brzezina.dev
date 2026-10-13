@@ -37,3 +37,11 @@ Thumbs.db
 # Tooling
 .codemie/
 .playwright-mcp/
+
+# TypeScript incremental build cache
+tsconfig.tsbuildinfo
+
+# Test output
+/playwright-report
+/test-results
+/coverage

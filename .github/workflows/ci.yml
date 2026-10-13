@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# A newer push to the same branch makes the older run pointless.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  HUSKY: 0 # no git hooks in CI
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Build
+        run: npm run build 2>&1 | tee build.log
+
+      # The pages must stay statically rendered (●). A stray `headers()`/`cookies()` call, or a missing
+      # `setRequestLocale`, silently turns them dynamic (ƒ) — slower, and uncacheable at the CDN.
+      - name: Pages are still pre-rendered
+        run: |
+          for route in '/[locale]' '/[locale]/privacy'; do
+            # Trailing space: '/[locale]' must not match '/[locale]/privacy' (or the other way round).
+            if ! grep -qF "● $route " build.log; then
+              echo "::error::$route is no longer statically pre-rendered"
+              grep -F "$route" build.log || true
+              exit 1
+            fi
+          done
+
+      - name: Install browser
+        run: npx playwright install --with-deps chromium
+
+      - name: End-to-end and accessibility tests
+        run: npm run e2e
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7

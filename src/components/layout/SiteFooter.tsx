@@ -155,7 +155,8 @@ export function SiteFooter({ homeHref = '' }: SiteFooterProps) {
         </Top>
 
         <Bottom>
-          <Copyright>{t('copyright')}</Copyright>
+          {/* The year is read in the browser too; a page built on 31 Dec and opened on 1 Jan would differ. */}
+          <Copyright suppressHydrationWarning>{t('copyright', { year: new Date().getFullYear() })}</Copyright>
           <BottomActions>
             <FooterLink as={Link} href="/privacy">
               {t('privacy')}
