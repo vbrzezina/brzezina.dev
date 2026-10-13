@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl'
 import { Container, Section } from '@/components/layout'
 import { Reveal } from '@/components/Reveal'
 import { Button, Icon, SectionHeader } from '@/components/ui'
-import { site } from '@/data/site'
+import { hasLegalIdentity, legal, site } from '@/data/site'
 import { Link } from '@/i18n/navigation'
 import { type } from '@/styles/typography'
 
@@ -83,7 +83,7 @@ const controlStyles = ({ theme }: { theme: import('@emotion/react').Theme }) => 
   padding: 0.75rem 0.875rem;
   border-radius: ${theme.radius.sm};
   border: 1px solid ${theme.colors.borderStrong};
-  background: ${theme.colors.canvas};
+  background: ${theme.colors.band};
   color: ${theme.colors.fg};
   font-family: ${theme.fonts.sans};
   font-size: 1.0625rem;
@@ -107,6 +107,12 @@ const controlStyles = ({ theme }: { theme: import('@emotion/react').Theme }) => 
 
   &[aria-invalid='true'] {
     border-color: ${theme.colors.error};
+  }
+
+  /* An invalid field keeps its error colour while focused — the halo turns red too. */
+  &[aria-invalid='true']:focus-visible {
+    border-color: ${theme.colors.error};
+    box-shadow: 0 0 0 3px ${theme.colors.errorSubtle};
   }
 `
 
@@ -225,6 +231,37 @@ const Aside = styled.dl`
   dd {
     ${type.bodyM}
     color: ${({ theme }) => theme.colors.fg};
+  }
+`
+
+const AsideLink = styled.a`
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  /* Full-size touch target, but the text sits on the same baseline rhythm as the plain values. */
+  margin-block: -0.5rem;
+  color: ${({ theme }) => theme.colors.fg};
+  text-decoration: underline;
+  text-decoration-color: ${({ theme }) => theme.colors.borderStrong};
+  text-underline-offset: 0.25em;
+  transition:
+    color ${({ theme }) => theme.motion.fast} ease,
+    text-decoration-color ${({ theme }) => theme.motion.fast} ease;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.accent};
+    text-decoration-color: currentColor;
+  }
+`
+
+const BusinessDetails = styled.dd`
+  && {
+    ${type.bodyS}
+    color: ${({ theme }) => theme.colors.fgSecondary};
+  }
+
+  span {
+    display: block;
   }
 `
 
@@ -390,6 +427,18 @@ export function Contact() {
           <Reveal delay={160}>
             <Aside>
               <div>
+                <dt>{t('sidebar.emailLabel')}</dt>
+                <dd>
+                  <AsideLink href={`mailto:${site.contactEmail}`}>{site.contactEmail}</AsideLink>
+                </dd>
+              </div>
+              <div>
+                <dt>{t('sidebar.phoneLabel')}</dt>
+                <dd>
+                  <AsideLink href={site.phoneHref}>{site.phone}</AsideLink>
+                </dd>
+              </div>
+              <div>
                 <dt>{t('sidebar.responseLabel')}</dt>
                 <dd>{t('sidebar.responseValue')}</dd>
               </div>
@@ -408,6 +457,16 @@ export function Contact() {
                   </Button>
                 </dd>
               </div>
+              {hasLegalIdentity && (
+                <div>
+                  <dt>{t('sidebar.businessLabel')}</dt>
+                  <BusinessDetails>
+                    <span>{legal.name}</span>
+                    <span>{t('sidebar.ico', { ico: legal.ico })}</span>
+                    <span>{legal.address}</span>
+                  </BusinessDetails>
+                </div>
+              )}
             </Aside>
           </Reveal>
         </Layout>

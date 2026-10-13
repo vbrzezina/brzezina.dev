@@ -189,8 +189,8 @@ Replace the three TBD cards with **real, honest content**:
 
 ### 05 Contact — "Available for freelance and contract engagements"
 - Lead: "Tell me about the product, the stack and the timeline. I reply within 1–2 business days." (matches the brief; replaces "48 hours")
-- **Form panel (8 cols, surface):** Name + Email side by side (stacked on mobile), Message (min 8 rows). Footer row: "All fields are required." on the left, **Send message** primary on the right. Inline validation. After submit the panel swaps to a success state with a check icon and the reply-time promise.
-- **Aside (4 cols):** `<dl>` with mono labels — Response time · Based in · Curriculum vitae (secondary button "Download PDF"). GitHub lives in the footer only.
+- **Form panel (8 cols, surface):** Name + Email side by side (stacked on mobile), Message (min 8 rows). Panel on `--color-surface` (same as the service cards), fields recessed on `--color-band` (the alternate-section tone). Every label carries an accent `*` (aria-hidden; inputs are `required`). Footer row: privacy note on the left, **Send message** primary on the right. Inline validation — an invalid field keeps the error border and gets an error-tinted focus halo (`--color-error-subtle`), never the accent one. After submit the panel swaps to a success state with a check icon and the reply-time promise.
+- **Aside (4 cols):** `<dl>` with mono labels — Email (mailto) · Phone (tel) · Response time · Based in · Curriculum vitae (secondary button "Download PDF") · Business details (name / IČO / registered address — the Civil Code §435 identification; also in the privacy policy, not in the footer). GitHub and LinkedIn live in the footer only.
 
 ### Content pages (privacy policy, future blog)
 - Use `ContentPage` (`src/components/layout/ContentPage.tsx`): `SiteNav variant="page"` + `<main>` + footer, with section links prefixed by `/<locale>`.

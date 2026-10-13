@@ -192,12 +192,16 @@
       "sendAnother": "Poslat další zprávu"
     },
     "sidebar": {
+      "emailLabel": "E-mail",
+      "phoneLabel": "Telefon",
       "responseLabel": "Doba odpovědi",
       "responseValue": "Do 1–2 pracovních dnů",
       "basedLabel": "Sídlo",
       "basedValue": "Česko · SEČ (UTC+1)",
       "cvLabel": "Životopis",
-      "cvCta": "Stáhnout PDF"
+      "cvCta": "Stáhnout PDF",
+      "businessLabel": "Fakturační údaje",
+      "ico": "IČO {ico}"
     }
   },
   "footer": {
@@ -207,7 +211,6 @@
     "copyright": "© 2026 Václav Brzezina",
     "privacy": "Ochrana osobních údajů",
     "cookieSettings": "Nastavení cookies",
-    "identity": "IČO {ico} · {address}",
     "backToTop": "Zpět nahoru"
   },
   "consent": {

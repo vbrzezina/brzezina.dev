@@ -23,6 +23,7 @@ const colors = {
   grid: 'var(--color-grid)',
   success: 'var(--color-success)',
   error: 'var(--color-error)',
+  errorSubtle: 'var(--color-error-subtle)',
 } as const;
 
 export const theme = {

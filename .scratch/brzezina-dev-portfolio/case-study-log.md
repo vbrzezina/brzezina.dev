@@ -177,3 +177,10 @@ Running record of decisions, alternatives considered, and wrong turns for the br
 **Alternatives considered:** A theme cookie read by the server layout — SSR-correct, but makes the route depend on `cookies()`, which conflicts with the still-open static-export option (ticket 10).
 
 ---
+
+### 2026-10-13 — Business identification lives in Contact, not the footer
+
+**Decision:** Email, phone and the sole-trader identification (name, IČO, registered address) sit in the Contact (05) aside; the privacy policy repeats them as the controller. The footer no longer carries an IČO line.
+**Alternatives considered:** IČO line in the footer of every page (the first implementation); contact details in the header.
+**Why:** Civil Code §435 requires the identification to be available on the website, not on every page. People looking for a phone number or invoicing details go to Contact, and a busy footer was already a complaint in earlier review rounds. The header stays navigation-only.
+**Wrong turn / lesson:** The footer placement was copied from the common Czech e-shop pattern, where it exists for convenience rather than legal necessity.

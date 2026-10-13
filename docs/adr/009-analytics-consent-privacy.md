@@ -18,7 +18,7 @@ The confirmed stack includes Vercel Analytics, GA4 via Google Tag Manager, and G
 4. **Consent banner:** non-modal card, Accept and Reject with equal visual weight, privacy link inline. Choice remembered for 12 months. "Cookie settings" in the footer reopens it; withdrawing updates Consent Mode and deletes `_ga` cookies.
 5. **Configuration by environment:** `NEXT_PUBLIC_GTM_ID` (validated `GTM-[A-Z0-9]+`). Without it nothing loads and no banner renders — so previews and local builds are tracking-free.
 6. **Privacy policy** at `/[locale]/privacy` (EN/CS), linked from the footer, the contact form and the banner. Covers the form, hosting logs, both analytics tools, storage table, US transfers, rights and the ÚOOÚ complaint route.
-7. **Business identification** (`legal` in `src/data/site.ts`) renders in the footer and privacy page once IČO and address are filled in.
+7. **Business identification** (`legal` in `src/data/site.ts`) renders in the Contact section (05) aside and the privacy policy controller section. Civil Code §435 requires it to be available on the website, not on every page, so it is not repeated in the footer.
 8. **No Terms of use** — no accounts, purchases or user content; engagement terms belong in contracts.
 
 ## Alternatives considered

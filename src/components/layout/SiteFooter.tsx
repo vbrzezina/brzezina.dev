@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { Icon, Logo } from '@/components/ui';
 import { useConsent } from '@/components/consent';
 import { Link } from '@/i18n/navigation';
-import { SECTION_IDS, hasLegalIdentity, legal, site } from '@/data/site';
+import { SECTION_IDS, site } from '@/data/site';
 import { type } from '@/styles/typography';
 import { Container } from './Container';
 
@@ -68,12 +68,6 @@ const Bottom = styled.div`
 const Copyright = styled.p`
   ${type.monoS}
   color: ${({ theme }) => theme.colors.fgTertiary};
-`;
-
-const Identity = styled.p`
-  ${type.monoS}
-  color: ${({ theme }) => theme.colors.fgTertiary};
-  margin-top: 0.25rem;
 `;
 
 const TextButton = styled.button`
@@ -150,14 +144,7 @@ export function SiteFooter({ homeHref = '' }: SiteFooterProps) {
         </Top>
 
         <Bottom>
-          <div>
-            <Copyright>{t('copyright')}</Copyright>
-            {hasLegalIdentity && (
-              <Identity>
-                {t('identity', { ico: legal.ico, address: legal.address })}
-              </Identity>
-            )}
-          </div>
+          <Copyright>{t('copyright')}</Copyright>
           <BottomActions>
             <FooterLink as={Link} href="/privacy">
               {t('privacy')}

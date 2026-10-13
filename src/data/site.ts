@@ -15,11 +15,13 @@ export const site = {
   contactEndpoint: '/api/contact',
   // Needs a mailbox or forwarding set up on the domain before going live.
   contactEmail: 'vaclav@brzezina.dev',
+  phone: '+420 604 716 317',
+  phoneHref: 'tel:+420604716317',
 } as const;
 
 /**
- * Business identification (Czech Civil Code §435 — required on the website of anyone trading under an IČO).
- * Rendered in the footer and on the privacy page only once `ico` and `address` are filled in.
+ * Business identification (Czech Civil Code §435 — required on the website of anyone trading under an IČO;
+ * the website as a whole, not every page). Shown in the Contact section and on the privacy page.
  */
 export const legal = {
   name: 'Václav Brzezina',
