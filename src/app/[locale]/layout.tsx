@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { getMessages } from "next-intl/server";
 import { Space_Grotesk, DM_Sans, JetBrains_Mono } from "next/font/google";
 import { ThemeRegistry } from "@/app/ThemeRegistry";
@@ -64,8 +65,9 @@ export default async function LocaleLayout({
             </ConsentProvider>
           </NextIntlClientProvider>
         </ThemeRegistry>
-        {/* Cookieless, aggregate page views — no consent needed. Active only on Vercel. */}
+        {/* Cookieless and aggregate — no consent needed. Both are active only on Vercel. */}
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

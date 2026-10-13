@@ -254,7 +254,7 @@
     "analytics": {
       "heading": "Analytics",
       "paragraphs": [
-        "Vercel Web Analytics counts page views without cookies and without storing anything that identifies you. It runs for every visitor (legitimate interest).",
+        "Vercel Web Analytics counts page views, and Vercel Speed Insights measures how fast pages load (Core Web Vitals) — both without cookies and without storing anything that identifies you. They run for every visitor (legitimate interest).",
         "Google Analytics 4, loaded through Google Tag Manager, runs only if you click “Accept” in the cookie banner (consent, Art. 6(1)(a) GDPR and §89(3) of the Czech Electronic Communications Act). It shows me how visitors find and use the site. Google Ireland Limited processes this data on my behalf; Google Analytics 4 does not store IP addresses.",
         "You can change your choice at any time under “Cookie settings” in the footer. Withdrawing consent deletes the Google Analytics cookies from your browser."
       ]
