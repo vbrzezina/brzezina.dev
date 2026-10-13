@@ -309,5 +309,17 @@
         "If this policy changes, the new version will be published here with an updated date."
       ]
     }
+  },
+  "meta": {
+    "title": "Václav Brzezina — Senior TypeScript & React Engineer, Prague",
+    "description": "Senior TypeScript/React engineer in Prague — nine years of React, Next.js, Node.js, NestJS and AWS. Available for freelance and contract work.",
+    "jobTitle": "Senior Full-Stack TypeScript Engineer",
+    "ogRole": "Senior full-stack TypeScript & React engineer",
+    "ogTagline": "Available for freelance and contract work · Prague"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "body": "That page doesn’t exist — it may have moved, or the link may be mistyped.",
+    "home": "Back to the home page"
   }
 }
