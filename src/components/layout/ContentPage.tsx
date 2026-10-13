@@ -22,7 +22,7 @@ export function ContentPage({ homeHref, children }: ContentPageProps) {
   return (
     <>
       <SiteNav homeHref={homeHref} variant="page" />
-      <Main id="main" tabIndex={-1}>
+      <Main id="main">
         {children}
       </Main>
       <SiteFooter homeHref={homeHref} />

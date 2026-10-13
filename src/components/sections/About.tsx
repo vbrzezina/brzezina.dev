@@ -1,14 +1,13 @@
 "use client";
 
-import Image from "next/image";
 import styled from "@emotion/styled";
 import { useTranslations } from "next-intl";
 import { Container, Section } from "@/components/layout";
 import { Reveal } from "@/components/Reveal";
-import { SectionHeader, StackList } from "@/components/ui";
+import { SectionHeader, TagList } from "@/components/ui";
 import { LANGUAGE_IDS, SKILL_GROUPS } from "@/data/skills";
 import { type } from "@/styles/typography";
-import aboutPortrait from "@/assets/photos/portrait-about.jpg";
+import { AboutDiagram } from "./AboutDiagram";
 
 // ─── Bio ──────────────────────────────────────────────────────────────────────
 
@@ -24,22 +23,12 @@ const BioGrid = styled.div`
   }
 `;
 
-/** 4:5 candid photo — deliberately a different shot from the hero headshot. */
-const Portrait = styled.div`
-  position: relative;
-  aspect-ratio: 4 / 5;
-  max-width: 28rem;
-  border-radius: ${({ theme }) => theme.radius.md};
-  overflow: hidden;
-  background: ${({ theme }) => theme.colors.surface};
+/* Stacked on phones the bio comes first; the diagram illustrates it rather than introducing it. */
+const DiagramSlot = styled(Reveal)`
+  order: 1;
 
-  img {
-    object-fit: cover;
-  }
-
-  /* Dark mode only: ease the bright wall down so it doesn't outshine the text. */
-  html:not([data-theme="light"]) & img {
-    filter: brightness(0.9);
+  ${({ theme }) => theme.mq.md} {
+    order: 0;
   }
 `;
 
@@ -143,17 +132,9 @@ export function About() {
         </Reveal>
 
         <BioGrid>
-          <Reveal delay={80}>
-            <Portrait>
-              <Image
-                src={aboutPortrait}
-                alt={t("portraitLabel")}
-                fill
-                placeholder="blur"
-                sizes="(min-width: 56.25em) 28rem, 100vw"
-              />
-            </Portrait>
-          </Reveal>
+          <DiagramSlot delay={80}>
+            <AboutDiagram />
+          </DiagramSlot>
 
           <Reveal delay={160}>
             <Bio>
@@ -192,7 +173,7 @@ export function About() {
                   <StackRow key={group.id}>
                     <dt>{t(`skills.categories.${group.id}`)}</dt>
                     <dd>
-                      <StackList items={items} tone="secondary" />
+                      <TagList items={items} />
                     </dd>
                   </StackRow>
                 );

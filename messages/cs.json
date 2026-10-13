@@ -44,7 +44,11 @@
     "index": "01",
     "slug": "O mně",
     "heading": "Senior inženýr, který pořád programuje",
-    "portraitLabel": "Usměvavý Václav Brzezina v tmavomodrém saku",
+    "diagram": {
+      "title": "Schéma stacku, ve kterém pracuji: klient v Reactu a Next.js, API v NestJS a GraphQL, AWS Lambda a SQS a data v PostgreSQL a DynamoDB. Požadavek putuje z prohlížeče až do databáze.",
+      "layers": { "client": "klient", "api": "api", "serverless": "serverless", "data": "data" },
+      "caption": "obr. 01 — od prohlížeče po databázi"
+    },
     "bio": {
       "lede": "Stavím JavaScriptové produkty od začátku do konce — TypeScript a React na frontendu, Node.js a NestJS na backendu, AWS serverless v cloudu.",
       "p2": "Po devíti letech se moje práce pohybuje tam, kde se architektura potkává s dodávkou: návrh systémů, standardy kódu, code review — a vlastní produkční kód. Vedu technicky, ne z povzdálí. V EPAM Systems teď pracuji jako Software Engineer na projektu pro SAP; předtím jsem byl Tech Lead na O2O clientelling platformě pro Burberry.",

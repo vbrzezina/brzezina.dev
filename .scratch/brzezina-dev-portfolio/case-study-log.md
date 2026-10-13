@@ -197,3 +197,14 @@ Running record of decisions, alternatives considered, and wrong turns for the br
 **Alternatives considered:** Hiding the CV on content pages (shipped briefly); also dropping "Get in touch"; reducing the content-page menu to a single "Home" link.
 **Why:** A blog post is often the first page a visitor sees, arriving from search or a shared link. For them the header is the way into the portfolio, and a recruiter reading a post is exactly who wants the CV. A different menu per page type means learning two navigations. A "Home"-only menu turns every section into two clicks, and it fits poorly with a Blog link that will need its own place in the nav.
 **Wrong turn / lesson:** "Content pages are a reading context, so strip the actions" sounded tidy but optimised for the privacy page, the least-visited page on the site. Also: scrolling to the bottom of the privacy page highlighted "Contact". The active-section hook's "at the bottom, the last section wins" rule didn't check that the section existed on the page. It now ignores ids that aren't rendered.
+
+### 2026-10-13 — About graphic: an architecture diagram instead of a second photo
+
+**Decision:** The About photo is replaced by an inline-SVG system diagram, with four layers (client → API → serverless → data). The request path is drawn in the accent colour, and a single pulse travels from the browser to the database.
+**Alternatives considered:**
+- A different candid photo (none of the available shots worked).
+- A generic workplace stock photo.
+- A code or terminal card (repeats the hero's whoami card).
+- A git-graph of career milestones (repeats the Experience timeline).
+**Why:** The diagram draws exactly what the bio's lede says. It belongs to the site's blueprint grid language, works in both themes from tokens alone and costs no image bytes. A stock photo would read as filler on a portfolio whose point is authenticity.
+**Wrong turn / lesson:** Three rounds of photo-picking for this slot. The slot never needed a photo, it needed something that explained the work.
