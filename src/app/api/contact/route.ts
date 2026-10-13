@@ -1,7 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { hasLocale } from 'next-intl';
 import { Resend } from 'resend';
-import { routing } from '@/i18n/routing';
 
 /*
  * Contact form → Resend (https://resend.com/docs/send-with-nextjs).
@@ -11,10 +9,11 @@ import { routing } from '@/i18n/routing';
  * Env (Vercel → Settings → Environment Variables):
  *   RESEND_API_KEY     required — a "sending access" key, scoped to the brzezina.dev domain
  *   CONTACT_TO_EMAIL   required — where messages are delivered
- *   CONTACT_FROM_EMAIL optional — must be on the domain verified in Resend
+ *   CONTACT_FROM_EMAIL optional — sender address on the domain verified in Resend. The display name
+ *                      is always the visitor's ("Jane Novák via brzezina.dev"), so the inbox shows who wrote.
  */
 
-const DEFAULT_FROM = 'brzezina.dev <contact@brzezina.dev>';
+const DEFAULT_FROM = 'contact@brzezina.dev';
 
 const LIMITS = { name: 120, email: 254, message: 5000, body: 16_000 } as const;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -41,6 +40,17 @@ function sameOrigin(origin: string, host: string): boolean {
   } catch {
     return false; // "null" (sandboxed frames, some redirects) or garbage
   }
+}
+
+/**
+ * The visitor can't be the sender — mail "from" their domain would fail SPF/DMARC — so their name
+ * goes in the display name on our verified address, and their address goes in Reply-To.
+ */
+function senderFor(name: string): string {
+  const configured = process.env.CONTACT_FROM_EMAIL || DEFAULT_FROM;
+  const address = configured.match(/<([^>]+)>/)?.[1] ?? configured.trim();
+  const displayName = name.replace(/["\\<>]/g, '').replace(/\s+/g, ' ').trim().slice(0, 64).trim();
+  return `"${displayName} via brzezina.dev" <${address}>`;
 }
 
 function fail(status: number, error: string) {
@@ -77,7 +87,6 @@ export async function POST(request: NextRequest) {
   const name = typeof body.name === 'string' ? singleLine(body.name) : '';
   const email = typeof body.email === 'string' ? body.email.trim() : '';
   const message = typeof body.message === 'string' ? body.message.trim() : '';
-  const locale = typeof body.locale === 'string' && hasLocale(routing.locales, body.locale) ? body.locale : null;
 
   if (
     !name ||
@@ -104,18 +113,17 @@ export async function POST(request: NextRequest) {
   const text = [
     `Name: ${name}`,
     `Email: ${email}`,
-    ...(locale ? [`Language: ${locale.toUpperCase()}`] : []),
     '',
     message,
     '',
     '—',
-    'Sent from the contact form on brzezina.dev. Reply to this email to answer directly.',
+    'Sent from the contact form on brzezina.dev.',
   ].join('\n');
 
   try {
     const { error } = await new Resend(apiKey).emails.send(
       {
-        from: process.env.CONTACT_FROM_EMAIL || DEFAULT_FROM,
+        from: senderFor(name),
         to: [to],
         replyTo: email,
         subject: `brzezina.dev — message from ${name}`,
