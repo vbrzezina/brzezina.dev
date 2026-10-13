@@ -24,6 +24,7 @@ const colors = {
   success: 'var(--color-success)',
   error: 'var(--color-error)',
   errorSubtle: 'var(--color-error-subtle)',
+  controlBorder: 'var(--color-control-border)',
 } as const;
 
 export const theme = {

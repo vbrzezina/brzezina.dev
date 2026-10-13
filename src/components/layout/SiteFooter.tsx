@@ -2,7 +2,7 @@
 
 import styled from '@emotion/styled';
 import { useTranslations } from 'next-intl';
-import { Icon, Logo } from '@/components/ui';
+import { Icon, Logo, VisuallyHidden } from '@/components/ui';
 import { useConsent } from '@/components/consent';
 import { Link } from '@/i18n/navigation';
 import { SECTION_IDS, site } from '@/data/site';
@@ -108,6 +108,7 @@ interface SiteFooterProps {
 export function SiteFooter({ homeHref = '' }: SiteFooterProps) {
   const t = useTranslations('footer');
   const nav = useTranslations('nav');
+  const a11y = useTranslations('a11y');
   const consent = useConsent();
 
   return (
@@ -139,12 +140,14 @@ export function SiteFooter({ homeHref = '' }: SiteFooterProps) {
                 <FooterLink href={site.githubUrl} target="_blank" rel="noopener noreferrer">
                   <Icon name="github" size={16} />
                   {site.githubLabel}
+                  <VisuallyHidden> {a11y('newTab')}</VisuallyHidden>
                 </FooterLink>
               </li>
               <li>
                 <FooterLink href={site.linkedinUrl} target="_blank" rel="noopener noreferrer">
                   <Icon name="linkedin" size={16} />
                   {site.linkedinLabel}
+                  <VisuallyHidden> {a11y('newTab')}</VisuallyHidden>
                 </FooterLink>
               </li>
             </LinkList>

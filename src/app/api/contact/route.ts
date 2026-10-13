@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { Resend } from 'resend';
+import { CONTACT_LIMITS as LIMITS, EMAIL_PATTERN, HONEYPOT_FIELD, type ContactError } from '@/lib/contact';
 
 /*
  * Contact form → Resend (https://resend.com/docs/send-with-nextjs).
@@ -15,24 +16,6 @@ import { Resend } from 'resend';
 
 const DEFAULT_FROM = 'contact@brzezina.dev';
 
-const LIMITS = { name: 120, email: 254, message: 5000, body: 16_000 } as const;
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-
-// Best-effort per-instance rate limit. Fluid compute reuses instances, so this blunts a burst from
-// one address; it is not a global guarantee — Resend's daily cap is the backstop.
-const WINDOW_MS = 10 * 60 * 1000;
-const MAX_PER_WINDOW = 5;
-const recent = new Map<string, number[]>();
-
-function rateLimited(ip: string, now: number): boolean {
-  const hits = (recent.get(ip) ?? []).filter((t) => now - t < WINDOW_MS);
-  hits.push(now);
-  recent.set(ip, hits);
-  if (recent.size > 1000) {
-    for (const [key, times] of recent) if (times.every((t) => now - t >= WINDOW_MS)) recent.delete(key);
-  }
-  return hits.length > MAX_PER_WINDOW;
-}
 
 function sameOrigin(origin: string, host: string): boolean {
   try {
@@ -53,7 +36,7 @@ function senderFor(name: string): string {
   return `"${displayName} via brzezina.dev" <${address}>`;
 }
 
-function fail(status: number, error: string) {
+function fail(status: number, error: ContactError) {
   return NextResponse.json({ ok: false, error }, { status });
 }
 
@@ -63,24 +46,26 @@ function singleLine(value: string): string {
 }
 
 export async function POST(request: NextRequest) {
-  // Browsers always send Origin on a cross-origin POST; reject posts from other sites.
+  // Browsers send Origin on cross-site posts; refuse ones from another website. (Anyone can still call the
+  // endpoint directly — this only stops other sites from using a visitor's browser to do it.)
   const origin = request.headers.get('origin');
-  if (origin && !sameOrigin(origin, request.nextUrl.host)) return fail(403, 'origin');
+  if (origin && !sameOrigin(origin, request.headers.get('host') ?? '')) return fail(403, 'origin');
 
-  const length = Number(request.headers.get('content-length') ?? 0);
-  if (length > LIMITS.body) return fail(413, 'too_large');
-
-  let body: Record<string, unknown>;
+  // Vercel already rejects request bodies over 4.5 MB; the per-field limits below handle the rest.
+  let parsed: unknown;
   try {
-    const parsed: unknown = await request.json();
-    if (!parsed || typeof parsed !== 'object') return fail(400, 'invalid');
-    body = parsed as Record<string, unknown>;
+    parsed = await request.json();
   } catch {
     return fail(400, 'invalid');
   }
+  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return fail(400, 'invalid');
+  const body = parsed as Record<string, unknown>;
 
   // Honeypot: a field people never see. Bots that fill it get a success they can't tell apart.
-  if (typeof body.website === 'string' && body.website.trim() !== '') {
+  // Logged, so a real visitor swallowed by it (an autofill quirk) shows up instead of vanishing.
+  const trap = body[HONEYPOT_FIELD];
+  if (typeof trap === 'string' && trap.trim() !== '') {
+    console.info('[contact] honeypot filled, message dropped');
     return NextResponse.json({ ok: true });
   }
 
@@ -98,9 +83,6 @@ export async function POST(request: NextRequest) {
   ) {
     return fail(400, 'invalid');
   }
-
-  const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
-  if (rateLimited(ip, Date.now())) return fail(429, 'rate_limited');
 
   const apiKey = process.env.RESEND_API_KEY;
   const to = process.env.CONTACT_TO_EMAIL;

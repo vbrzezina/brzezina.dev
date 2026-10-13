@@ -8,7 +8,8 @@
     "language": "Language",
     "toggleTheme": "Toggle colour theme",
     "toLight": "Switch to light theme",
-    "toDark": "Switch to dark theme"
+    "toDark": "Switch to dark theme",
+    "newTab": "(opens in a new tab)"
   },
   "nav": {
     "about": "About",
@@ -192,6 +193,8 @@
       },
       "errorTitle": "Your message couldn’t be sent.",
       "error": "Please try again or contact me directly at <link>{email}</link>.",
+      "errorRateLimited": "Too many messages in a short time. Please wait a few minutes and try again, or contact me directly at <link>{email}</link>.",
+      "errorInvalid": "Something in the form wasn’t accepted. Please check it and try again, or contact me directly at <link>{email}</link>.",
       "successTitle": "Message sent",
       "successBody": "Thanks — I’ll reply within 1–2 business days.",
       "sendAnother": "Send another message"
@@ -262,6 +265,7 @@
     },
     "storage": {
       "heading": "Cookies and local storage",
+      "tableLabel": "Browser storage details",
       "columns": [
         "Name",
         "Type",

@@ -226,6 +226,20 @@ Running record of decisions, alternatives considered, and wrong turns for the br
 - Abuse controls are sized to the actual risk. The recipient is fixed server-side and the visitor's address only goes into Reply-To, so the worst case is spam in the owner's own inbox: a honeypot, an Origin check and a per-instance rate limit cover it without adding a KV store.
 **Wrong turn / lesson:** The first version called Resend's REST API with a plain `fetch` to keep the SDK's inbound and webhook dependencies out of a public repo. The owner preferred the official SDK: typed payloads, `{ data, error }` results and API changes absorbed upstream are worth two small transitive packages on a site they maintain alone. The switch changed nothing observable, and the same tests passed byte for byte.
 
+### 2026-10-13 — Accessibility pass: a form that is announced, focusable and visible
+
+**Decision:** Fix the form and header issues an independent WCAG audit found, rather than claim AA on the strength of a clean axe run: commit validation errors before moving focus (`flushSync`) so the field and its message are announced together; `scroll-padding-top` for the sticky header; a real 2px focus outline (red on invalid fields) instead of a faint halo; a `--color-control-border` token that reaches 3:1; `aria-disabled` instead of `disabled` so focus survives sending; focus restored after the consent banner closes.
+**Alternatives considered:** keep `disabled` on the submit button and re-focus it after the response (rejected: screen readers drop focus the moment the button disables); a single live-region summary of all errors (rejected for now: per-field `role="alert"` is simpler and matches how the errors appear on blur).
+**Why:** axe found one issue on the default page state; the audit found four serious ones, all in interaction states axe doesn't exercise (focus order, announcements, the sticky header covering the focused field, a halo at 1.3:1).
+**Wrong turn / lesson:** The first privacy-table fix named the scroll region with the same heading as its parent section, and axe's `landmark-unique` rule failed it, so the region got its own label. And the first control-border measurement said 10:1: it was taken while the field was focused. Measure resting states.
+
+### 2026-10-13 — Trimming the contact route: what a plain-text form really needs
+
+**Decision:** Remove the in-memory rate limiter, the streaming body reader and the forwarded-host handling from the contact route; keep validation, the fixed recipient, the sanitised sender, the honeypot and the simple Origin/Host check.
+**Alternatives considered:** keep everything the review suggested; replace the rate limiter with Cloudflare Turnstile or a Vercel firewall rule (the right tool if spam ever appears, not needed on day one).
+**Why:** The owner asked whether plain-text inputs justify the hardening. The honest split: the server must defend itself against any client, not just the form (so validation and a fixed recipient stay), but a per-instance in-memory limiter is easy to walk around, Vercel already caps request bodies, and the forwarded-host code fixed a problem that only exists off Vercel. About 50 lines and four tests went; no protection that worked went with them.
+**Wrong turn / lesson:** The review reported "the origin check can reject every real submission" as high severity. On Vercel it never did, and the owner's live test had already shown it working. A finding's severity depends on where the code runs; checking that against a known-good production result would have saved a round of code.
+
 ### 2026-10-13 — Review findings → static rendering, localized metadata, visible hero
 
 **Decision:** Pre-render both locales (`generateStaticParams` + `setRequestLocale`), generate all page metadata from one helper with canonical + hreflang + Open Graph, add the missing SEO files (robots, sitemap, icons, OG image, JSON-LD), and make the hero visible without waiting for JavaScript. See ADR-010.

@@ -150,7 +150,8 @@ export function PrivacyPolicy() {
 
           <Block aria-labelledby="privacy-storage">
             <Heading id="privacy-storage">{t('storage.heading')}</Heading>
-            <TableWrap>
+            {/* Scrollable on narrow screens: it needs a name and to be reachable by keyboard (WCAG 2.1.1, 4.1.2). */}
+            <TableWrap tabIndex={0} role="region" aria-label={t('storage.tableLabel')}>
               <Table>
                 <thead>
                   <tr>

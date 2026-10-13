@@ -88,7 +88,8 @@ const Figure = styled.figure`
     stroke-width: 2;
     stroke-linecap: round;
     stroke-dasharray: 6 94;
-    animation: ${travel} 3.2s linear infinite;
+    /* A few passes to show the request path, then it rests — nothing here should move forever (WCAG 2.2.2). */
+    animation: ${travel} 3.2s linear 3;
   }
   .caption {
     fill: ${({ theme }) => theme.colors.fgTertiary};

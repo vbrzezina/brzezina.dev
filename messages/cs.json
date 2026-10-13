@@ -8,7 +8,8 @@
     "language": "Jazyk",
     "toggleTheme": "Přepnout barevný režim",
     "toLight": "Přepnout na světlý režim",
-    "toDark": "Přepnout na tmavý režim"
+    "toDark": "Přepnout na tmavý režim",
+    "newTab": "(otevře se v novém panelu)"
   },
   "nav": {
     "about": "O mně",
@@ -192,6 +193,8 @@
       },
       "errorTitle": "Zprávu se nepodařilo odeslat.",
       "error": "Zkuste to prosím znovu, nebo mi napište přímo na <link>{email}</link>.",
+      "errorRateLimited": "Příliš mnoho zpráv za krátkou dobu. Zkuste to prosím za pár minut, nebo mi napište přímo na <link>{email}</link>.",
+      "errorInvalid": "Formulář se nepodařilo přijmout. Zkontrolujte ho prosím a zkuste to znovu, nebo mi napište přímo na <link>{email}</link>.",
       "successTitle": "Zpráva odeslána",
       "successBody": "Děkuji — odpovím do 1–2 pracovních dnů.",
       "sendAnother": "Poslat další zprávu"
@@ -262,6 +265,7 @@
     },
     "storage": {
       "heading": "Cookies a lokální úložiště",
+      "tableLabel": "Podrobnosti o úložišti v prohlížeči",
       "columns": [
         "Název",
         "Typ",
