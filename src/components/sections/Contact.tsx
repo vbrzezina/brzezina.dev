@@ -71,6 +71,12 @@ const Label = styled.label`
   color: ${({ theme }) => theme.colors.fg};
 `
 
+/* Visual marker only — the inputs carry `required`, so assistive tech announces it already. */
+const RequiredMark = styled.span`
+  margin-left: 0.25rem;
+  color: ${({ theme }) => theme.colors.accent};
+`
+
 const controlStyles = ({ theme }: { theme: import('@emotion/react').Theme }) => `
   width: 100%;
   min-height: 3rem;
@@ -327,19 +333,28 @@ export function Contact() {
               ) : (
                 <Form ref={formRef} onSubmit={handleSubmit} noValidate aria-label={t('form.label')}>
                   <FieldRoot>
-                    <Label htmlFor={`${uid}-name`}>{t('form.name')}</Label>
+                    <Label htmlFor={`${uid}-name`}>
+                      {t('form.name')}
+                      <RequiredMark aria-hidden="true">*</RequiredMark>
+                    </Label>
                     <Input type="text" autoComplete="name" {...fieldProps('name')} />
                     {errors.name && <ErrorText id={`${uid}-name-error`}>{errors.name}</ErrorText>}
                   </FieldRoot>
 
                   <FieldRoot>
-                    <Label htmlFor={`${uid}-email`}>{t('form.email')}</Label>
+                    <Label htmlFor={`${uid}-email`}>
+                      {t('form.email')}
+                      <RequiredMark aria-hidden="true">*</RequiredMark>
+                    </Label>
                     <Input type="email" autoComplete="email" inputMode="email" {...fieldProps('email')} />
                     {errors.email && <ErrorText id={`${uid}-email-error`}>{errors.email}</ErrorText>}
                   </FieldRoot>
 
                   <FieldRoot $wide>
-                    <Label htmlFor={`${uid}-message`}>{t('form.message')}</Label>
+                    <Label htmlFor={`${uid}-message`}>
+                      {t('form.message')}
+                      <RequiredMark aria-hidden="true">*</RequiredMark>
+                    </Label>
                     <Textarea rows={7} {...fieldProps('message')} />
                     {errors.message && <ErrorText id={`${uid}-message-error`}>{errors.message}</ErrorText>}
                   </FieldRoot>
@@ -358,7 +373,6 @@ export function Contact() {
 
                   <FormFooter>
                     <Hint>
-                      {t('form.required')}{' '}
                       {t.rich('form.privacy', {
                         link: (chunks) => <Link href="/privacy">{chunks}</Link>,
                       })}

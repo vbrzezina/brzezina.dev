@@ -178,7 +178,6 @@
       "namePlaceholder": "Jane Novák",
       "emailPlaceholder": "jane@company.com",
       "messagePlaceholder": "What are you building, and where could I help?",
-      "required": "All fields are required.",
       "privacy": "I’ll only use your details to reply — <link>privacy policy</link>.",
       "submit": "Send message",
       "sending": "Sending…",
