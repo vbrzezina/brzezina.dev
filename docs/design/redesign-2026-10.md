@@ -235,6 +235,6 @@ Replace the three TBD cards with **real, honest content**:
 ## 8. Out of scope / follow-ups
 
 - **Contact submission backend** — the form POSTs JSON `{ name, email, message }` to `site.contactEndpoint` (`/api/contact`). The handler doesn't exist yet (tickets 08/10), so submissions currently show the error state — message kept, GitHub offered — never a fake success.
-- **CV file** — every CV link points at `/cv.pdf` with `download`; the PDF still needs adding to `public/`.
+- **CV file** — `public/cv.pdf` (the 2026 one-page CV). Every CV link points at it with `download="Vaclav-Brzezina-CV.pdf"` (`site.cvFileName`).
 - **Photography** — current photos are the best of the available selfies (hero: studio shot, cropped 680² from 800²; About: 1200×1500). A short proper shoot — natural light, plain or dark background, same blazer + glasses look — would lift both. Replace the files in `src/assets/photos/` at the same aspect ratios; no code changes needed.
 - **Figma parity** — finish the screens in the Figma file once MCP calls are available again (Pro plan or next month's quota).

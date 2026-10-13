@@ -451,7 +451,7 @@ export function Contact() {
                 <dt>{t('sidebar.cvLabel')}</dt>
                 <dd>
                   <Button $variant="secondary" asChild>
-                    <a href={site.cvUrl} download>
+                    <a href={site.cvUrl} download={site.cvFileName}>
                       {t('sidebar.cvCta')}
                       <Icon name="download" size={16} />
                     </a>

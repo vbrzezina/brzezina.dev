@@ -9,8 +9,9 @@ export const site = {
   linkedinUrl: 'https://www.linkedin.com/in/vaclav-brzezina/',
   linkedinLabel: 'linkedin.com/in/vaclav-brzezina',
   repoUrl: 'https://github.com/vbrzezina/brzezina.dev',
-  // The PDF itself still needs adding to public/ (see redesign spec §8).
   cvUrl: '/cv.pdf',
+  /** Saved filename for `download` — ASCII so it survives every OS and mail client. */
+  cvFileName: 'Vaclav-Brzezina-CV.pdf',
   // Route handler not implemented yet (tickets 08/10) — until then submissions fail visibly.
   contactEndpoint: '/api/contact',
   // Needs a mailbox or forwarding set up on the domain before going live.

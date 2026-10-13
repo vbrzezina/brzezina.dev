@@ -299,7 +299,7 @@ export function SiteNav({ homeHref = '', variant = 'home' }: SiteNavProps) {
               <ThemeToggle />
               <DesktopOnly>
                 <Button $variant="subtle" $size="sm" asChild>
-                  <a href={site.cvUrl} download aria-label={t('downloadCv')}>
+                  <a href={site.cvUrl} download={site.cvFileName} aria-label={t('downloadCv')}>
                     {t('cv')}
                     <Icon name="download" size={16} />
                   </a>
@@ -346,7 +346,7 @@ export function SiteNav({ homeHref = '', variant = 'home' }: SiteNavProps) {
                         <LocaleSwitch />
                         <SheetActions>
                           <Button $variant="secondary" asChild>
-                            <a href={site.cvUrl} download>
+                            <a href={site.cvUrl} download={site.cvFileName}>
                               {t('downloadCv')}
                               <Icon name="download" size={16} />
                             </a>
