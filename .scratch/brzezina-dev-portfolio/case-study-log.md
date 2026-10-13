@@ -215,3 +215,13 @@ Running record of decisions, alternatives considered, and wrong turns for the br
 **Alternatives considered:** `npm audit fix --force` (jumps to Next 16, a major upgrade with its own migration); an `overrides` entry forcing postcss ≥ 8.5.23 under Next.
 **Why:** The postcss advisories all need attacker-controlled CSS. Here postcss only compiles the repo's own stylesheets at build time, so overriding a framework's exact pin would add risk without removing any. The v4 migration was nearly drop-in because the code already used next-intl's newer APIs (`createNavigation`, `defineRouting`, `requestLocale`).
 **Wrong turn / lesson:** Probing the open redirect turned up an older bug. The middleware matcher skips dotted paths, and the `[locale]` layout never validated the locale, so `/foo.bar` rendered the home page with a 200 and `lang="foo.bar"`. Fixed with v4's `hasLocale` + `notFound()`.
+
+### 2026-10-13 — Contact form: Resend via a route handler; Vercel-native confirmed
+
+**Decision:** The contact form posts to `src/app/api/contact/route.ts`, which sends through Resend's REST API with a plain `fetch`. This also closes the static-export question (ticket 10) in favour of Vercel-native deployment.
+**Alternatives considered:** the Resend SDK; Formspree and other hosted form backends (which static export would have required); Nodemailer + SMTP; AWS SES.
+**Why:**
+- The owner had a Resend account ready, and research ticket 03 had already ranked it first.
+- A plain `fetch` keeps the public repo free of the SDK's inbound and webhook dependencies for a one-request job.
+- The site had quietly stopped being static-exportable once next-intl's middleware arrived, so ticket 10 was already decided by the code.
+- Abuse controls are sized to the actual risk. The recipient is fixed server-side and the visitor's address only goes into Reply-To, so the worst case is spam in the owner's own inbox: a honeypot, an Origin check and a per-instance rate limit cover it without adding a KV store.

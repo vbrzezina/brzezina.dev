@@ -1,7 +1,7 @@
 # ADR-006: Contact form and mailer
 
-**Status:** open — depends on ADR-003 (deployment mode)  
-**Date:** 2026-08-18  
+**Status:** accepted  
+**Date:** 2026-08-18 · resolved 2026-10-13  
 **Decider:** Václav Brzezina
 
 ---
@@ -52,17 +52,18 @@ This path is not recommended — see ADR-003 Option A.
 
 ---
 
-## Current state
+## Resolution (2026-10-13)
 
-- Form component exists at `src/components/sections/Contact.tsx` with `handleSubmit` using a `setTimeout` stub
-- No `app/api/contact/route.ts` yet
-- No `RESEND_API_KEY` env var
+Implemented as `src/app/api/contact/route.ts`:
 
-## What needs to happen next
-
-1. Confirm deployment mode (ADR-003)
-2. Create `app/api/contact/route.ts` with Resend integration
-3. Add `RESEND_API_KEY` to Vercel project env vars (preview + production)
-4. Wire the form's `fetch('/api/contact', ...)` call to replace the stub
-5. Add server-side validation and error response handling
-6. Add rate limiting (simple in-memory or Vercel's native IP limiting) to prevent abuse
+- **Resend over plain `fetch`** (`POST https://api.resend.com/emails`), not the SDK. Sending one email is a single authenticated request, and the SDK (v6) pulls in `postal-mime` and `standardwebhooks` for inbound and webhook features this route doesn't use.
+- **Fixed recipient.** `to` comes only from `CONTACT_TO_EMAIL`, and the visitor's address goes in `reply_to`, so the endpoint can never be used to mail third parties. The body is plain text only, so nothing the visitor typed is rendered as HTML.
+- **Env:** `RESEND_API_KEY` and `CONTACT_TO_EMAIL` are required; without them the route returns `503` and the form shows its error state. `CONTACT_FROM_EMAIL` is optional and defaults to `brzezina.dev <contact@brzezina.dev>`. See `.env.example`.
+- **Validation:** server-side, mirroring the client: name ≤ 120 chars (control characters stripped, single line), email ≤ 254, message ≤ 5000, body ≤ 16 kB (`413`).
+- **Abuse controls:**
+  - same-origin check on `Origin` (`403`);
+  - a honeypot field, which gets a silent `200` without sending;
+  - a best-effort per-instance rate limit of 5 per IP per 10 minutes (`429`);
+  - Resend's daily cap as the backstop.
+- **Provider failure:** returns `502`, logged as `[contact] …`. The form keeps the typed message and offers a `mailto:` fallback.
+- **Privacy policy:** names Resend as the processor and adds it to the US transfers paragraph.

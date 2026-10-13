@@ -2,13 +2,13 @@
 
 import { useId, useRef, useState } from 'react'
 import styled from '@emotion/styled'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { Container, Section } from '@/components/layout'
 import { Reveal } from '@/components/Reveal'
 import { Button, Icon, SectionHeader } from '@/components/ui'
 import { hasLegalIdentity, legal, site } from '@/data/site'
 import { Link } from '@/i18n/navigation'
-import { type } from '@/styles/typography'
+import { type, visuallyHidden } from '@/styles/typography'
 
 type FieldName = 'name' | 'email' | 'message'
 type Values = Record<FieldName, string>
@@ -129,6 +129,11 @@ const Textarea = styled.textarea`
 const ErrorText = styled.p`
   ${type.bodyS}
   color: ${({ theme }) => theme.colors.error};
+`
+
+/* Honeypot: off-screen and out of the tab order and accessibility tree, so only bots fill it in. */
+const Trap = styled.div`
+  ${visuallyHidden}
 `
 
 const SubmitError = styled.p`
@@ -269,6 +274,7 @@ const BusinessDetails = styled.dd`
 
 export function Contact() {
   const t = useTranslations('contact')
+  const locale = useLocale()
   const uid = useId()
   const [values, setValues] = useState<Values>({ name: '', email: '', message: '' })
   const [touched, setTouched] = useState<Partial<Record<FieldName, boolean>>>({})
@@ -311,6 +317,8 @@ export function Contact() {
           name: values.name.trim(),
           email: values.email.trim(),
           message: values.message.trim(),
+          locale,
+          website: new FormData(e.currentTarget).get('website') ?? '',
         }),
       })
       if (!res.ok) throw new Error(`Contact endpoint responded ${res.status}`)
@@ -396,14 +404,16 @@ export function Contact() {
                     {errors.message && <ErrorText id={`${uid}-message-error`}>{errors.message}</ErrorText>}
                   </FieldRoot>
 
+                  <Trap aria-hidden="true">
+                    <label htmlFor={`${uid}-website`}>Website</label>
+                    <input id={`${uid}-website`} name="website" type="text" tabIndex={-1} autoComplete="off" />
+                  </Trap>
+
                   {status === 'error' && (
                     <SubmitError role="alert">
                       {t.rich('form.error', {
-                        link: (chunks) => (
-                          <a href={site.githubUrl} target="_blank" rel="noopener noreferrer">
-                            {chunks}
-                          </a>
-                        ),
+                        email: site.contactEmail,
+                        link: (chunks) => <a href={`mailto:${site.contactEmail}`}>{chunks}</a>,
                       })}
                     </SubmitError>
                   )}

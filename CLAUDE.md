@@ -172,12 +172,11 @@ Types: feat | fix | docs | style | refactor | perf | test | build | ci | chore |
 
 ## Open decisions — do not treat research recommendations as approved
 
+Resolved 2026-10-13: deployment is **Vercel-native** (ticket `10`, ADR-003) and the contact form sends through **Resend** from `src/app/api/contact/route.ts` (ticket `08`, ADR-006).
+
 The following are **not yet decided** — work the relevant ticket before coding against them:
 
 | Decision | Ticket | Notes |
 |----------|--------|-------|
-| `output: 'export'` vs Vercel-native SSG | `10` | Unresolved; affects i18n library and contact form |
-| Contact form approach | depends on `10` | Resend via route handler (Vercel-native) vs external service (static export) |
-| i18n library | `06` (blocked by `10`) | next-intl recommended by research; not HITL-approved; next-i18next still viable |
+| i18n library | `06` | next-intl recommended by research; not HITL-approved; next-i18next still viable |
 | CMS strategy | `07` | No-CMS recommended by research; not HITL-approved |
-| Mailer selection | `08` | Resend recommended by research; not HITL-approved |
