@@ -22,7 +22,25 @@ const Link = styled.a`
   }
 `;
 
+/*
+ * <main> is deliberately not focusable at rest: Next.js focuses the page's first element after a
+ * route change, and a focusable <main> taller than the viewport gets scrolled under the sticky
+ * header. The skip link makes it focusable just for the jump.
+ */
+function skipToMain(event: React.MouseEvent<HTMLAnchorElement>) {
+  const target = document.getElementById('main');
+  if (!target) return;
+  event.preventDefault();
+  target.setAttribute('tabindex', '-1');
+  target.addEventListener('blur', () => target.removeAttribute('tabindex'), { once: true });
+  target.focus();
+}
+
 export function SkipLink() {
   const t = useTranslations('a11y');
-  return <Link href="#main">{t('skip')}</Link>;
+  return (
+    <Link href="#main" onClick={skipToMain}>
+      {t('skip')}
+    </Link>
+  );
 }
