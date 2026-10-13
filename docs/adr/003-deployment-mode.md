@@ -1,8 +1,8 @@
 # ADR-003: Deployment mode — Vercel-native SSG vs static export
 
-**Status:** open  
-**Date:** 2026-08-18  
-**Decider:** Václav Brzezina (pending HITL confirmation)
+**Status:** accepted (Option A)  
+**Date:** 2026-08-18 · resolved 2026-10-13  
+**Decider:** Václav Brzezina
 
 ---
 
@@ -48,6 +48,6 @@ The codebase currently has no `output: 'export'` in `next.config.ts` — Vercel-
 
 **Option A.** Vercel-native SSG with API routes. The static-export constraint was inherited from an early assumption about deployment flexibility that is not relevant for this project — Vercel is the confirmed host, the stack is Next.js, and the contact form is a first-class requirement.
 
-## Decision needed
+## Resolution (2026-10-13)
 
-Confirm Option A (remove any `output: 'export'` config if present, proceed with Vercel-native). This unblocks ADR-004 (i18n) and ADR-006 (mailer).
+**Option A — Vercel-native.** Confirmed when the owner chose Resend for the contact form, which needs a route handler (ADR-006). It was already true in practice: the next-intl locale middleware and the `/[locale]` dynamic routes cannot run under `output: 'export'`. The commented-out `output: 'export'` line in `next.config` is obsolete.

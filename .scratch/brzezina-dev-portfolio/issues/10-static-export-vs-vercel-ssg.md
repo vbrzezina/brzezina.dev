@@ -1,7 +1,7 @@
 # Static export vs Vercel-native SSG deployment
 
 Type: grilling
-Status: in_progress
+Status: resolved
 Assignee: claude
 
 ## Question
@@ -24,3 +24,7 @@ Two options:
 - Loses full control over form submission UX and email format
 
 Resolve: confirm Option A (drop static export, use Vercel-native SSG) and update the map Notes accordingly.
+
+## Answer
+
+**Option A — Vercel-native.** Resolved 2026-10-13 alongside ticket 08: the Resend contact form needs a route handler, and the site already depends on a server runtime (the next-intl locale middleware and the `/[locale]` dynamic routes cannot run under `output: 'export'`). See `docs/adr/003-deployment-mode.md`.

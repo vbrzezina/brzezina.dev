@@ -12,7 +12,7 @@ export const site = {
   cvUrl: '/cv.pdf',
   /** Saved filename for `download` — ASCII so it survives every OS and mail client. */
   cvFileName: 'Vaclav-Brzezina-CV.pdf',
-  // Route handler not implemented yet (tickets 08/10) — until then submissions fail visibly.
+  // Route handler: src/app/api/contact/route.ts (Resend). Needs RESEND_API_KEY + CONTACT_TO_EMAIL.
   contactEndpoint: '/api/contact',
   // Needs a mailbox or forwarding set up on the domain before going live.
   contactEmail: 'vaclav@brzezina.dev',

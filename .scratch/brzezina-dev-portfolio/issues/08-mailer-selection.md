@@ -1,7 +1,7 @@
 # Contact form mailer selection
 
 Type: grilling
-Status: open
+Status: resolved
 Blocked by: 03
 
 ## Question
@@ -13,3 +13,7 @@ Depends on research from "Contact form mailer for Vercel serverless functions".
 Constraints: public repo, Vercel env vars for secrets, very low volume, personal portfolio.
 
 Resolve: select and commit to one approach with rationale.
+
+## Answer
+
+**Resend** — confirmed by the owner on 2026-10-13 ("we have Resend available now"). Implemented in `src/app/api/contact/route.ts` with the official `resend` SDK; env `RESEND_API_KEY` + `CONTACT_TO_EMAIL`. Details in `docs/adr/006-contact-form-mailer.md`.

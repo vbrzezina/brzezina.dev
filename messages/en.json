@@ -190,7 +190,7 @@
         "email": "Enter a valid email address",
         "message": "Please add a short message"
       },
-      "error": "Your message couldn’t be sent — it’s still here, so you can try again, or reach me on <link>GitHub</link>.",
+      "error": "Your message couldn’t be sent — it’s still here, so you can try again, or email me at <link>{email}</link>.",
       "successTitle": "Message sent",
       "successBody": "Thanks — I’ll reply within 1–2 business days.",
       "sendAnother": "Send another message"
@@ -242,7 +242,7 @@
         "The contact form asks for your name, email address and message. I use them only to reply to you and, if we decide to work together, to prepare an offer or contract.",
         "Legal basis: steps taken at your request before entering into a contract (Art. 6(1)(b) GDPR), or my legitimate interest in answering enquiries (Art. 6(1)(f) GDPR).",
         "I keep the conversation for up to 12 months after our last contact, unless it leads to a contract — then for as long as the law requires business records to be kept.",
-        "Messages are delivered by an email service provider acting on my behalf as a processor."
+        "Messages are delivered by Resend (Resend, Inc.), an email service acting on my behalf as a processor. It passes the message to my inbox and keeps delivery logs for a limited time."
       ]
     },
     "hosting": {
@@ -292,7 +292,7 @@
     "transfers": {
       "heading": "Transfers outside the EU",
       "paragraphs": [
-        "Vercel and Google are based in, or connected to, the United States. Transfers rely on the EU–US Data Privacy Framework and the European Commission’s standard contractual clauses."
+        "Vercel, Google and Resend are based in, or connected to, the United States. Transfers rely on the EU–US Data Privacy Framework or the European Commission’s standard contractual clauses."
       ]
     },
     "rights": {
