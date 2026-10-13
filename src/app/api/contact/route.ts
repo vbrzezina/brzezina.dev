@@ -16,23 +16,6 @@ import { CONTACT_LIMITS as LIMITS, EMAIL_PATTERN, HONEYPOT_FIELD, type ContactEr
 
 const DEFAULT_FROM = 'contact@brzezina.dev';
 
-
-// Best-effort per-instance rate limit. Fluid compute reuses instances, so this blunts a burst from
-// one address; it is not a global guarantee — Resend's daily cap is the backstop.
-const WINDOW_MS = 10 * 60 * 1000;
-const MAX_PER_WINDOW = 5;
-const recent = new Map<string, number[]>();
-
-function rateLimited(ip: string, now: number): boolean {
-  const hits = (recent.get(ip) ?? []).filter((t) => now - t < WINDOW_MS);
-  hits.push(now);
-  recent.set(ip, hits);
-  if (recent.size > 1000) {
-    for (const [key, times] of recent) if (times.every((t) => now - t >= WINDOW_MS)) recent.delete(key);
-  }
-  return hits.length > MAX_PER_WINDOW;
-}
-
 function sameOrigin(origin: string, host: string): boolean {
   try {
     return new URL(origin).host === host;
@@ -48,42 +31,13 @@ function sameOrigin(origin: string, host: string): boolean {
 function senderFor(name: string): string {
   const configured = process.env.CONTACT_FROM_EMAIL || DEFAULT_FROM;
   const address = configured.match(/<([^>]+)>/)?.[1] ?? configured.trim();
-  const displayName = name.replace(/["\\<>]/g, '').replace(/\s+/g, ' ').trim().slice(0, 64).trim();
+  const displayName = name
+    .replace(/["\\<>]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 64)
+    .trim();
   return `"${displayName} via brzezina.dev" <${address}>`;
-}
-
-/**
- * Reads the JSON body but gives up past `maxBytes`. A Content-Length check alone can't stop a chunked
- * request, which declares no length.
- */
-async function readJson(request: NextRequest, maxBytes: number): Promise<unknown | typeof TOO_LARGE> {
-  const reader = request.body?.getReader();
-  if (!reader) return null;
-
-  const chunks: Uint8Array[] = [];
-  let received = 0;
-  for (;;) {
-    const { done, value } = await reader.read();
-    if (done) break;
-    received += value.byteLength;
-    if (received > maxBytes) {
-      await reader.cancel();
-      return TOO_LARGE;
-    }
-    chunks.push(value);
-  }
-  try {
-    return JSON.parse(Buffer.concat(chunks).toString('utf8'));
-  } catch {
-    return null;
-  }
-}
-
-const TOO_LARGE = Symbol('too_large');
-
-/** The host the visitor typed: behind a proxy that's the forwarded one, not the server's bound address. */
-function requestHost(request: NextRequest): string {
-  return request.headers.get('x-forwarded-host') ?? request.headers.get('host') ?? request.nextUrl.host;
 }
 
 function fail(status: number, error: ContactError) {
@@ -92,16 +46,25 @@ function fail(status: number, error: ContactError) {
 
 /** Collapse whitespace and strip control characters — for values that end up in a subject line. */
 function singleLine(value: string): string {
-  return value.replace(/[\u0000-\u001f\u007f]+/g, ' ').replace(/\s+/g, ' ').trim();
+  return value
+    .replace(/[\u0000-\u001f\u007f]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 export async function POST(request: NextRequest) {
-  // Browsers always send Origin on a cross-origin POST; reject posts from other sites.
+  // Browsers send Origin on cross-site posts; refuse ones from another website. (Anyone can still call the
+  // endpoint directly — this only stops other sites from using a visitor's browser to do it.)
   const origin = request.headers.get('origin');
-  if (origin && !sameOrigin(origin, requestHost(request))) return fail(403, 'origin');
+  if (origin && !sameOrigin(origin, request.headers.get('host') ?? '')) return fail(403, 'origin');
 
-  const parsed = await readJson(request, LIMITS.body);
-  if (parsed === TOO_LARGE) return fail(413, 'too_large');
+  // Vercel already rejects request bodies over 4.5 MB; the per-field limits below handle the rest.
+  let parsed: unknown;
+  try {
+    parsed = await request.json();
+  } catch {
+    return fail(400, 'invalid');
+  }
   if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return fail(400, 'invalid');
   const body = parsed as Record<string, unknown>;
 
@@ -127,9 +90,6 @@ export async function POST(request: NextRequest) {
   ) {
     return fail(400, 'invalid');
   }
-
-  const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
-  if (rateLimited(ip, Date.now())) return fail(429, 'rate_limited');
 
   const apiKey = process.env.RESEND_API_KEY;
   const to = process.env.CONTACT_TO_EMAIL;

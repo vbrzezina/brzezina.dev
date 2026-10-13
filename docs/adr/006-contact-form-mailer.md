@@ -68,9 +68,10 @@ Implemented as `src/app/api/contact/route.ts`:
   - Resend's daily cap as the backstop.
 - **Provider failure:** returns `502`, logged as `[contact] …`. The form keeps the typed message and offers a `mailto:` fallback.
 - **Privacy policy:** names Resend as the processor and adds it to the US transfers paragraph.
-- **Hardening (2026-10-13, after a review):**
-  - the body limit is enforced while streaming (a chunked request has no `Content-Length`);
-  - the origin check compares against the forwarded host first, so it keeps working behind a proxy;
-  - the honeypot field is named `contact_trap` (a name like `website` is autofilled by password managers, which silently dropped real messages) and each hit is logged;
-  - limits and the email pattern live in `src/lib/contact.ts`, shared with the form, which now sets `maxLength` and shows distinct copy for rate-limited and rejected submissions;
-  - the email pattern rejects `< > " , ;`, so `x<a@b.cc>` can't reach `Reply-To`.
+- **Hardening, then trimming (2026-10-13):** a review added a streaming body limit, forwarded-host handling and a per-IP rate limiter; the owner then asked whether a plain-text form needs all that, and most of it came back out. What stays is what protects against a client that is not the form (anyone can POST directly):
+  - server-side validation with the same limits and email pattern as the form (`src/lib/contact.ts`; the pattern rejects `< > " , ;`);
+  - a fixed recipient with the visitor only in `Reply-To`, and a plain-text body;
+  - a sanitised sender display name;
+  - the honeypot, named `contact_trap` (a name like `website` is autofilled by password managers, which silently dropped real messages), with every hit logged;
+  - a simple same-site check comparing `Origin` with the `Host` header.
+  What was removed, and why: the **in-memory rate limiter** (per server instance, so a determined bot walks around it; if spam ever becomes real, use a Vercel firewall rate-limit rule or Cloudflare Turnstile — the form already has copy for a 429); the **streaming body cap** (Vercel rejects bodies over 4.5 MB itself, and per-field limits cover the rest); the **forwarded-host logic** (it fixed a problem that does not exist on Vercel).
