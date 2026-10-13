@@ -190,7 +190,8 @@
         "email": "Enter a valid email address",
         "message": "Please add a short message"
       },
-      "error": "Your message couldn’t be sent — it’s still here, so you can try again, or email me at <link>{email}</link>.",
+      "errorTitle": "Your message couldn’t be sent.",
+      "error": "Please try again or contact me directly at <link>{email}</link>.",
       "successTitle": "Message sent",
       "successBody": "Thanks — I’ll reply within 1–2 business days.",
       "sendAnother": "Send another message"
