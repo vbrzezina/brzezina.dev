@@ -14,7 +14,7 @@ export interface SkillGroup {
 export const SKILL_GROUPS: readonly SkillGroup[] = [
   {
     id: 'frontend',
-    items: ['TypeScript', 'React', 'Next.js', 'Emotion', 'MUI', 'Redux', 'RTK Query', 'React Hook Form', 'React Query', 'GraphQL', 'Jest', 'Cypress'],
+    items: ['React', 'Next.js', 'Emotion', 'MUI', 'Redux', 'RTK Query', 'React Hook Form', 'React Query', 'GraphQL', 'Jest', 'Cypress'],
   },
   {
     id: 'backend',
