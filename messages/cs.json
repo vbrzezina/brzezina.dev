@@ -190,7 +190,8 @@
         "email": "Zadejte platný e-mail",
         "message": "Připište prosím krátkou zprávu"
       },
-      "error": "Zprávu se nepodařilo odeslat — zůstala ve formuláři, takže to můžete zkusit znovu, nebo mi napište na <link>{email}</link>.",
+      "errorTitle": "Zprávu se nepodařilo odeslat.",
+      "error": "Zkuste to prosím znovu, nebo mi napište přímo na <link>{email}</link>.",
       "successTitle": "Zpráva odeslána",
       "successBody": "Děkuji — odpovím do 1–2 pracovních dnů.",
       "sendAnother": "Poslat další zprávu"

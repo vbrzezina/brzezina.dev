@@ -136,19 +136,37 @@ const Trap = styled.div`
   ${visuallyHidden}
 `
 
-const SubmitError = styled.p`
-  ${type.bodyS}
-  padding: 0.75rem 1rem;
-  border: 1px solid ${({ theme }) => theme.colors.error};
+/** Tinted callout — same error tint as an invalid field's focus halo, no outline. */
+const SubmitError = styled.div`
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
   border-radius: ${({ theme }) => theme.radius.sm};
-  color: ${({ theme }) => theme.colors.fg};
+  background: ${({ theme }) => theme.colors.errorSubtle};
 
   ${({ theme }) => theme.mq.sm} {
     grid-column: 1 / -1;
   }
 
+  svg {
+    flex: none;
+    margin-top: 0.0625rem;
+    color: ${({ theme }) => theme.colors.error};
+  }
+
+  p {
+    ${type.bodyS}
+    color: ${({ theme }) => theme.colors.fgSecondary};
+  }
+
+  strong {
+    display: block;
+    font-weight: 600;
+    color: ${({ theme }) => theme.colors.fg};
+  }
+
   a {
-    color: ${({ theme }) => theme.colors.accent};
+    color: ${({ theme }) => theme.colors.fg};
     text-decoration: underline;
     text-underline-offset: 0.2em;
   }
@@ -411,10 +429,14 @@ export function Contact() {
 
                   {status === 'error' && (
                     <SubmitError role="alert">
-                      {t.rich('form.error', {
-                        email: site.contactEmail,
-                        link: (chunks) => <a href={`mailto:${site.contactEmail}`}>{chunks}</a>,
-                      })}
+                      <Icon name="alert" size={20} />
+                      <p>
+                        <strong>{t('form.errorTitle')}</strong>
+                        {t.rich('form.error', {
+                          email: site.contactEmail,
+                          link: (chunks) => <a href={`mailto:${site.contactEmail}`}>{chunks}</a>,
+                        })}
+                      </p>
                     </SubmitError>
                   )}
 
