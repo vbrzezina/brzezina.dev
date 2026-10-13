@@ -7,6 +7,7 @@ import { Container, Section } from '@/components/layout'
 import { Reveal } from '@/components/Reveal'
 import { Button, Icon, SectionHeader } from '@/components/ui'
 import { site } from '@/data/site'
+import { Link } from '@/i18n/navigation'
 import { type } from '@/styles/typography'
 
 type FieldName = 'name' | 'email' | 'message'
@@ -152,6 +153,12 @@ const FormFooter = styled.div`
 const Hint = styled.p`
   ${type.bodyS}
   color: ${({ theme }) => theme.colors.fgTertiary};
+
+  a {
+    color: ${({ theme }) => theme.colors.fgSecondary};
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
 `
 
 // ─── Success state ────────────────────────────────────────────────────────────
@@ -350,7 +357,12 @@ export function Contact() {
                   )}
 
                   <FormFooter>
-                    <Hint>{t('form.required')}</Hint>
+                    <Hint>
+                      {t('form.required')}{' '}
+                      {t.rich('form.privacy', {
+                        link: (chunks) => <Link href="/privacy">{chunks}</Link>,
+                      })}
+                    </Hint>
                     <Button type="submit" disabled={status === 'sending'}>
                       {status === 'sending' ? t('form.sending') : t('form.submit')}
                       {status !== 'sending' && <Icon name="arrowRight" size={18} data-nudge />}

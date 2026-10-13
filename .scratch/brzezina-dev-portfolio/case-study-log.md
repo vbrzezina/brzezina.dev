@@ -161,6 +161,15 @@ Running record of decisions, alternatives considered, and wrong turns for the br
 
 ---
 
+### 2026-10-13 — GA4 kept, behind opt-in consent; privacy policy; no Terms
+
+**Decision:** GA4 via GTM stays, but GTM loads only after the visitor clicks Accept in a custom, non-modal banner (Consent Mode v2 defaults denied, then granted). Vercel Analytics (cookieless) runs for everyone. `NEXT_LOCALE` cookie disabled so the site sets zero cookies by default. Privacy policy page in EN/CS; no Terms of use. Details in ADR-009.
+**Alternatives considered:** Dropping GA4 to avoid a banner entirely (recommended, owner preferred GA4); Consent Mode "advanced" with pre-consent pings; a third-party CMP.
+**Why:** EU/Czech law requires opt-in for analytics cookies; loading nothing before consent is the simplest defensible pattern and keeps previews tracking-free (no ID → no banner). A custom banner keeps the design system intact and avoids another vendor script.
+**Wrong turn / lesson:** The first audit with the banner showing flagged the skip link — rendering the banner first had demoted the skip link from first focusable element. Moved the skip link into the layout ahead of the banner. Also: an earlier "zero cookies" check came back clean only because the server wasn't running — re-verifying against a live server found `NEXT_LOCALE`.
+
+---
+
 ### 2026-10-12 — Theme reset on locale switch: React owns `<html>`
 
 **Decision:** Removed `data-theme` from the server-rendered `<html>`; dark is the CSS default on `:root`. The colour-scheme provider re-applies the stored theme in a layout effect on every mount.

@@ -15,23 +15,6 @@ import { type, visuallyHidden } from '@/styles/typography';
 
 // ─── Shell ────────────────────────────────────────────────────────────────────
 
-const SkipLink = styled.a`
-  ${type.label}
-  position: fixed;
-  top: 0.75rem;
-  left: 0.75rem;
-  z-index: 100;
-  padding: 0.75rem 1rem;
-  border-radius: ${({ theme }) => theme.radius.sm};
-  background: ${({ theme }) => theme.colors.accent};
-  color: ${({ theme }) => theme.colors.onAccent};
-  transform: translateY(-200%);
-
-  &:focus-visible {
-    transform: none;
-  }
-`;
-
 /**
  * Translucent material that only shows its edge once content scrolls under it
  * (scroll-edge effect) — no permanent hard divider.
@@ -244,7 +227,12 @@ const SheetActions = styled.div`
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export function SiteNav() {
+interface SiteNavProps {
+  /** Prefix for section links — '' on the home page, '/<locale>' on other pages. */
+  homeHref?: string;
+}
+
+export function SiteNav({ homeHref = '' }: SiteNavProps) {
   const t = useTranslations('nav');
   const a11y = useTranslations('a11y');
   const activeSection = useActiveSection(SECTION_IDS);
@@ -273,16 +261,15 @@ export function SiteNav() {
     id,
     index: String(i + 1).padStart(2, '0'),
     label: t(id),
-    href: `#${id}`,
+    href: `${homeHref}#${id}`,
   }));
 
   return (
     <>
-      <SkipLink href="#main">{a11y('skip')}</SkipLink>
       <Header $scrolled={scrolled || open}>
         <Container>
           <Inner>
-            <Logo />
+            <Logo href={`${homeHref}#top`} />
 
             <NavRoot aria-label={a11y('mainNav')}>
               <NavList role="list">
@@ -322,7 +309,7 @@ export function SiteNav() {
                     <SheetTitle>{a11y('menu')}</SheetTitle>
                     <Container>
                       <Inner>
-                        <Logo onClick={() => navigateFromSheet('top')} />
+                        <Logo href={`${homeHref}#top`} onClick={() => navigateFromSheet('top')} />
                         <Dialog.Close asChild>
                           <MenuButton type="button" aria-label={a11y('closeMenu')}>
                             <Icon name="close" />
@@ -356,7 +343,7 @@ export function SiteNav() {
                             </a>
                           </Button>
                           <Button asChild>
-                            <a href="#contact" onClick={() => navigateFromSheet('contact')}>
+                            <a href={`${homeHref}#contact`} onClick={() => navigateFromSheet('contact')}>
                               {t('getInTouch')}
                             </a>
                           </Button>
