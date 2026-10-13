@@ -34,8 +34,8 @@
       "role": "role",
       "roleValue": "Lead Software Engineer · EPAM Systems",
       "stack": "stack",
-      "based": "sídlo",
-      "basedValue": "Česko · SEČ",
+      "based": "lokalita",
+      "basedValue": "Praha, Česko · SEČ",
       "speaks": "jazyky"
     },
     "shippedFor": "Pracoval jsem na projektech pro"
@@ -182,7 +182,7 @@
       "namePlaceholder": "Jana Nováková",
       "emailPlaceholder": "jana@firma.cz",
       "messagePlaceholder": "Co stavíte a kde bych mohl pomoct?",
-      "required": "Všechna pole jsou povinná.",
+      "privacy": "Údaje použiji jen k odpovědi — <link>ochrana osobních údajů</link>.",
       "submit": "Odeslat zprávu",
       "sending": "Odesílám…",
       "errors": {
@@ -196,12 +196,16 @@
       "sendAnother": "Poslat další zprávu"
     },
     "sidebar": {
+      "emailLabel": "E-mail",
+      "phoneLabel": "Telefon",
       "responseLabel": "Doba odpovědi",
       "responseValue": "Do 1–2 pracovních dnů",
-      "basedLabel": "Sídlo",
-      "basedValue": "Česko · SEČ (UTC+1)",
+      "basedLabel": "Lokalita",
+      "basedValue": "Praha, Česko · SEČ (UTC+1)",
       "cvLabel": "Životopis",
-      "cvCta": "Stáhnout PDF"
+      "cvCta": "Stáhnout PDF",
+      "businessLabel": "Fakturační údaje",
+      "ico": "IČO {ico}"
     }
   },
   "footer": {
@@ -209,6 +213,100 @@
     "sectionsLabel": "Sekce",
     "elsewhereLabel": "Jinde",
     "copyright": "© 2026 Václav Brzezina",
+    "privacy": "Ochrana osobních údajů",
+    "cookieSettings": "Nastavení cookies",
     "backToTop": "Zpět nahoru"
+  },
+  "consent": {
+    "title": "Analytické cookies",
+    "body": "Rád bych používal Google Analytics, abych viděl, jak návštěvníci web nacházejí a používají. Bez vašeho souhlasu se nic neměří. <link>Ochrana osobních údajů</link>",
+    "accept": "Přijmout",
+    "reject": "Odmítnout"
+  },
+  "privacy": {
+    "metaTitle": "Ochrana osobních údajů — Václav Brzezina",
+    "metaDescription": "Jaké osobní údaje brzezina.dev zpracovává, proč a co s tím můžete udělat.",
+    "eyebrow": "Právní informace",
+    "title": "Ochrana osobních údajů",
+    "updated": "Naposledy aktualizováno: 13. října 2026",
+    "intro": "Tento web je moje osobní portfolio. Zpracovává co nejméně údajů — tady je přesně jakých, proč a co s tím můžete udělat.",
+    "controller": {
+      "heading": "Kdo za vaše údaje odpovídá",
+      "body": "Správcem vašich osobních údajů je {name}.",
+      "identity": "IČO {ico}, {address}.",
+      "contact": "Ve všech záležitostech týkajících se vašich údajů pište na <mail>{email}</mail>."
+    },
+    "contact": {
+      "heading": "Když mi pošlete zprávu",
+      "paragraphs": [
+        "Kontaktní formulář se ptá na jméno, e-mail a zprávu. Používám je jen k tomu, abych vám odpověděl, a pokud se domluvíme na spolupráci, k přípravě nabídky nebo smlouvy.",
+        "Právní základ: provedení opatření před uzavřením smlouvy na vaši žádost (čl. 6 odst. 1 písm. b) GDPR), případně můj oprávněný zájem odpovídat na dotazy (čl. 6 odst. 1 písm. f) GDPR).",
+        "Konverzaci uchovávám nejdéle 12 měsíců od posledního kontaktu, pokud z ní nevznikne smlouva — pak po dobu, kterou předpisy vyžadují pro uchovávání obchodních záznamů.",
+        "Zprávy doručuje poskytovatel e-mailových služeb, který je pro mě zpracovává jako zpracovatel."
+      ]
+    },
+    "hosting": {
+      "heading": "Hosting a serverové záznamy",
+      "paragraphs": [
+        "Web běží na hostingu společnosti Vercel Inc. Jako každý webový server zaznamenává technické údaje, například vaši IP adresu, typ prohlížeče a požadované stránky, aby mohl web doručit a chránit (oprávněný zájem, čl. 6 odst. 1 písm. f) GDPR). Poskytovatel hostingu tyto záznamy uchovává jen krátce."
+      ]
+    },
+    "analytics": {
+      "heading": "Analytika",
+      "paragraphs": [
+        "Vercel Web Analytics počítá návštěvy bez cookies a bez ukládání čehokoli, co by vás identifikovalo. Běží pro všechny návštěvníky (oprávněný zájem).",
+        "Google Analytics 4, načítané přes Google Tag Manager, se spustí jen tehdy, když v liště o cookies kliknete na „Přijmout“ (souhlas, čl. 6 odst. 1 písm. a) GDPR a § 89 odst. 3 zákona o elektronických komunikacích). Ukazují mi, jak návštěvníci web nacházejí a používají. Údaje pro mě zpracovává Google Ireland Limited; Google Analytics 4 neukládá IP adresy.",
+        "Svou volbu můžete kdykoli změnit v „Nastavení cookies“ v patičce. Odvoláním souhlasu se cookies Google Analytics z vašeho prohlížeče smažou."
+      ]
+    },
+    "storage": {
+      "heading": "Cookies a lokální úložiště",
+      "columns": [
+        "Název",
+        "Typ",
+        "Účel",
+        "Doba"
+      ],
+      "rows": [
+        [
+          "theme",
+          "Lokální úložiště",
+          "Pamatuje si světlý nebo tmavý režim",
+          "Dokud ho nesmažete"
+        ],
+        [
+          "consent",
+          "Lokální úložiště",
+          "Pamatuje si vaši volbu ohledně analytiky",
+          "12 měsíců"
+        ],
+        [
+          "_ga, _ga_<ID>",
+          "Cookie (Google)",
+          "Rozlišuje návštěvníky v Google Analytics — jen po vašem souhlasu",
+          "Až 2 roky"
+        ]
+      ],
+      "note": "Nic dalšího se neukládá. Bez souhlasu s analytikou web nenastavuje žádné cookies."
+    },
+    "transfers": {
+      "heading": "Předávání mimo EU",
+      "paragraphs": [
+        "Vercel a Google sídlí ve Spojených státech, nebo jsou s nimi propojeni. Předávání údajů se opírá o rámec EU–USA pro ochranu osobních údajů (Data Privacy Framework) a standardní smluvní doložky Evropské komise."
+      ]
+    },
+    "rights": {
+      "heading": "Vaše práva",
+      "paragraphs": [
+        "Máte právo na přístup ke svým údajům, jejich opravu nebo výmaz, omezení zpracování, vznesení námitky, jejich získání v přenositelném formátu a na odvolání souhlasu kdykoli — napište mi na {email}.",
+        "Stížnost můžete podat také u Úřadu pro ochranu osobních údajů (uoou.gov.cz)."
+      ]
+    },
+    "changes": {
+      "heading": "Změny",
+      "paragraphs": [
+        "Pokud se tyto zásady změní, novou verzi zveřejním zde s aktualizovaným datem."
+      ]
+    }
   }
 }

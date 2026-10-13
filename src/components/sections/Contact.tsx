@@ -6,7 +6,8 @@ import { useTranslations } from 'next-intl'
 import { Container, Section } from '@/components/layout'
 import { Reveal } from '@/components/Reveal'
 import { Button, Icon, SectionHeader } from '@/components/ui'
-import { site } from '@/data/site'
+import { hasLegalIdentity, legal, site } from '@/data/site'
+import { Link } from '@/i18n/navigation'
 import { type } from '@/styles/typography'
 
 type FieldName = 'name' | 'email' | 'message'
@@ -38,7 +39,7 @@ const Layout = styled.div`
 `
 
 const Panel = styled.div`
-  padding: clamp(1.25rem, 1rem + 1.5vw, 2rem);
+  padding: clamp(1.25rem, 1rem + 1.5vw, 2.5rem);
   background: ${({ theme }) => theme.colors.surface};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radius.md};
@@ -70,13 +71,19 @@ const Label = styled.label`
   color: ${({ theme }) => theme.colors.fg};
 `
 
+/* Visual marker only — the inputs carry `required`, so assistive tech announces it already. */
+const RequiredMark = styled.span`
+  margin-left: 0.25rem;
+  color: ${({ theme }) => theme.colors.accent};
+`
+
 const controlStyles = ({ theme }: { theme: import('@emotion/react').Theme }) => `
   width: 100%;
   min-height: 3rem;
   padding: 0.75rem 0.875rem;
   border-radius: ${theme.radius.sm};
   border: 1px solid ${theme.colors.borderStrong};
-  background: ${theme.colors.canvas};
+  background: ${theme.colors.band};
   color: ${theme.colors.fg};
   font-family: ${theme.fonts.sans};
   font-size: 1.0625rem;
@@ -100,6 +107,12 @@ const controlStyles = ({ theme }: { theme: import('@emotion/react').Theme }) => 
 
   &[aria-invalid='true'] {
     border-color: ${theme.colors.error};
+  }
+
+  /* An invalid field keeps its error colour while focused — the halo turns red too. */
+  &[aria-invalid='true']:focus-visible {
+    border-color: ${theme.colors.error};
+    box-shadow: 0 0 0 3px ${theme.colors.errorSubtle};
   }
 `
 
@@ -152,6 +165,12 @@ const FormFooter = styled.div`
 const Hint = styled.p`
   ${type.bodyS}
   color: ${({ theme }) => theme.colors.fgTertiary};
+
+  a {
+    color: ${({ theme }) => theme.colors.fgSecondary};
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
 `
 
 // ─── Success state ────────────────────────────────────────────────────────────
@@ -191,7 +210,7 @@ const SuccessBody = styled.p`
 
 const Aside = styled.dl`
   display: grid;
-  gap: 1.75rem;
+  gap: 1.25rem 1.75rem;
   align-content: start;
 
   ${({ theme }) => theme.mq.sm} {
@@ -200,18 +219,50 @@ const Aside = styled.dl`
 
   ${({ theme }) => theme.mq.lg} {
     grid-template-columns: 1fr;
-    padding-top: 0.5rem;
+    /* Text tops line up with the panel's first label. */
+    padding-top: clamp(1.25rem, 1rem + 1.5vw, 2.5rem);
   }
 
   dt {
     ${type.monoEyebrow}
     color: ${({ theme }) => theme.colors.fgTertiary};
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.375rem;
   }
 
   dd {
     ${type.bodyM}
     color: ${({ theme }) => theme.colors.fg};
+  }
+`
+
+const AsideLink = styled.a`
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  /* Full-size touch target, but the text sits on the same baseline rhythm as the plain values. */
+  margin-block: -0.5rem;
+  color: ${({ theme }) => theme.colors.fg};
+  text-decoration: underline;
+  text-decoration-color: ${({ theme }) => theme.colors.borderStrong};
+  text-underline-offset: 0.25em;
+  transition:
+    color ${({ theme }) => theme.motion.fast} ease,
+    text-decoration-color ${({ theme }) => theme.motion.fast} ease;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.accent};
+    text-decoration-color: currentColor;
+  }
+`
+
+const BusinessDetails = styled.dd`
+  && {
+    ${type.bodyS}
+    color: ${({ theme }) => theme.colors.fgSecondary};
+  }
+
+  span {
+    display: block;
   }
 `
 
@@ -320,20 +371,29 @@ export function Contact() {
               ) : (
                 <Form ref={formRef} onSubmit={handleSubmit} noValidate aria-label={t('form.label')}>
                   <FieldRoot>
-                    <Label htmlFor={`${uid}-name`}>{t('form.name')}</Label>
+                    <Label htmlFor={`${uid}-name`}>
+                      {t('form.name')}
+                      <RequiredMark aria-hidden="true">*</RequiredMark>
+                    </Label>
                     <Input type="text" autoComplete="name" {...fieldProps('name')} />
                     {errors.name && <ErrorText id={`${uid}-name-error`}>{errors.name}</ErrorText>}
                   </FieldRoot>
 
                   <FieldRoot>
-                    <Label htmlFor={`${uid}-email`}>{t('form.email')}</Label>
+                    <Label htmlFor={`${uid}-email`}>
+                      {t('form.email')}
+                      <RequiredMark aria-hidden="true">*</RequiredMark>
+                    </Label>
                     <Input type="email" autoComplete="email" inputMode="email" {...fieldProps('email')} />
                     {errors.email && <ErrorText id={`${uid}-email-error`}>{errors.email}</ErrorText>}
                   </FieldRoot>
 
                   <FieldRoot $wide>
-                    <Label htmlFor={`${uid}-message`}>{t('form.message')}</Label>
-                    <Textarea rows={7} {...fieldProps('message')} />
+                    <Label htmlFor={`${uid}-message`}>
+                      {t('form.message')}
+                      <RequiredMark aria-hidden="true">*</RequiredMark>
+                    </Label>
+                    <Textarea rows={8} {...fieldProps('message')} />
                     {errors.message && <ErrorText id={`${uid}-message-error`}>{errors.message}</ErrorText>}
                   </FieldRoot>
 
@@ -350,7 +410,11 @@ export function Contact() {
                   )}
 
                   <FormFooter>
-                    <Hint>{t('form.required')}</Hint>
+                    <Hint>
+                      {t.rich('form.privacy', {
+                        link: (chunks) => <Link href="/privacy">{chunks}</Link>,
+                      })}
+                    </Hint>
                     <Button type="submit" disabled={status === 'sending'}>
                       {status === 'sending' ? t('form.sending') : t('form.submit')}
                       {status !== 'sending' && <Icon name="arrowRight" size={18} data-nudge />}
@@ -363,6 +427,18 @@ export function Contact() {
 
           <Reveal delay={160}>
             <Aside>
+              <div>
+                <dt>{t('sidebar.emailLabel')}</dt>
+                <dd>
+                  <AsideLink href={`mailto:${site.contactEmail}`}>{site.contactEmail}</AsideLink>
+                </dd>
+              </div>
+              <div>
+                <dt>{t('sidebar.phoneLabel')}</dt>
+                <dd>
+                  <AsideLink href={site.phoneHref}>{site.phone}</AsideLink>
+                </dd>
+              </div>
               <div>
                 <dt>{t('sidebar.responseLabel')}</dt>
                 <dd>{t('sidebar.responseValue')}</dd>
@@ -382,6 +458,16 @@ export function Contact() {
                   </Button>
                 </dd>
               </div>
+              {hasLegalIdentity && (
+                <div>
+                  <dt>{t('sidebar.businessLabel')}</dt>
+                  <BusinessDetails>
+                    <span>{legal.name}</span>
+                    <span>{t('sidebar.ico', { ico: legal.ico })}</span>
+                    <span>{legal.address}</span>
+                  </BusinessDetails>
+                </div>
+              )}
             </Aside>
           </Reveal>
         </Layout>

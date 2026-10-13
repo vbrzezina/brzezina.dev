@@ -139,7 +139,8 @@ Only `transform` and `opacity` are animated for movement. No looping animation a
 ### Nav (sticky, 64px)
 - **Left:** Logo.
 - **Centre (≥900px):** About · Experience · Services · Work · Contact. Active section → `fg` + a 1px accent rule under the label, scaling in from the centre — the same mark as the eyebrow's rule (`aria-current`).
-- **Right:** LocaleSwitch · ThemeToggle · `CV` secondary `sm` button with download icon.
+- **Right:** LocaleSwitch · ThemeToggle · `CV` `subtle` `sm` button with download icon.
+- **Same nav on every page.** Content pages (`variant="page"`: privacy, future blog) change only the surface (solid header). Links and actions stay identical: section links point back into the home page (`/<locale>#experience`), and CV and "Get in touch" stay. A blog post is often a visitor's first page, and the header is their way into the portfolio. No section is highlighted on a content page; the active-section hook ignores ids that aren't rendered. When the blog ships it joins the link list and is the active item on its pages.
 - **Material:** transparent at the top of the page; after 8px of scroll it becomes `--color-material` + `backdrop-filter: blur(20px) saturate(180%)` with a hairline bottom edge. The edge exists only when content is actually under the bar.
 - **< 900px:** Logo · ThemeToggle · 44px menu button. Menu = Radix Dialog sheet anchored to the top edge: large `titleL` links with mono counters (`01 About`), LocaleSwitch, CV + "Get in touch" buttons. Focus trap, Escape, scrim click. Dismissing returns focus to the trigger; choosing a section moves focus to that section instead.
 - **Active section:** the section the reading line (35% down the viewport) passes through; none while on the hero; the last section at the very bottom of the page.
@@ -197,11 +198,17 @@ Replace the three TBD cards with **real, honest content**:
 
 ### 05 Contact — "Available for freelance and contract engagements"
 - Lead: "Tell me about the product, the stack and the timeline. I reply within 1–2 business days." (matches the brief; replaces "48 hours")
-- **Form panel (8 cols, surface):** Name + Email side by side (stacked on mobile), Message (min 8 rows). Footer row: "All fields are required." on the left, **Send message** primary on the right. Inline validation. After submit the panel swaps to a success state with a check icon and the reply-time promise.
-- **Aside (4 cols):** `<dl>` with mono labels — Response time · Based in · Curriculum vitae (secondary button "Download PDF"). GitHub lives in the footer only.
+- **Form panel (8 cols, surface):** Name + Email side by side (stacked on mobile), Message (min 8 rows). Panel on `--color-surface` (same as the service cards), fields recessed on `--color-band` (the alternate-section tone). At desktop the aside's top padding equals the panel's, so its first label sits level with the form's first label, and its rhythm (1.25rem items, 0.375rem label gap) ends it at the panel's bottom edge. Every label carries an accent `*` (aria-hidden; inputs are `required`). Footer row: privacy note on the left, **Send message** primary on the right. Inline validation — an invalid field keeps the error border and gets an error-tinted focus halo (`--color-error-subtle`), never the accent one. After submit the panel swaps to a success state with a check icon and the reply-time promise.
+- **Aside (4 cols):** `<dl>` with mono labels — Email (mailto) · Phone (tel) · Response time · Based in (CS *Lokalita* — not *Sídlo*, which reads as the registered address) · Curriculum vitae (secondary button "Download PDF") · Business details (name / IČO / registered address — the Civil Code §435 identification; also in the privacy policy, not in the footer). GitHub and LinkedIn live in the footer only.
+
+### Content pages (privacy policy, future blog)
+- Use `ContentPage` (`src/components/layout/ContentPage.tsx`): `SiteNav variant="page"` + `<main>` + footer, with section links prefixed by `/<locale>`.
+- Header is **always solid** — `--color-header` (`#07101f` dark / surface white light) with a hairline bottom border, no scroll transition, no blur.
+- Body sits on `--color-page` (`#0d1723` dark / band grey light) and starts **below** the header — no negative margin, no hero overlap.
+- The home page keeps its transparent-until-scrolled header over the hero.
 
 ### Footer
-- Logo + a two-sentence description (role, stack, years, location, availability) · Sections column · Elsewhere (GitHub + LinkedIn — CV is in the nav and Contact).
+- Logo (pulled up so its text sits on the column eyebrows' line; the tagline's first line sits level with the first links) + a two-sentence description (role, stack, years, location, availability) · Sections column · Elsewhere (GitHub + LinkedIn — CV is in the nav and Contact).
 - Theme toggle and language switch live in the header only (sticky, so always one click away; on mobile both sit in/next to the menu) — no duplicate controls in the footer.
 - Bottom bar: `© 2026 Václav Brzezina` · "Back to top ↑".
 
