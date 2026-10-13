@@ -60,6 +60,7 @@ browser tests. A pre-commit hook formats and lints staged files and type-checks 
 - `docs/adr/` — architecture decisions (framework, styling, i18n, mailer, analytics/consent, SEO and rendering)
 - `.scratch/brzezina-dev-portfolio/` — planning map, tickets, and the running case-study log
 - `src/lib/seo.ts`, `src/app/sitemap.ts` — page metadata and the sitemap; new pages need an entry in both
+- `scripts/generate-icons.mjs` — regenerates every icon (favicon, Apple, manifest) from one `$` glyph
 
 ## Adding a page
 

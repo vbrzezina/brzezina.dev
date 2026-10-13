@@ -19,7 +19,9 @@ A review of `main` found that both page routes were rendered on every request (`
 5. **Structured data.** The home page renders a server-side JSON-LD graph (`Person`, `ProfessionalService` with the IČO as an identifier, `WebSite`), built from data that is already public on the page (`src/lib/structuredData.ts`).
 6. **Branded 404.** `[locale]/not-found.tsx` plus a `[locale]/[...rest]` catch-all that calls `notFound()`, so unknown paths below a valid locale render inside the locale layout (correct `lang`, nav, footer, `noindex`).
 7. **Hero is visible without JavaScript.** `Reveal` has an `eager` mode: a CSS-only entrance animation instead of hidden-until-hydrated. The hero uses it. A `<noscript>` rule shows all other reveals when scripts don't run.
-8. **Fonts include `latin-ext`.** Czech letters (č ř ě ů ž š) are outside the `latin` subset and silently fell back to a system font. The English page needs them too (the address "Střížkov"). Cost: about 49 KB of extra preloads on every page.
+8. **Web app manifest** (`app/manifest.ts`), so the site is installable ("Add to Home Screen") with its own icon and no browser chrome. Chrome reports no installability errors. **There is deliberately no service worker**: no offline cache means a deploy is visible immediately and there is no stale-content failure mode; a test fails if one is ever registered. If offline support is wanted later (the CV is the obvious candidate), use Serwist with network-first pages. `theme-color` follows the OS colour scheme, because the in-page toggle can't change it after load.
+9. **Icons from one source.** The mark is the logo's `$` (teal on navy), drawn as paths so it needs no font. `scripts/generate-icons.mjs` renders `icon.svg`, `favicon.ico`, `apple-icon.png` and the manifest's 192/512/maskable PNGs, so they can't drift apart. Re-run it after changing the glyph.
+10. **Fonts include `latin-ext`.** Czech letters (č ř ě ů ž š) are outside the `latin` subset and silently fell back to a system font. The English page needs them too (the address "Střížkov"). Cost: about 49 KB of extra preloads on every page.
 
 ## Consequences
 

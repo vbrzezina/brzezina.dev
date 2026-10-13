@@ -1,50 +1,57 @@
-import type { Metadata } from "next";
-import { hasLocale, NextIntlClientProvider } from "next-intl";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-import { notFound } from "next/navigation";
-import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
-import { Space_Grotesk, DM_Sans, JetBrains_Mono } from "next/font/google";
-import { ThemeRegistry } from "@/app/ThemeRegistry";
-import { ConsentBanner, ConsentProvider } from "@/components/consent";
-import { SkipLink } from "@/components/nav/SkipLink";
-import { themeInitScript } from "@/app/themeScript";
-import { routing } from "@/i18n/routing";
-import { site } from "@/data/site";
-import { pageMetadata } from "@/lib/seo";
-import "@/styles/tokens.css";
-import "@/app/globals.css";
+import type { Metadata, Viewport } from 'next';
+import { hasLocale, NextIntlClientProvider } from 'next-intl';
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
+import { notFound } from 'next/navigation';
+import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
+import { Space_Grotesk, DM_Sans, JetBrains_Mono } from 'next/font/google';
+import { ThemeRegistry } from '@/app/ThemeRegistry';
+import { ConsentBanner, ConsentProvider } from '@/components/consent';
+import { SkipLink } from '@/components/nav/SkipLink';
+import { themeInitScript } from '@/app/themeScript';
+import { routing } from '@/i18n/routing';
+import { site } from '@/data/site';
+import { pageMetadata } from '@/lib/seo';
+import '@/styles/tokens.css';
+import '@/app/globals.css';
 
 const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin", "latin-ext"],
-  variable: "--font-display",
-  display: "swap",
+  subsets: ['latin', 'latin-ext'],
+  variable: '--font-display',
+  display: 'swap',
 });
 
 const dmSans = DM_Sans({
-  subsets: ["latin", "latin-ext"],
-  variable: "--font-sans",
-  display: "swap",
+  subsets: ['latin', 'latin-ext'],
+  variable: '--font-sans',
+  display: 'swap',
 });
 
 const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin", "latin-ext"],
-  variable: "--font-mono",
-  display: "swap",
+  subsets: ['latin', 'latin-ext'],
+  variable: '--font-mono',
+  display: 'swap',
 });
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}): Promise<Metadata> {
+// Colours the browser chrome (mobile address bar, installed-app title bar) to match the site's header.
+// `media` follows the operating-system theme; the in-page toggle can't change it after load.
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: dark)', color: '#07101f' },
+    { media: '(prefers-color-scheme: light)', color: '#fefefb' },
+  ],
+};
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
-  const t = await getTranslations({ locale, namespace: "meta" });
+  const t = await getTranslations({ locale, namespace: 'meta' });
 
   return {
     metadataBase: new URL(site.url),
-    ...pageMetadata({ locale, title: t("title"), description: t("description") }),
+    // iOS: opens full-screen from the home screen (the web manifest covers Android and desktop).
+    appleWebApp: { capable: true, title: site.url.replace('https://', ''), statusBarStyle: 'default' },
+    ...pageMetadata({ locale, title: t('title'), description: t('description') }),
   };
 }
 
@@ -80,7 +87,7 @@ export default async function LocaleLayout({
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         {/* Reveal blocks start transparent and fade in once scripts run; without JS they must just show. */}
         <noscript>
-          <style>{"[data-reveal]{opacity:1!important;transform:none!important;animation:none!important}"}</style>
+          <style>{'[data-reveal]{opacity:1!important;transform:none!important;animation:none!important}'}</style>
         </noscript>
       </head>
       <body>
