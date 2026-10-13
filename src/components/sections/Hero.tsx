@@ -244,20 +244,20 @@ export function Hero() {
       <Container>
         <Layout>
           <Copy>
-            <Reveal>
+            <Reveal eager>
               <StatusPill>{t('status')}</StatusPill>
               <Name id="hero-title">
                 <NameLine>{first}</NameLine> <NameLine>{rest.join(' ')}</NameLine>
               </Name>
             </Reveal>
 
-            <Reveal delay={80}>
+            <Reveal eager delay={80}>
               <Role>{t('role')}</Role>
               <Tagline>{t('tagline')}</Tagline>
               <Intro>{t('intro')}</Intro>
             </Reveal>
 
-            <Reveal delay={160}>
+            <Reveal eager delay={160}>
               <Actions>
                 <Button asChild>
                   <a href="#work">
@@ -273,7 +273,7 @@ export function Hero() {
           </Copy>
 
           <Visual>
-            <Reveal delay={120}>
+            <Reveal eager delay={120}>
               <Portrait>
                 <PortraitFill>
                   <Image
@@ -287,7 +287,7 @@ export function Hero() {
                 </PortraitFill>
               </Portrait>
             </Reveal>
-            <WhoamiReveal delay={260}>
+            <WhoamiReveal eager delay={260}>
               <Whoami>
                 <Prompt aria-hidden="true">
                   ~ <b>$</b> <span>whoami</span>
