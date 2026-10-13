@@ -247,6 +247,13 @@ Running record of decisions, alternatives considered, and wrong turns for the br
 **Why:** Every serious defect found in the review was invisible to the tooling that existed: pages silently rendering per request, a honeypot named like an autofill target, an origin check tied to the server's host. Each is now a test or a CI assertion.
 **Wrong turn / lesson:** The first e2e run failed six tests, none of them a site bug: a `role="alert"` locator also matched Next's own route announcer, and an axe run started while a section was mid-fade (blended opacity reads as low contrast). Both were test-design mistakes. Mutation-checking the tests (break the code on purpose, watch them fail) is what makes a green suite trustworthy.
 
+### 2026-10-13 — PWA: a manifest, no service worker
+
+**Decision:** Make the site installable with `app/manifest.ts`, icons and theme colours, and nothing else. No service worker, no PWA library. The favicon and every app icon are the logo's `$`, generated from one script.
+**Alternatives considered:** `next-pwa` (abandoned, last release 2022); `@ducanh2912/next-pwa` (a fork whose own README now points to Serwist); Serwist with offline caching (deferred); `next-sitemap` to replace the sitemap/robots files (rejected: the built-in `sitemap.ts`/`robots.ts` are the library approach and understand locale alternates).
+**Why:** Installability is the cheap, risk-free half of a PWA. The expensive half, a caching service worker, can show returning visitors an old version of a site that is redeployed often, for a portfolio nobody browses offline. Chrome confirms the manifest alone is installable. If the CV should work offline later, Serwist with network-first pages is the way.
+**Wrong turn / lesson:** The first favicon was a `>_` prompt. The owner wanted the `$` from the logo, which is the better mark: it is already the brand's one recurring glyph. Generating all icons from one script means the next change is one edit, not six files.
+
 ### 2026-10-13 — Trimming the contact route: what a plain-text form really needs
 
 **Decision:** Remove the in-memory rate limiter, the streaming body reader and the forwarded-host handling from the contact route; keep validation, the fixed recipient, the sanitised sender, the honeypot and the simple Origin/Host check.
