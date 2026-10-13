@@ -208,3 +208,10 @@ Running record of decisions, alternatives considered, and wrong turns for the br
 - A git-graph of career milestones (repeats the Experience timeline).
 **Why:** The diagram draws exactly what the bio's lede says. It belongs to the site's blueprint grid language, works in both themes from tokens alone and costs no image bytes. A stock photo would read as filler on a portfolio whose point is authenticity.
 **Wrong turn / lesson:** Three rounds of photo-picking for this slot. The slot never needed a photo, it needed something that explained the work.
+
+### 2026-10-13 — Security upgrade: Next.js 15.5.27, next-intl v4; postcss advisory accepted
+
+**Decision:** Patch Next.js to 15.5.27, which fixes two critical RCE advisories, one of them in the Image Optimization API that `next/image` uses. Move next-intl from 3.26.5 to 4.14.9: the middleware open-redirect fix only exists in v4. Leave the postcss advisory open; Next 15 pins postcss to exactly 8.4.31, and the only fix on offer is Next 16.
+**Alternatives considered:** `npm audit fix --force` (jumps to Next 16, a major upgrade with its own migration); an `overrides` entry forcing postcss ≥ 8.5.23 under Next.
+**Why:** The postcss advisories all need attacker-controlled CSS. Here postcss only compiles the repo's own stylesheets at build time, so overriding a framework's exact pin would add risk without removing any. The v4 migration was nearly drop-in because the code already used next-intl's newer APIs (`createNavigation`, `defineRouting`, `requestLocale`).
+**Wrong turn / lesson:** Probing the open redirect turned up an older bug. The middleware matcher skips dotted paths, and the `[locale]` layout never validated the locale, so `/foo.bar` rendered the home page with a 200 and `lang="foo.bar"`. Fixed with v4's `hasLocale` + `notFound()`.

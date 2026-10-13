@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
-import { NextIntlClientProvider } from "next-intl";
+import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { notFound } from "next/navigation";
 import { getMessages } from "next-intl/server";
 import { Space_Grotesk, DM_Sans, JetBrains_Mono } from "next/font/google";
 import { ThemeRegistry } from "@/app/ThemeRegistry";
 import { ConsentBanner, ConsentProvider } from "@/components/consent";
 import { SkipLink } from "@/components/nav/SkipLink";
 import { themeInitScript } from "@/app/themeScript";
+import { routing } from "@/i18n/routing";
 import "@/styles/tokens.css";
 import "@/app/globals.css";
 
@@ -43,6 +45,9 @@ export default async function LocaleLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  // The middleware skips paths containing a dot (static files), so `/foo.bar` lands here with
+  // locale "foo.bar". Without this check it rendered the home page with a 200 and lang="foo.bar".
+  if (!hasLocale(routing.locales, locale)) notFound();
   const messages = await getMessages();
 
   return (
