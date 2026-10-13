@@ -13,7 +13,7 @@ The confirmed stack includes Vercel Analytics, GA4 via Google Tag Manager, and G
 ## Decision
 
 1. **No non-essential storage by default.** next-intl's `NEXT_LOCALE` cookie is disabled (`localeCookie: false`) — the locale is always in the URL. Theme and consent choices live in `localStorage` (strictly necessary, user-requested).
-2. **Vercel Web Analytics for everyone** — cookieless, aggregate, no consent needed.
+2. **Vercel Web Analytics and Speed Insights for everyone** — cookieless, aggregate (page views; Core Web Vitals), no consent needed. Both are named in the privacy policy's analytics section.
 3. **GA4 only through GTM, and GTM only after opt-in.** Nothing from Google loads before the visitor clicks *Accept* — no script, no requests. Consent Mode v2 defaults (`denied` for analytics and all ad signals) are pushed before the container boots, followed by `analytics_storage: granted`. Ad signals are never granted.
 4. **Consent banner:** non-modal card, Accept and Reject with equal visual weight, privacy link inline. Choice remembered for 12 months. "Cookie settings" in the footer reopens it; withdrawing updates Consent Mode and deletes `_ga` cookies.
 5. **Configuration by environment:** `NEXT_PUBLIC_GTM_ID` (validated `GTM-[A-Z0-9]+`). Without it nothing loads and no banner renders — so previews and local builds are tracking-free.
@@ -31,5 +31,5 @@ The confirmed stack includes Vercel Analytics, GA4 via Google Tag Manager, and G
 
 - Search Console must be verified via DNS (no meta tag, no script).
 - Adding any new non-essential tool means extending the banner copy, the privacy policy table and this ADR.
-- Vercel Web Analytics must be enabled in the Vercel dashboard; locally its script 404s harmlessly.
+- Vercel Web Analytics and Speed Insights must each be enabled in the Vercel dashboard; locally their scripts 404 harmlessly.
 - `site.contactEmail` (`vaclav@brzezina.dev`) needs a working mailbox or forward before launch.

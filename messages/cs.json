@@ -254,7 +254,7 @@
     "analytics": {
       "heading": "Analytika",
       "paragraphs": [
-        "Vercel Web Analytics počítá návštěvy bez cookies a bez ukládání čehokoli, co by vás identifikovalo. Běží pro všechny návštěvníky (oprávněný zájem).",
+        "Vercel Web Analytics počítá návštěvy a Vercel Speed Insights měří, jak rychle se stránky načítají (Core Web Vitals) — obojí bez cookies a bez ukládání čehokoli, co by vás identifikovalo. Běží pro všechny návštěvníky (oprávněný zájem).",
         "Google Analytics 4, načítané přes Google Tag Manager, se spustí jen tehdy, když v liště o cookies kliknete na „Přijmout“ (souhlas, čl. 6 odst. 1 písm. a) GDPR a § 89 odst. 3 zákona o elektronických komunikacích). Ukazují mi, jak návštěvníci web nacházejí a používají. Údaje pro mě zpracovává Google Ireland Limited; Google Analytics 4 neukládá IP adresy.",
         "Svou volbu můžete kdykoli změnit v „Nastavení cookies“ v patičce. Odvoláním souhlasu se cookies Google Analytics z vašeho prohlížeče smažou."
       ]

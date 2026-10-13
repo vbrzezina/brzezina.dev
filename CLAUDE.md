@@ -16,7 +16,7 @@ Pre-build. The stack and architecture are locked via a wayfinder planning effort
   - Tokens stay in `tokens.css` as CSS custom properties; Emotion reads them via `var(--token-name)`
   - Wrap Radix Primitives with `styled(Primitive)` — no visual defaults to fight
   - Type-safe variants use `$`-prefixed props: `<Button $variant="solid" />`
-- **Analytics**: Vercel Analytics (cookieless) + GA4 via GTM + Google Search Console (DNS-verified). GTM loads **only after opt-in consent** — see ADR-009; container ID via `NEXT_PUBLIC_GTM_ID`. Any new non-essential cookie/tool must be added to the consent banner copy and the privacy policy table.
+- **Analytics**: Vercel Analytics + Speed Insights (cookieless) + GA4 via GTM + Google Search Console (DNS-verified). GTM loads **only after opt-in consent** — see ADR-009; container ID via `NEXT_PUBLIC_GTM_ID`. Any new non-essential cookie/tool must be added to the consent banner copy and the privacy policy table.
 - **CMS**: None initially; Keystatic as the upgrade path when editing friction materialises
 - **Accessibility**: WCAG 2.1 AA target
 
