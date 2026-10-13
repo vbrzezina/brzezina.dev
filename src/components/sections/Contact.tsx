@@ -90,25 +90,6 @@ const controlStyles = ({ theme }: { theme: import('@emotion/react').Theme }) => 
   line-height: 1.5;
   transition: border-color ${theme.motion.fast} ease, box-shadow ${theme.motion.fast} ease;
 
-  /* Browser / password-manager autofill: Chrome paints :autofill fields with its own !important
-     background. It can't be overridden, so its transition is delayed until it never shows. */
-  &:-webkit-autofill {
-    -webkit-text-fill-color: ${theme.colors.fg};
-    caret-color: ${theme.colors.fg};
-    transition:
-      border-color ${theme.motion.fast} ease,
-      box-shadow ${theme.motion.fast} ease,
-      background-color 0s 600000s,
-      color 0s 600000s;
-  }
-  &:autofill {
-    transition:
-      border-color ${theme.motion.fast} ease,
-      box-shadow ${theme.motion.fast} ease,
-      background-color 0s 600000s,
-      color 0s 600000s;
-  }
-
   &::placeholder {
     color: ${theme.colors.fgTertiary};
     opacity: 1;
@@ -217,12 +198,14 @@ const Hint = styled.p`
 
 // ─── Success state ────────────────────────────────────────────────────────────
 
-/* Takes the height the form had (min-height set inline on swap), so the layout doesn't jump. */
+/* Takes the height the form had (min-height set inline on swap), so the layout doesn't jump;
+   content sits in the middle of it. */
 const Success = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
+  text-align: center;
   gap: 0.75rem;
   padding-block: 2rem;
   outline: none;
