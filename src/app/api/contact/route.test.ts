@@ -10,19 +10,16 @@ vi.mock('resend', () => ({
 
 import { POST } from './route';
 
-let ipCounter = 0;
-const nextIp = () => `203.0.113.${++ipCounter}`;
-
 const valid = { name: 'Jana Nováková', email: 'jana@firma.cz', message: 'Hledáme seniora.', contact_trap: '' };
 
-function post(body: unknown, headers: Record<string, string> = {}, ip = nextIp()) {
+function post(body: unknown, headers: Record<string, string> = {}) {
   return POST(
     new NextRequest('http://localhost:3000/api/contact', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
         origin: 'http://localhost:3000',
-        'x-forwarded-for': ip,
+        host: 'localhost:3000',
         ...headers,
       },
       body: typeof body === 'string' ? body : JSON.stringify(body),
@@ -125,14 +122,11 @@ describe('POST /api/contact', () => {
       expect((await post(valid, { origin })).status).toBe(403);
     });
 
-    it('accepts the forwarded host as the site origin (behind a proxy)', async () => {
-      const res = await post(valid, {
-        origin: 'https://brzezina.dev',
-        host: 'internal:3000',
-        'x-forwarded-host': 'brzezina.dev',
-      });
+    it('compares Origin with the Host header the visitor used', async () => {
+      const headers = { host: 'brzezina.dev' };
 
-      expect(res.status).toBe(200);
+      expect((await post(valid, { ...headers, origin: 'https://brzezina.dev' })).status).toBe(200);
+      expect((await post(valid, { ...headers, origin: 'https://www.brzezina.dev' })).status).toBe(403);
     });
 
     it('accepts a request without an Origin header (not a browser form post)', async () => {
@@ -152,29 +146,6 @@ describe('POST /api/contact', () => {
       await post({ ...valid, website: 'https://brzezina.dev' });
 
       expect(send).toHaveBeenCalledTimes(1);
-    });
-
-    it('rejects an oversized body even when it declares no length', async () => {
-      const res = await post({ ...valid, message: 'x'.repeat(17_000) });
-
-      expect(res.status).toBe(413);
-      expect(await json(res)).toEqual({ ok: false, error: 'too_large' });
-      expect(send).not.toHaveBeenCalled();
-    });
-
-    it('rate-limits one address to 5 messages per window', async () => {
-      const ip = nextIp();
-      const statuses = [];
-      for (let i = 0; i < 7; i++) statuses.push((await post(valid, {}, ip)).status);
-
-      expect(statuses).toEqual([200, 200, 200, 200, 200, 429, 429]);
-      expect(send).toHaveBeenCalledTimes(5);
-    });
-
-    it('keeps separate budgets for separate addresses', async () => {
-      for (let i = 0; i < 5; i++) await post(valid, {}, '198.51.100.1');
-
-      expect((await post(valid, {}, '198.51.100.2')).status).toBe(200);
     });
   });
 

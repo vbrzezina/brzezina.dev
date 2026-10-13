@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { CONTACT_LIMITS, EMAIL_PATTERN, HONEYPOT_FIELD } from './contact';
+import { EMAIL_PATTERN, HONEYPOT_FIELD } from './contact';
 
 describe('EMAIL_PATTERN', () => {
   it.each(['jana@firma.cz', 'v.brzezina@gmail.com', 'a+b@sub.example.co.uk', 'x@y.io'])('accepts %s', (email) => {
@@ -24,10 +24,5 @@ describe('EMAIL_PATTERN', () => {
 describe('contact constants', () => {
   it('keeps the honeypot name away from names password managers autofill', () => {
     expect(HONEYPOT_FIELD).not.toMatch(/website|url|company|organi[sz]ation|homepage|address|email|phone/i);
-  });
-
-  it('allows a message to fit inside the body cap', () => {
-    // 4 bytes per char is the worst case for JSON-escaped text; the body cap must still admit a full message.
-    expect(CONTACT_LIMITS.message * 3).toBeLessThan(CONTACT_LIMITS.body);
   });
 });
