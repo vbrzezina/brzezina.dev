@@ -219,8 +219,7 @@ const Aside = styled.dl`
 
   ${({ theme }) => theme.mq.lg} {
     grid-template-columns: 1fr;
-    /* Text tops line up with the panel's first label. */
-    padding-top: clamp(1.25rem, 1rem + 1.5vw, 2.5rem);
+    padding-top: 1.2rem;
   }
 
   dt {

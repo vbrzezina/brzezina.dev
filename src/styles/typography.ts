@@ -48,19 +48,19 @@ export const type = {
     font-family: ${fonts.sans};
     font-weight: 400;
     font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem);
-    line-height: 1.6;
+    line-height: 1.75;
   `,
   bodyM: css`
     font-family: ${fonts.sans};
     font-weight: 400;
     font-size: 1.0625rem;
-    line-height: 1.65;
+    line-height: 1.7;
   `,
   bodyS: css`
     font-family: ${fonts.sans};
     font-weight: 400;
     font-size: 0.9375rem;
-    line-height: 1.6;
+    line-height: 1.65;
     letter-spacing: 0.01em;
   `,
   label: css`
