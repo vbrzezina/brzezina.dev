@@ -154,7 +154,7 @@ const PortraitFill = styled.div`
 const WhoamiReveal = styled(Reveal)`
   position: relative;
   margin-top: -4rem;
-  width: min(100%, 25rem);
+  width: min(100%, 26rem);
 
   ${({ theme }) => theme.mq.lg} {
     position: absolute;
