@@ -104,7 +104,7 @@ Implemented as Emotion `css` mixins in `src/styles/typography.ts`. Body text mea
 
 | Interaction | Spec | Reduced motion |
 |-------------|------|----------------|
-| Scroll reveal | opacity 0→1 + translateY(1rem→0), 700ms `cubic-bezier(0.22, 1, 0.36, 1)`, 70ms stagger, once | Opacity only, 200ms |
+| Scroll reveal | opacity 0→1 + translateY(1rem→0), 700ms `cubic-bezier(0.22, 1, 0.36, 1)`, 70ms stagger, once. Observed on scroll below the fold; **the hero uses `Reveal eager`** (the same animation as plain CSS on load, so nothing waits for JavaScript). Without JS everything is simply visible. | Opacity only, 200ms |
 | Press feedback | `:active` → `scale(0.97)`, 100ms ease-out — feedback on pointer-down, not release | None |
 | Hover | colour / background / border, 150ms ease | Same (non-vestibular) |
 | Nav material | border + background fade in after 8px of scroll, 200ms | Same |

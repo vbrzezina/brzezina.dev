@@ -4,6 +4,8 @@ export const SECTION_IDS = ['about', 'experience', 'services', 'work', 'contact'
 export type SectionId = (typeof SECTION_IDS)[number];
 
 export const site = {
+  /** Canonical origin — used for metadataBase, canonical/hreflang URLs, the sitemap and structured data. */
+  url: 'https://brzezina.dev',
   githubUrl: 'https://github.com/vbrzezina',
   githubLabel: 'github.com/vbrzezina',
   linkedinUrl: 'https://www.linkedin.com/in/vaclav-brzezina/',

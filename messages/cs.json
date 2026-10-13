@@ -313,5 +313,17 @@
         "Pokud se tyto zásady změní, novou verzi zveřejním zde s aktualizovaným datem."
       ]
     }
+  },
+  "meta": {
+    "title": "Václav Brzezina — freelance React a TypeScript vývojář, Praha",
+    "description": "Senior TypeScript/React vývojář z Prahy — devět let s Reactem, Next.js, Node.js, NestJS a AWS. K dispozici pro externí spolupráci na IČO.",
+    "jobTitle": "Senior full-stack TypeScript vývojář",
+    "ogRole": "Senior full-stack TypeScript a React vývojář",
+    "ogTagline": "K dispozici pro externí spolupráci · Praha"
+  },
+  "notFound": {
+    "title": "Stránka nenalezena",
+    "body": "Tato stránka neexistuje — mohla být přesunuta, nebo je odkaz chybně zadaný.",
+    "home": "Zpět na úvodní stránku"
   }
 }
