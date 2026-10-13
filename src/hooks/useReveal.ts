@@ -16,8 +16,10 @@ export function useReveal<T extends Element>(): [React.RefObject<T | null>, bool
         }
       },
       {
-        threshold: 0.12,
-        rootMargin: '0px 0px -8% 0px',
+        /* Fire as soon as the top edge is a few percent into the viewport. A ratio threshold
+           scaled with element height, so tall stacked blocks on phones revealed far too late. */
+        threshold: 0,
+        rootMargin: '0px 0px -5% 0px',
       }
     )
 

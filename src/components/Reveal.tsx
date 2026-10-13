@@ -16,7 +16,11 @@ const Wrapper = styled.div<{ $visible: boolean; $delay: number }>`
   transition:
     opacity ${({ theme }) => `${theme.motion.reveal} ${theme.motion.ease}`},
     transform ${({ theme }) => `${theme.motion.reveal} ${theme.motion.ease}`};
-  transition-delay: ${({ $delay }) => $delay}ms;
+  /* Stagger only where blocks sit side by side; stacked on a phone each one enters on its own,
+     so a delay is just lag. */
+  ${({ theme }) => theme.mq.md} {
+    transition-delay: ${({ $delay }) => $delay}ms;
+  }
 
   /* Reduced motion: keep the fade (non-vestibular), drop the movement. */
   ${({ theme }) => theme.mq.reducedMotion} {
