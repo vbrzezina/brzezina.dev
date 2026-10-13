@@ -4,7 +4,7 @@ import styled from '@emotion/styled'
 import { useTranslations } from 'next-intl'
 import { Container, Section } from '@/components/layout'
 import { Reveal } from '@/components/Reveal'
-import { Button, Icon, SectionHeader, StackList } from '@/components/ui'
+import { Button, Icon, SectionHeader, StackList, VisuallyHidden } from '@/components/ui'
 import { FEATURED_PROJECT } from '@/data/work'
 import { gridBackdrop } from '@/styles/backdrop'
 import { type } from '@/styles/typography'
@@ -170,6 +170,7 @@ const SlotDescription = styled.p`
 
 export function Work() {
   const t = useTranslations('work')
+  const a11y = useTranslations('a11y')
 
   return (
     <Section id="work" aria-labelledby="work-title">
@@ -211,6 +212,7 @@ export function Work() {
                 <StackList items={FEATURED_PROJECT.stack} />
                 <SourceLink href={FEATURED_PROJECT.url} target="_blank" rel="noopener noreferrer">
                   {t('featured.link')}
+                  <VisuallyHidden> {a11y('newTab')}</VisuallyHidden>
                   <Icon name="arrowUpRight" size={16} />
                 </SourceLink>
               </Body>

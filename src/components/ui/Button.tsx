@@ -54,14 +54,14 @@ const StyledButton = styled('button', {
         return `
           background: ${c.accent};
           color: ${c.onAccent};
-          &:hover:not(:disabled) { background: ${c.accentHover}; }
+          &:hover:not(:disabled):not([aria-disabled='true']) { background: ${c.accentHover}; }
         `
       case 'secondary':
         return `
           background: transparent;
           color: ${c.fg};
           border-color: ${c.borderStrong};
-          &:hover:not(:disabled) { background: ${c.raised}; border-color: ${c.fgTertiary}; }
+          &:hover:not(:disabled):not([aria-disabled='true']) { background: ${c.raised}; border-color: ${c.fgTertiary}; }
         `
       // Same treatment as IconButton, for buttons that sit beside it in the nav.
       case 'subtle':
@@ -69,36 +69,38 @@ const StyledButton = styled('button', {
           background: transparent;
           color: ${c.fgSecondary};
           border-color: ${c.border};
-          &:hover:not(:disabled) { color: ${c.fg}; }
+          &:hover:not(:disabled):not([aria-disabled='true']) { color: ${c.fg}; }
         `
       case 'ghost':
         return `
           background: transparent;
           color: ${c.fgSecondary};
-          &:hover:not(:disabled) { background: ${c.accentSubtle}; color: ${c.fg}; }
+          &:hover:not(:disabled):not([aria-disabled='true']) { background: ${c.accentSubtle}; color: ${c.fg}; }
         `
     }
   }}
 
-  &:hover:not(:disabled) svg[data-nudge] {
+  &:hover:not(:disabled):not([aria-disabled='true']) svg[data-nudge] {
     transform: translateX(2px);
   }
 
   /* Feedback on pointer-down, not release. */
-  &:active:not(:disabled) {
+  &:active:not(:disabled):not([aria-disabled='true']) {
     transform: scale(0.97);
   }
 
-  &:disabled {
+  /* aria-disabled rather than disabled where focus must stay put (e.g. a form's submit button while sending). */
+  &:disabled,
+  &[aria-disabled='true'] {
     opacity: 0.6;
     cursor: not-allowed;
   }
 
   ${({ theme }) => theme.mq.reducedMotion} {
-    &:active:not(:disabled) {
+    &:active:not(:disabled):not([aria-disabled='true']) {
       transform: none;
     }
-    &:hover:not(:disabled) svg[data-nudge] {
+    &:hover:not(:disabled):not([aria-disabled='true']) svg[data-nudge] {
       transform: none;
     }
   }

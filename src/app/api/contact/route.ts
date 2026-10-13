@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { Resend } from 'resend';
+import { CONTACT_LIMITS as LIMITS, EMAIL_PATTERN, HONEYPOT_FIELD, type ContactError } from '@/lib/contact';
 
 /*
  * Contact form → Resend (https://resend.com/docs/send-with-nextjs).
@@ -15,8 +16,6 @@ import { Resend } from 'resend';
 
 const DEFAULT_FROM = 'contact@brzezina.dev';
 
-const LIMITS = { name: 120, email: 254, message: 5000, body: 16_000 } as const;
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 // Best-effort per-instance rate limit. Fluid compute reuses instances, so this blunts a burst from
 // one address; it is not a global guarantee — Resend's daily cap is the backstop.
@@ -53,7 +52,41 @@ function senderFor(name: string): string {
   return `"${displayName} via brzezina.dev" <${address}>`;
 }
 
-function fail(status: number, error: string) {
+/**
+ * Reads the JSON body but gives up past `maxBytes`. A Content-Length check alone can't stop a chunked
+ * request, which declares no length.
+ */
+async function readJson(request: NextRequest, maxBytes: number): Promise<unknown | typeof TOO_LARGE> {
+  const reader = request.body?.getReader();
+  if (!reader) return null;
+
+  const chunks: Uint8Array[] = [];
+  let received = 0;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    received += value.byteLength;
+    if (received > maxBytes) {
+      await reader.cancel();
+      return TOO_LARGE;
+    }
+    chunks.push(value);
+  }
+  try {
+    return JSON.parse(Buffer.concat(chunks).toString('utf8'));
+  } catch {
+    return null;
+  }
+}
+
+const TOO_LARGE = Symbol('too_large');
+
+/** The host the visitor typed: behind a proxy that's the forwarded one, not the server's bound address. */
+function requestHost(request: NextRequest): string {
+  return request.headers.get('x-forwarded-host') ?? request.headers.get('host') ?? request.nextUrl.host;
+}
+
+function fail(status: number, error: ContactError) {
   return NextResponse.json({ ok: false, error }, { status });
 }
 
@@ -65,22 +98,18 @@ function singleLine(value: string): string {
 export async function POST(request: NextRequest) {
   // Browsers always send Origin on a cross-origin POST; reject posts from other sites.
   const origin = request.headers.get('origin');
-  if (origin && !sameOrigin(origin, request.nextUrl.host)) return fail(403, 'origin');
+  if (origin && !sameOrigin(origin, requestHost(request))) return fail(403, 'origin');
 
-  const length = Number(request.headers.get('content-length') ?? 0);
-  if (length > LIMITS.body) return fail(413, 'too_large');
-
-  let body: Record<string, unknown>;
-  try {
-    const parsed: unknown = await request.json();
-    if (!parsed || typeof parsed !== 'object') return fail(400, 'invalid');
-    body = parsed as Record<string, unknown>;
-  } catch {
-    return fail(400, 'invalid');
-  }
+  const parsed = await readJson(request, LIMITS.body);
+  if (parsed === TOO_LARGE) return fail(413, 'too_large');
+  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return fail(400, 'invalid');
+  const body = parsed as Record<string, unknown>;
 
   // Honeypot: a field people never see. Bots that fill it get a success they can't tell apart.
-  if (typeof body.website === 'string' && body.website.trim() !== '') {
+  // Logged, so a real visitor swallowed by it (an autofill quirk) shows up instead of vanishing.
+  const trap = body[HONEYPOT_FIELD];
+  if (typeof trap === 'string' && trap.trim() !== '') {
+    console.info('[contact] honeypot filled, message dropped');
     return NextResponse.json({ ok: true });
   }
 

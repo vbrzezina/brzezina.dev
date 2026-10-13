@@ -23,7 +23,8 @@ const Segment = styled(Link)`
   min-height: 2rem;
   padding-inline: 0.5rem;
   border-radius: ${({ theme }) => theme.radius.sm};
-  color: ${({ theme }) => theme.colors.fgTertiary};
+  /* fg-secondary, not tertiary: the header is translucent, so the inactive link can sit over a photo. */
+  color: ${({ theme }) => theme.colors.fgSecondary};
   text-transform: uppercase;
   transition:
     background-color ${({ theme }) => theme.motion.fast} ease,
@@ -33,9 +34,14 @@ const Segment = styled(Link)`
     color: ${({ theme }) => theme.colors.fg};
   }
 
+  /* The current language is marked by more than a fill: an accent underline survives low-contrast modes. */
   &[aria-current='true'] {
     background: ${({ theme }) => theme.colors.raised};
     color: ${({ theme }) => theme.colors.fg};
+    text-decoration: underline;
+    text-decoration-color: ${({ theme }) => theme.colors.accent};
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.3em;
   }
 `
 

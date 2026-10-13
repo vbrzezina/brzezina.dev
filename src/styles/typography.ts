@@ -13,6 +13,7 @@ export const type = {
     font-family: ${fonts.display};
     font-weight: 700;
     font-size: clamp(3.25rem, 1.9rem + 5.6vw, 6rem);
+    overflow-wrap: break-word;
     line-height: 0.95;
     letter-spacing: -0.035em;
   `,
@@ -20,6 +21,7 @@ export const type = {
     font-family: ${fonts.display};
     font-weight: 700;
     font-size: clamp(2.25rem, 1.6rem + 2.6vw, 3.5rem);
+    overflow-wrap: break-word; /* long Czech compounds must not push the page sideways */
     line-height: 1.05;
     letter-spacing: -0.03em;
   `,

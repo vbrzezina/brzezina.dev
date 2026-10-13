@@ -68,3 +68,9 @@ Implemented as `src/app/api/contact/route.ts`:
   - Resend's daily cap as the backstop.
 - **Provider failure:** returns `502`, logged as `[contact] …`. The form keeps the typed message and offers a `mailto:` fallback.
 - **Privacy policy:** names Resend as the processor and adds it to the US transfers paragraph.
+- **Hardening (2026-10-13, after a review):**
+  - the body limit is enforced while streaming (a chunked request has no `Content-Length`);
+  - the origin check compares against the forwarded host first, so it keeps working behind a proxy;
+  - the honeypot field is named `contact_trap` (a name like `website` is autofilled by password managers, which silently dropped real messages) and each hit is logged;
+  - limits and the email pattern live in `src/lib/contact.ts`, shared with the form, which now sets `maxLength` and shows distinct copy for rate-limited and rejected submissions;
+  - the email pattern rejects `< > " , ;`, so `x<a@b.cc>` can't reach `Reply-To`.

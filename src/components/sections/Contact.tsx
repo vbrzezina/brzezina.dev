@@ -1,6 +1,7 @@
 'use client'
 
 import { useId, useRef, useState } from 'react'
+import { flushSync } from 'react-dom'
 import styled from '@emotion/styled'
 import { useTranslations } from 'next-intl'
 import { Container, Section } from '@/components/layout'
@@ -8,13 +9,12 @@ import { Reveal } from '@/components/Reveal'
 import { Button, Icon, SectionHeader } from '@/components/ui'
 import { hasLegalIdentity, legal, site } from '@/data/site'
 import { Link } from '@/i18n/navigation'
+import { CONTACT_LIMITS, EMAIL_PATTERN, HONEYPOT_FIELD } from '@/lib/contact'
 import { type, visuallyHidden } from '@/styles/typography'
 
 type FieldName = 'name' | 'email' | 'message'
 type Values = Record<FieldName, string>
 type Errors = Partial<Record<FieldName, string>>
-
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
 
 function validate(values: Values): Partial<Record<FieldName, true>> {
   const invalid: Partial<Record<FieldName, true>> = {}
@@ -82,7 +82,7 @@ const controlStyles = ({ theme }: { theme: import('@emotion/react').Theme }) => 
   min-height: 3rem;
   padding: 0.75rem 0.875rem;
   border-radius: ${theme.radius.sm};
-  border: 1px solid ${theme.colors.borderStrong};
+  border: 1px solid ${theme.colors.controlBorder};
   background: ${theme.colors.band};
   color: ${theme.colors.fg};
   font-family: ${theme.fonts.sans};
@@ -99,20 +99,19 @@ const controlStyles = ({ theme }: { theme: import('@emotion/react').Theme }) => 
     border-color: ${theme.colors.fgTertiary};
   }
 
+  /* A real outline, not a faint halo: the focus indicator has to be unmistakable (WCAG 2.4.7, 1.4.11). */
   &:focus-visible {
-    outline: none;
+    outline: 2px solid ${theme.colors.accent};
+    outline-offset: 2px;
     border-color: ${theme.colors.accent};
-    box-shadow: 0 0 0 3px ${theme.colors.accentSubtle};
   }
 
+  /* An invalid field stays red while focused — the ring is red too, never the accent colour. */
   &[aria-invalid='true'] {
     border-color: ${theme.colors.error};
   }
-
-  /* An invalid field keeps its error colour while focused — the halo turns red too. */
   &[aria-invalid='true']:focus-visible {
-    border-color: ${theme.colors.error};
-    box-shadow: 0 0 0 3px ${theme.colors.errorSubtle};
+    outline-color: ${theme.colors.error};
   }
 `
 
@@ -129,6 +128,11 @@ const Textarea = styled.textarea`
 const ErrorText = styled.p`
   ${type.bodyS}
   color: ${({ theme }) => theme.colors.error};
+`
+
+/* Screen-reader-only live region: announces the "Sending…" state, which is otherwise only a button label. */
+const Announce = styled.p`
+  ${visuallyHidden}
 `
 
 /* Honeypot: off-screen and out of the tab order and accessibility tree, so only bots fill it in. */
@@ -301,6 +305,7 @@ export function Contact() {
   const [touched, setTouched] = useState<Partial<Record<FieldName, boolean>>>({})
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
   const [formHeight, setFormHeight] = useState<number>()
+  const [errorKind, setErrorKind] = useState<'generic' | 'rateLimited' | 'invalid'>('generic')
   const successRef = useRef<HTMLDivElement>(null)
   const formRef = useRef<HTMLFormElement>(null)
 
@@ -322,7 +327,10 @@ export function Contact() {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    setTouched({ name: true, email: true, message: true })
+    if (status === 'sending') return // aria-disabled keeps focus on the button but doesn't block the click
+    // Commit the errors before moving focus, so the field is already aria-invalid and described by its
+    // message when it receives focus (and the screen reader announces both).
+    flushSync(() => setTouched({ name: true, email: true, message: true }))
 
     const firstInvalid = (['name', 'email', 'message'] as const).find((f) => invalid[f])
     if (firstInvalid) {
@@ -339,10 +347,13 @@ export function Contact() {
           name: values.name.trim(),
           email: values.email.trim(),
           message: values.message.trim(),
-          website: new FormData(e.currentTarget).get('website') ?? '',
+          [HONEYPOT_FIELD]: new FormData(e.currentTarget).get(HONEYPOT_FIELD) ?? '',
         }),
       })
-      if (!res.ok) throw new Error(`Contact endpoint responded ${res.status}`)
+      if (!res.ok) {
+        setErrorKind(res.status === 429 ? 'rateLimited' : res.status === 400 || res.status === 413 ? 'invalid' : 'generic')
+        throw new Error(`Contact endpoint responded ${res.status}`)
+      }
       setFormHeight(formRef.current?.offsetHeight)
       setStatus('success')
       requestAnimationFrame(() => successRef.current?.focus())
@@ -356,6 +367,8 @@ export function Contact() {
     setValues({ name: '', email: '', message: '' })
     setTouched({})
     setStatus('idle')
+    // The panel swaps back to the form; put focus where the next message starts instead of dropping it.
+    requestAnimationFrame(() => formRef.current?.querySelector<HTMLElement>('[name="name"]')?.focus())
   }
 
   const fieldProps = (field: FieldName) => ({
@@ -365,6 +378,7 @@ export function Contact() {
     onChange: update(field),
     onBlur: blur(field),
     required: true,
+    maxLength: CONTACT_LIMITS[field],
     'aria-invalid': errors[field] ? true : undefined,
     'aria-describedby': errors[field] ? `${uid}-${field}-error` : undefined,
     placeholder: t(`form.${field}Placeholder`),
@@ -405,7 +419,7 @@ export function Contact() {
                       <RequiredMark aria-hidden="true">*</RequiredMark>
                     </Label>
                     <Input type="text" autoComplete="name" {...fieldProps('name')} />
-                    {errors.name && <ErrorText id={`${uid}-name-error`}>{errors.name}</ErrorText>}
+                    {errors.name && <ErrorText role="alert" id={`${uid}-name-error`}>{errors.name}</ErrorText>}
                   </FieldRoot>
 
                   <FieldRoot>
@@ -414,7 +428,7 @@ export function Contact() {
                       <RequiredMark aria-hidden="true">*</RequiredMark>
                     </Label>
                     <Input type="email" autoComplete="email" inputMode="email" {...fieldProps('email')} />
-                    {errors.email && <ErrorText id={`${uid}-email-error`}>{errors.email}</ErrorText>}
+                    {errors.email && <ErrorText role="alert" id={`${uid}-email-error`}>{errors.email}</ErrorText>}
                   </FieldRoot>
 
                   <FieldRoot $wide>
@@ -423,12 +437,14 @@ export function Contact() {
                       <RequiredMark aria-hidden="true">*</RequiredMark>
                     </Label>
                     <Textarea rows={8} {...fieldProps('message')} />
-                    {errors.message && <ErrorText id={`${uid}-message-error`}>{errors.message}</ErrorText>}
+                    {errors.message && <ErrorText role="alert" id={`${uid}-message-error`}>{errors.message}</ErrorText>}
                   </FieldRoot>
 
+                  <Announce role="status">{status === 'sending' ? t('form.sending') : ''}</Announce>
+
                   <Trap aria-hidden="true">
-                    <label htmlFor={`${uid}-website`}>Website</label>
-                    <input id={`${uid}-website`} name="website" type="text" tabIndex={-1} autoComplete="off" />
+                    <label htmlFor={`${uid}-trap`}>Leave this field empty</label>
+                    <input id={`${uid}-trap`} name={HONEYPOT_FIELD} type="text" tabIndex={-1} autoComplete="off" />
                   </Trap>
 
                   {status === 'error' && (
@@ -436,7 +452,7 @@ export function Contact() {
                       <Icon name="alert" size={20} />
                       <p>
                         <strong>{t('form.errorTitle')}</strong>
-                        {t.rich('form.error', {
+                        {t.rich(errorKind === 'rateLimited' ? 'form.errorRateLimited' : errorKind === 'invalid' ? 'form.errorInvalid' : 'form.error', {
                           email: site.contactEmail,
                           link: (chunks) => <a href={`mailto:${site.contactEmail}`}>{chunks}</a>,
                         })}
@@ -450,7 +466,7 @@ export function Contact() {
                         link: (chunks) => <Link href="/privacy">{chunks}</Link>,
                       })}
                     </Hint>
-                    <Button type="submit" disabled={status === 'sending'}>
+                    <Button type="submit" aria-disabled={status === 'sending' || undefined}>
                       {status === 'sending' ? t('form.sending') : t('form.submit')}
                       {status !== 'sending' && <Icon name="arrowRight" size={18} data-nudge />}
                     </Button>

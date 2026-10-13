@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import Script from 'next/script';
 import { gtmId } from '@/data/site';
 
@@ -107,6 +107,20 @@ export function ConsentProvider({ children }: { children: React.ReactNode }) {
   // `undefined` until mounted: the server can't know the stored choice, so nothing renders yet.
   const [analytics, setAnalytics] = useState<ConsentChoice | null | undefined>(undefined);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  // What had focus when "Cookie settings" was pressed, so closing the banner can hand focus back.
+  const returnFocusTo = useRef<HTMLElement | null>(null);
+
+  /** The banner unmounts while it holds focus, which would drop focus on <body> (WCAG 2.4.3). */
+  const restoreFocus = useCallback(() => {
+    requestAnimationFrame(() => {
+      if (document.activeElement && document.activeElement !== document.body) return;
+      const target = returnFocusTo.current?.isConnected ? returnFocusTo.current : document.getElementById('main');
+      returnFocusTo.current = null;
+      if (!target) return;
+      if (!target.hasAttribute('tabindex') && target.id === 'main') target.setAttribute('tabindex', '-1');
+      target.focus({ preventScroll: true });
+    });
+  }, []);
 
   useEffect(() => {
     setAnalytics(enabled ? readStored() : null);
@@ -118,17 +132,26 @@ export function ConsentProvider({ children }: { children: React.ReactNode }) {
     setSettingsOpen(false);
     // If GTM was already loaded earlier in this visit, re-grant through Consent Mode.
     (window as WindowWithDataLayer).gtag?.('consent', 'update', { analytics_storage: 'granted' });
-  }, []);
+    restoreFocus();
+  }, [restoreFocus]);
 
   const reject = useCallback(() => {
+    const wasGranted = readStored() === 'granted';
     writeStored('denied');
     setAnalytics('denied');
     setSettingsOpen(false);
     (window as WindowWithDataLayer).gtag?.('consent', 'update', { analytics_storage: 'denied' });
     deleteAnalyticsCookies();
-  }, []);
+    // Once granted, GTM is loaded in this page and would keep sending cookieless pings (Consent Mode
+    // "advanced", which ADR-009 rejected). Withdrawing reloads so nothing from Google stays running.
+    if (wasGranted) window.location.reload();
+    else restoreFocus();
+  }, [restoreFocus]);
 
-  const openSettings = useCallback(() => setSettingsOpen(true), []);
+  const openSettings = useCallback(() => {
+    returnFocusTo.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    setSettingsOpen(true);
+  }, []);
 
   const bannerOpen = enabled && analytics !== undefined && (analytics === null || settingsOpen);
 

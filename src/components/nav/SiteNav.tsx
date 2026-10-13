@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { keyframes } from '@emotion/react';
 import * as Dialog from '@radix-ui/react-dialog';
@@ -225,7 +225,8 @@ const SheetFooter = styled.div`
 const SheetActions = styled.div`
   align-self: stretch;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  /* Two columns while they fit; at 320px the buttons stack instead of running off the edge (WCAG 1.4.10). */
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
   gap: 0.75rem;
 `;
 
@@ -247,6 +248,15 @@ export function SiteNav({ homeHref = '', variant = 'home' }: SiteNavProps) {
   const activeSection = useActiveSection(SECTION_IDS);
   const scrolled = useScrolled();
   const [open, setOpen] = useState(false);
+  // The sheet's trigger is hidden from md up. Widening the window (or zooming out) with the sheet open
+  // would leave it open with no visible way to close it and focus stranded inside.
+  useEffect(() => {
+    const wide = window.matchMedia('(min-width: 56.25em)');
+    const closeWhenWide = () => wide.matches && setOpen(false);
+    wide.addEventListener('change', closeWhenWide);
+    return () => wide.removeEventListener('change', closeWhenWide);
+  }, []);
+
   // In-page target picked from the sheet; focus goes there instead of back to the trigger.
   const pendingTarget = useRef<string | null>(null);
 
@@ -284,7 +294,12 @@ export function SiteNav({ homeHref = '', variant = 'home' }: SiteNavProps) {
               <NavList role="list">
                 {links.map(({ id, label, href }) => (
                   <NavigationMenu.Item key={id}>
-                    <NavLink href={href} active={activeSection === id}>
+                    <NavLink
+                      href={href}
+                      active={activeSection === id}
+                      // Same value as the sheet's links: these are in-page sections, not separate pages.
+                      aria-current={activeSection === id ? 'location' : undefined}
+                    >
                       {label}
                     </NavLink>
                   </NavigationMenu.Item>
