@@ -124,7 +124,8 @@ Only `transform` and `opacity` are animated for movement. No looping animation a
 | **Button** | Variants `primary` (accent fill), `secondary` (transparent, `border-strong`, hover → `raised`), `ghost` (no border, `fg-secondary`, hover → `accent-subtle`). Sizes `md` (48px, 4px radius) and `sm` (40px, 6px radius — nav CV, matching the icon button and locale switch). Variant `subtle` (hairline border, `fg-secondary`, hover → `fg`, colour only) mirrors IconButton exactly — used for the nav CV button so every nav control reacts the same. Optional leading/trailing icon. Focus: 2px accent outline, 2px offset. `asChild` for links. One primary button per view. |
 | **SectionHeader** | `NN —— LABEL` eyebrow (number + rule in accent, label in `fg-secondary`) → h2 `displayL`. Optional lead directly below the heading (max 40rem). One left-aligned reading column at every width — eyebrow → heading → lead — so the eye never jumps across the page. |
 | **StatusPill** | `accent-subtle` fill, success dot with soft glow, `monoS` label. Static — no pulse. |
-| **StackList** | Mono, dot-separated (`TypeScript · React · NestJS`), wraps naturally, rendered as `<ul role="list">` with CSS separators — the explicit role keeps Safari/VoiceOver announcing it after the `list-style: none` reset (same on every styled list). Replaces boxed tags everywhere. |
+| **StackList** | Mono, dot-separated (`TypeScript · React · NestJS`), wraps naturally, rendered as `<ul role="list">` with CSS separators — the explicit role keeps Safari/VoiceOver announcing it after the `list-style: none` reset (same on every styled list). Used inside cards (Experience, Services, Work). |
+| **TagList** | Bordered mono chips (`monoS`, `fg-secondary`, hairline border, 4px radius, 0.5rem gap), `<ul role="list">`. Used only for the About stack table, where the chips give a long list scannable units. No hover state, since the chips aren't links. |
 | **Logo** | `$` accent + `brzezina.dev` in `monoBody`. No cursor — the prompt alone carries the terminal reference. |
 | **LocaleSwitch** | Segmented control (`EN | CS`) — selected segment on `raised`. Real `<a>` links to the locale route with `aria-current`, `hreflang`. |
 | **ThemeToggle** | 40px icon button, SVG sun/moon, label states the action ("Switch to light theme"). Persists to `localStorage`; inline head script applies the theme before first paint. |
@@ -177,7 +178,7 @@ Only `transform` and `opacity` are animated for movement. No looping animation a
   - **Mobile order:** below `md` it moves after the bio.
 
   Right: first paragraph in `bodyL` fg (the lede), then two `bodyM` fg-secondary paragraphs, then a languages `<dl>`: **English** Fluent · **Czech** Native.
-- **Stack & tooling** (h3): a six-row table. Category in `titleM` on the left (3 cols), StackList on the right (9 cols), hairline between rows. Content from the brief: Frontend, Backend, Cloud, Databases, Practices, GenAI.
+- **Stack & tooling** (h3): a six-row table. Category in `titleS` on the left (2 cols), TagList on the right (10 cols), baseline-aligned with the first row of chips, hairline between rows. Content from the brief: Frontend, Backend, Cloud, Databases, Practices, GenAI.
 
 ### 02 Experience — "Nine years, shipped"
 - A vertical rail on the left with an accent dot per employer. The dot of the current role has a halo.

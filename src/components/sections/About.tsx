@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 import { useTranslations } from "next-intl";
 import { Container, Section } from "@/components/layout";
 import { Reveal } from "@/components/Reveal";
-import { SectionHeader, StackList } from "@/components/ui";
+import { SectionHeader, TagList } from "@/components/ui";
 import { LANGUAGE_IDS, SKILL_GROUPS } from "@/data/skills";
 import { type } from "@/styles/typography";
 import { AboutDiagram } from "./AboutDiagram";
@@ -173,7 +173,7 @@ export function About() {
                   <StackRow key={group.id}>
                     <dt>{t(`skills.categories.${group.id}`)}</dt>
                     <dd>
-                      <StackList items={items} tone="secondary" />
+                      <TagList items={items} />
                     </dd>
                   </StackRow>
                 );
