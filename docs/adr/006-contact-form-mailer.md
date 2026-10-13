@@ -58,7 +58,8 @@ Implemented as `src/app/api/contact/route.ts`:
 
 - **Resend SDK** (`resend` v6, `emails.send` with a 10 s `AbortSignal`). A plain `fetch` was tried first to avoid the SDK's inbound and webhook dependencies (`postal-mime`, `standardwebhooks`). The owner preferred the SDK for its typed payloads, `{ data, error }` results and upstream-maintained API changes.
 - **Fixed recipient.** `to` comes only from `CONTACT_TO_EMAIL`, and the visitor's address goes in `reply_to`, so the endpoint can never be used to mail third parties. The body is plain text only, so nothing the visitor typed is rendered as HTML.
-- **Env:** `RESEND_API_KEY` and `CONTACT_TO_EMAIL` are required; without them the route returns `503` and the form shows its error state. `CONTACT_FROM_EMAIL` is optional and defaults to `brzezina.dev <contact@brzezina.dev>`. See `.env.example`.
+- **Env:** `RESEND_API_KEY` and `CONTACT_TO_EMAIL` are required; without them the route returns `503` and the form shows its error state. `CONTACT_FROM_EMAIL` is optional and defaults to `contact@brzezina.dev`. See `.env.example`.
+- **Sender display name:** `"<visitor's name> via brzezina.dev" <contact@brzezina.dev>`, so the inbox shows who wrote. Mail can't be sent *from* the visitor's own address, because it would fail SPF/DMARC on their domain, so their address goes in Reply-To.
 - **Validation:** server-side, mirroring the client: name ≤ 120 chars (control characters stripped, single line), email ≤ 254, message ≤ 5000, body ≤ 16 kB (`413`).
 - **Abuse controls:**
   - same-origin check on `Origin` (`403`);

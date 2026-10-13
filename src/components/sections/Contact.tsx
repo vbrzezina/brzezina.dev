@@ -2,7 +2,7 @@
 
 import { useId, useRef, useState } from 'react'
 import styled from '@emotion/styled'
-import { useLocale, useTranslations } from 'next-intl'
+import { useTranslations } from 'next-intl'
 import { Container, Section } from '@/components/layout'
 import { Reveal } from '@/components/Reveal'
 import { Button, Icon, SectionHeader } from '@/components/ui'
@@ -89,6 +89,25 @@ const controlStyles = ({ theme }: { theme: import('@emotion/react').Theme }) => 
   font-size: 1.0625rem;
   line-height: 1.5;
   transition: border-color ${theme.motion.fast} ease, box-shadow ${theme.motion.fast} ease;
+
+  /* Browser / password-manager autofill: Chrome paints :autofill fields with its own !important
+     background. It can't be overridden, so its transition is delayed until it never shows. */
+  &:-webkit-autofill {
+    -webkit-text-fill-color: ${theme.colors.fg};
+    caret-color: ${theme.colors.fg};
+    transition:
+      border-color ${theme.motion.fast} ease,
+      box-shadow ${theme.motion.fast} ease,
+      background-color 0s 600000s,
+      color 0s 600000s;
+  }
+  &:autofill {
+    transition:
+      border-color ${theme.motion.fast} ease,
+      box-shadow ${theme.motion.fast} ease,
+      background-color 0s 600000s,
+      color 0s 600000s;
+  }
 
   &::placeholder {
     color: ${theme.colors.fgTertiary};
@@ -198,9 +217,11 @@ const Hint = styled.p`
 
 // ─── Success state ────────────────────────────────────────────────────────────
 
+/* Takes the height the form had (min-height set inline on swap), so the layout doesn't jump. */
 const Success = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: flex-start;
   gap: 0.75rem;
   padding-block: 2rem;
@@ -292,11 +313,11 @@ const BusinessDetails = styled.dd`
 
 export function Contact() {
   const t = useTranslations('contact')
-  const locale = useLocale()
   const uid = useId()
   const [values, setValues] = useState<Values>({ name: '', email: '', message: '' })
   const [touched, setTouched] = useState<Partial<Record<FieldName, boolean>>>({})
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
+  const [formHeight, setFormHeight] = useState<number>()
   const successRef = useRef<HTMLDivElement>(null)
   const formRef = useRef<HTMLFormElement>(null)
 
@@ -335,11 +356,11 @@ export function Contact() {
           name: values.name.trim(),
           email: values.email.trim(),
           message: values.message.trim(),
-          locale,
           website: new FormData(e.currentTarget).get('website') ?? '',
         }),
       })
       if (!res.ok) throw new Error(`Contact endpoint responded ${res.status}`)
+      setFormHeight(formRef.current?.offsetHeight)
       setStatus('success')
       requestAnimationFrame(() => successRef.current?.focus())
     } catch {
@@ -383,7 +404,7 @@ export function Contact() {
           <Reveal delay={80}>
             <Panel>
               {status === 'success' ? (
-                <Success ref={successRef} tabIndex={-1} role="status">
+                <Success ref={successRef} tabIndex={-1} role="status" style={{ minHeight: formHeight }}>
                   <SuccessIcon>
                     <Icon name="check" size={22} />
                   </SuccessIcon>
