@@ -1,11 +1,12 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { hasLocale } from 'next-intl';
+import { Resend } from 'resend';
 import { routing } from '@/i18n/routing';
 
 /*
- * Contact form → Resend (https://resend.com/docs/api-reference/emails/send-email).
- * One authenticated POST, so no SDK. The recipient is fixed server-side, which means the endpoint
- * can only ever email the site owner — the visitor's address goes in Reply-To, never in To.
+ * Contact form → Resend (https://resend.com/docs/send-with-nextjs).
+ * The recipient is fixed server-side, which means the endpoint can only ever email the site owner —
+ * the visitor's address goes in Reply-To, never in To.
  *
  * Env (Vercel → Settings → Environment Variables):
  *   RESEND_API_KEY     required — a "sending access" key, scoped to the brzezina.dev domain
@@ -13,7 +14,6 @@ import { routing } from '@/i18n/routing';
  *   CONTACT_FROM_EMAIL optional — must be on the domain verified in Resend
  */
 
-const RESEND_URL = 'https://api.resend.com/emails';
 const DEFAULT_FROM = 'brzezina.dev <contact@brzezina.dev>';
 
 const LIMITS = { name: 120, email: 254, message: 5000, body: 16_000 } as const;
@@ -113,20 +113,18 @@ export async function POST(request: NextRequest) {
   ].join('\n');
 
   try {
-    const res = await fetch(RESEND_URL, {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+    const { error } = await new Resend(apiKey).emails.send(
+      {
         from: process.env.CONTACT_FROM_EMAIL || DEFAULT_FROM,
         to: [to],
-        reply_to: email,
+        replyTo: email,
         subject: `brzezina.dev — message from ${name}`,
         text,
-      }),
-      signal: AbortSignal.timeout(10_000),
-    });
-    if (!res.ok) {
-      console.error('[contact] Resend responded', res.status, await res.text().catch(() => ''));
+      },
+      { signal: AbortSignal.timeout(10_000) },
+    );
+    if (error) {
+      console.error('[contact] Resend rejected the email', error);
       return fail(502, 'send_failed');
     }
   } catch (error) {

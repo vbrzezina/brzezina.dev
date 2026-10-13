@@ -56,7 +56,7 @@ This path is not recommended — see ADR-003 Option A.
 
 Implemented as `src/app/api/contact/route.ts`:
 
-- **Resend over plain `fetch`** (`POST https://api.resend.com/emails`), not the SDK. Sending one email is a single authenticated request, and the SDK (v6) pulls in `postal-mime` and `standardwebhooks` for inbound and webhook features this route doesn't use.
+- **Resend SDK** (`resend` v6, `emails.send` with a 10 s `AbortSignal`). A plain `fetch` was tried first to avoid the SDK's inbound and webhook dependencies (`postal-mime`, `standardwebhooks`). The owner preferred the SDK for its typed payloads, `{ data, error }` results and upstream-maintained API changes.
 - **Fixed recipient.** `to` comes only from `CONTACT_TO_EMAIL`, and the visitor's address goes in `reply_to`, so the endpoint can never be used to mail third parties. The body is plain text only, so nothing the visitor typed is rendered as HTML.
 - **Env:** `RESEND_API_KEY` and `CONTACT_TO_EMAIL` are required; without them the route returns `503` and the form shows its error state. `CONTACT_FROM_EMAIL` is optional and defaults to `brzezina.dev <contact@brzezina.dev>`. See `.env.example`.
 - **Validation:** server-side, mirroring the client: name ≤ 120 chars (control characters stripped, single line), email ≤ 254, message ≤ 5000, body ≤ 16 kB (`413`).

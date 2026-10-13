@@ -46,7 +46,7 @@ A finalized spec for brzezina.dev — a bilingual (EN/CS) personal portfolio sit
 - [MUI adoption depth](issues/05-mui-adoption-depth.md) — MUI rejected; Radix UI + CSS custom properties + CSS Modules confirmed
 - [Hero section visual prototype](issues/09-visual-prototype.md) — Prototype at https://github.com/vbrzezina/brzezina-blueprint; design direction confirmed, ready for build phase
 - [Static export vs Vercel-native](issues/10-static-export-vs-vercel-ssg.md) — Vercel-native (Option A): the contact route handler and next-intl middleware need a server runtime; pages are still pre-rendered where possible
-- [Mailer selection](issues/08-mailer-selection.md) — Resend via `app/api/contact/route.ts` (plain `fetch`, fixed recipient, honeypot + origin check + rate limit); env `RESEND_API_KEY` + `CONTACT_TO_EMAIL`
+- [Mailer selection](issues/08-mailer-selection.md) — Resend SDK via `app/api/contact/route.ts` (fixed recipient, honeypot + origin check + rate limit); env `RESEND_API_KEY` + `CONTACT_TO_EMAIL`
 - Styling library — `@radix-ui/react-*` Primitives + `@emotion/react` + `@emotion/styled`; Radix Themes, Chakra, Mantine, CSS Modules, Tailwind, shadcn all rejected; see `case-study-log.md` for rationale
 
 ## Not yet specified

@@ -16,4 +16,4 @@ Resolve: select and commit to one approach with rationale.
 
 ## Answer
 
-**Resend** — confirmed by the owner on 2026-10-13 ("we have Resend available now"). Implemented in `src/app/api/contact/route.ts` via a plain `fetch` to the Resend API (no SDK); env `RESEND_API_KEY` + `CONTACT_TO_EMAIL`. Details in `docs/adr/006-contact-form-mailer.md`.
+**Resend** — confirmed by the owner on 2026-10-13 ("we have Resend available now"). Implemented in `src/app/api/contact/route.ts` with the official `resend` SDK; env `RESEND_API_KEY` + `CONTACT_TO_EMAIL`. Details in `docs/adr/006-contact-form-mailer.md`.

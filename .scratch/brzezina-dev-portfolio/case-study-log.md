@@ -218,10 +218,10 @@ Running record of decisions, alternatives considered, and wrong turns for the br
 
 ### 2026-10-13 — Contact form: Resend via a route handler; Vercel-native confirmed
 
-**Decision:** The contact form posts to `src/app/api/contact/route.ts`, which sends through Resend's REST API with a plain `fetch`. This also closes the static-export question (ticket 10) in favour of Vercel-native deployment.
-**Alternatives considered:** the Resend SDK; Formspree and other hosted form backends (which static export would have required); Nodemailer + SMTP; AWS SES.
+**Decision:** The contact form posts to `src/app/api/contact/route.ts`, which sends through the official Resend SDK. This also closes the static-export question (ticket 10) in favour of Vercel-native deployment.
+**Alternatives considered:** a plain `fetch` to Resend's REST API; Formspree and other hosted form backends (which static export would have required); Nodemailer + SMTP; AWS SES.
 **Why:**
 - The owner had a Resend account ready, and research ticket 03 had already ranked it first.
-- A plain `fetch` keeps the public repo free of the SDK's inbound and webhook dependencies for a one-request job.
 - The site had quietly stopped being static-exportable once next-intl's middleware arrived, so ticket 10 was already decided by the code.
 - Abuse controls are sized to the actual risk. The recipient is fixed server-side and the visitor's address only goes into Reply-To, so the worst case is spam in the owner's own inbox: a honeypot, an Origin check and a per-instance rate limit cover it without adding a KV store.
+**Wrong turn / lesson:** The first version called Resend's REST API with a plain `fetch` to keep the SDK's inbound and webhook dependencies out of a public repo. The owner preferred the official SDK: typed payloads, `{ data, error }` results and API changes absorbed upstream are worth two small transitive packages on a site they maintain alone. The switch changed nothing observable, and the same tests passed byte for byte.
