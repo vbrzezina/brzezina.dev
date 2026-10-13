@@ -168,3 +168,14 @@ Running record of decisions, alternatives considered, and wrong turns for the br
 **Alternatives considered:** A theme cookie read by the server layout — SSR-correct, but makes the route depend on `cookies()`, which conflicts with the still-open static-export option (ticket 10).
 
 ---
+
+### 2026-10-13 — About graphic: an architecture diagram instead of a second photo
+
+**Decision:** The About photo is replaced by an inline-SVG system diagram, with four layers (client → API → serverless → data). The request path is drawn in the accent colour, and a single pulse travels from the browser to the database.
+**Alternatives considered:**
+- A different candid photo (none of the available shots worked).
+- A generic workplace stock photo.
+- A code or terminal card (repeats the hero's whoami card).
+- A git-graph of career milestones (repeats the Experience timeline).
+**Why:** The diagram draws exactly what the bio's lede says. It belongs to the site's blueprint grid language, works in both themes from tokens alone and costs no image bytes. A stock photo would read as filler on a portfolio whose point is authenticity.
+**Wrong turn / lesson:** Three rounds of photo-picking for this slot. The slot never needed a photo, it needed something that explained the work.

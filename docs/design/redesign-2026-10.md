@@ -167,7 +167,15 @@ Only `transform` and `opacity` are animated for movement. No looping animation a
 - **Proof strip** (bottom of hero, no rule): `WORKED ON PROJECTS FOR` eyebrow + `Burberry · Walmart · PSA · Veolia · Carvago · Logio` in `monoBody`. Worded as *projects for* because these were clients of EPAM, Starky's Club and Etnetera, not direct engagements — the big names stay, the claim stays accurate.
 
 ### 01 About — "Hands-on senior engineer"
-- 5/7 split. Left: 4:5 photo — a different shot from the hero headshot (`src/assets/photos/portrait-about.jpg`, `next/image` with blur-up). In dark mode it's dimmed to 90% brightness so a bright background doesn't outshine the text; light mode shows it untouched. Right: first paragraph in `bodyL` fg (the lede), then two `bodyM` fg-secondary paragraphs, then a languages `<dl>`: **English** Fluent · **Czech** Native.
+- 5/7 split. Left: **architecture diagram** (`AboutDiagram`, inline SVG in a 4:5 surface card on a 20-unit blueprint grid), not a second photo.
+  - **Layers** (mono eyebrow labels): client, API, serverless, data. Each has two nodes from `ARCHITECTURE_LAYERS` in `src/data/skills.ts`.
+  - **Request path:** the first column is the request path. Its nodes and edges use the accent colour, and its nodes are recessed on `canvas`.
+  - **Pulse:** a single pulse travels down that path, a 3.2s linear loop, hidden under reduced motion.
+  - **Caption:** "fig. 01 — browser to database".
+  - **Accessibility:** `role="img"` with a translated `<title>` describing the stack.
+  - **Mobile order:** below `md` it moves after the bio.
+
+  Right: first paragraph in `bodyL` fg (the lede), then two `bodyM` fg-secondary paragraphs, then a languages `<dl>`: **English** Fluent · **Czech** Native.
 - **Stack & tooling** (h3): a six-row table. Category in `titleM` on the left (3 cols), StackList on the right (9 cols), hairline between rows. Content from the brief: Frontend, Backend, Cloud, Databases, Practices, GenAI.
 
 ### 02 Experience — "Nine years, shipped"

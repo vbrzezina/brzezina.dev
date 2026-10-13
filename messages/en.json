@@ -44,7 +44,11 @@
     "index": "01",
     "slug": "About",
     "heading": "Hands-on senior engineer",
-    "portraitLabel": "Václav Brzezina smiling, in a navy blazer",
+    "diagram": {
+      "title": "Diagram of the stack I work across: a React and Next.js client, a NestJS and GraphQL API, AWS Lambda and SQS, and PostgreSQL and DynamoDB for data. A request travels from the browser down to the database.",
+      "layers": { "client": "client", "api": "api", "serverless": "serverless", "data": "data" },
+      "caption": "fig. 01 — browser to database"
+    },
     "bio": {
       "lede": "I build JavaScript products end to end — TypeScript and React on the frontend, Node.js and NestJS on the backend, AWS serverless in the cloud.",
       "p2": "Nine years in, my work sits where architecture meets delivery: designing systems, setting code standards, reviewing pull requests — and writing production code myself. I lead technically rather than from a distance. At EPAM Systems I’m currently a Software Engineer on an SAP project; before that I was Tech Lead on Burberry’s O2O clientelling platform.",

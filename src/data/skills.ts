@@ -33,3 +33,14 @@ export const SKILL_GROUPS: readonly SkillGroup[] = [
 ];
 
 export const LANGUAGE_IDS = ['en', 'cs'] as const;
+
+/**
+ * The About diagram: one row per layer, two nodes each. The first column is the request path
+ * the pulse travels down. Node names are proper nouns; layer labels live in `about.diagram.layers`.
+ */
+export const ARCHITECTURE_LAYERS = [
+  { id: 'client', nodes: ['React', 'Next.js'] },
+  { id: 'api', nodes: ['NestJS', 'GraphQL'] },
+  { id: 'serverless', nodes: ['Lambda', 'SQS'] },
+  { id: 'data', nodes: ['PostgreSQL', 'DynamoDB'] },
+] as const;
