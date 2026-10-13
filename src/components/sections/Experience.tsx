@@ -1,12 +1,12 @@
-'use client'
+'use client';
 
-import styled from '@emotion/styled'
-import { useTranslations } from 'next-intl'
-import { Container, Section } from '@/components/layout'
-import { Reveal } from '@/components/Reveal'
-import { SectionHeader, StackList } from '@/components/ui'
-import { EXPERIENCE } from '@/data/experience'
-import { type } from '@/styles/typography'
+import styled from '@emotion/styled';
+import { useTranslations } from 'next-intl';
+import { Container, Section } from '@/components/layout';
+import { Reveal } from '@/components/Reveal';
+import { SectionHeader, StackList } from '@/components/ui';
+import { EXPERIENCE } from '@/data/experience';
+import { type } from '@/styles/typography';
 
 // ─── Timeline ─────────────────────────────────────────────────────────────────
 
@@ -33,7 +33,7 @@ const Timeline = styled.ol`
   ${({ theme }) => theme.mq.md} {
     padding-left: 2.5rem;
   }
-`
+`;
 
 const Employer = styled.li`
   position: relative;
@@ -41,7 +41,7 @@ const Employer = styled.li`
   & + & {
     margin-top: clamp(3rem, 2.5rem + 2vw, 4rem);
   }
-`
+`;
 
 const Dot = styled.span<{ $current: boolean }>`
   position: absolute;
@@ -57,7 +57,7 @@ const Dot = styled.span<{ $current: boolean }>`
   ${({ theme }) => theme.mq.md} {
     left: -2.5rem;
   }
-`
+`;
 
 const EmployerHeader = styled.div`
   display: flex;
@@ -70,24 +70,24 @@ const EmployerHeader = styled.div`
     align-items: baseline;
     gap: 2rem;
   }
-`
+`;
 
 const Company = styled.h3`
   ${type.titleL}
   color: ${({ theme }) => theme.colors.fg};
-`
+`;
 
 const Title = styled.p`
   ${type.bodyM}
   color: ${({ theme }) => theme.colors.fgSecondary};
   margin-top: 0.25rem;
-`
+`;
 
 const Period = styled.p`
   ${type.monoS}
   color: ${({ theme }) => theme.colors.accent};
   white-space: nowrap;
-`
+`;
 
 // ─── Projects ─────────────────────────────────────────────────────────────────
 
@@ -99,7 +99,7 @@ const Projects = styled.ul`
   ${({ theme }) => theme.mq.lg} {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-`
+`;
 
 /* Fills its grid cell, so cards in the same row share a height; the stack line pins to the bottom. */
 const Project = styled.div`
@@ -115,7 +115,7 @@ const Project = styled.div`
   &:hover {
     border-color: ${({ theme }) => theme.colors.borderStrong};
   }
-`
+`;
 
 const Client = styled.h4`
   ${type.titleM}
@@ -127,7 +127,7 @@ const Client = styled.h4`
     color: ${({ theme }) => theme.colors.accent};
     margin-right: 0.5rem;
   }
-`
+`;
 
 const CurrentTag = styled.span`
   ${type.monoEyebrow}
@@ -139,27 +139,27 @@ const CurrentTag = styled.span`
   /* accent-hover keeps 4.5:1 on the tinted fill in both themes */
   color: ${({ theme }) => theme.colors.accentHover};
   vertical-align: middle;
-`
+`;
 
 const ProjectRole = styled.p`
   ${type.label}
   color: ${({ theme }) => theme.colors.fg};
-`
+`;
 
 const ProjectDescription = styled.p`
   ${type.bodyS}
   color: ${({ theme }) => theme.colors.fgSecondary};
-`
+`;
 
 const ProjectStack = styled.div`
   margin-top: auto;
   padding-top: 0.75rem;
-`
+`;
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export function Experience() {
-  const t = useTranslations('experience')
+  const t = useTranslations('experience');
 
   return (
     <Section id="experience" aria-labelledby="experience-title">
@@ -201,8 +201,9 @@ export function Experience() {
                           {project.current && <CurrentTag>{t('current')}</CurrentTag>}
                         </Client>
                         <ProjectRole>{t(`projects.${project.id}.role`)}</ProjectRole>
-                        {t.has(`projects.${project.id}.description`) && (
-                          <ProjectDescription>{t(`projects.${project.id}.description`)}</ProjectDescription>
+                        {/* Descriptions are optional (SAP has none yet), so the type — which lists only today's keys — can't see them. */}
+                        {t.has(`projects.${project.id}.description` as never) && (
+                          <ProjectDescription>{t(`projects.${project.id}.description` as never)}</ProjectDescription>
                         )}
                         {project.stack.length > 0 && (
                           <ProjectStack>
@@ -219,5 +220,5 @@ export function Experience() {
         </Timeline>
       </Container>
     </Section>
-  )
+  );
 }

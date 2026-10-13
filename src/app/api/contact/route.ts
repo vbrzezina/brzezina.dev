@@ -16,7 +16,6 @@ import { CONTACT_LIMITS as LIMITS, EMAIL_PATTERN, HONEYPOT_FIELD, type ContactEr
 
 const DEFAULT_FROM = 'contact@brzezina.dev';
 
-
 function sameOrigin(origin: string, host: string): boolean {
   try {
     return new URL(origin).host === host;
@@ -32,7 +31,12 @@ function sameOrigin(origin: string, host: string): boolean {
 function senderFor(name: string): string {
   const configured = process.env.CONTACT_FROM_EMAIL || DEFAULT_FROM;
   const address = configured.match(/<([^>]+)>/)?.[1] ?? configured.trim();
-  const displayName = name.replace(/["\\<>]/g, '').replace(/\s+/g, ' ').trim().slice(0, 64).trim();
+  const displayName = name
+    .replace(/["\\<>]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 64)
+    .trim();
   return `"${displayName} via brzezina.dev" <${address}>`;
 }
 
@@ -42,7 +46,10 @@ function fail(status: number, error: ContactError) {
 
 /** Collapse whitespace and strip control characters — for values that end up in a subject line. */
 function singleLine(value: string): string {
-  return value.replace(/[\u0000-\u001f\u007f]+/g, ' ').replace(/\s+/g, ' ').trim();
+  return value
+    .replace(/[\u0000-\u001f\u007f]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 export async function POST(request: NextRequest) {

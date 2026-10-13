@@ -19,3 +19,4 @@ Decisions made during the brzezina.dev build. Each TDR records what was chosen, 
 | [008](008-component-architecture.md) | Shared UI primitives vs section-local components | revisit |
 | [009](009-analytics-consent-privacy.md) | Analytics, cookie consent and privacy policy | accepted |
 | [010](010-seo-prerendering-metadata.md) | Static rendering, localized metadata and SEO files | accepted |
+| [011](011-tooling-ci-testing.md) | Linting, formatting, tests and CI | accepted |

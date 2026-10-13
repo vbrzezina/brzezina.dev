@@ -232,14 +232,6 @@ Running record of decisions, alternatives considered, and wrong turns for the br
 **Alternatives considered:** keep `disabled` on the submit button and re-focus it after the response (rejected: screen readers drop focus the moment the button disables); a single live-region summary of all errors (rejected for now: per-field `role="alert"` is simpler and matches how the errors appear on blur).
 **Why:** axe found one issue on the default page state; the audit found four serious ones, all in interaction states axe doesn't exercise (focus order, announcements, the sticky header covering the focused field, a halo at 1.3:1).
 **Wrong turn / lesson:** The first privacy-table fix named the scroll region with the same heading as its parent section, and axe's `landmark-unique` rule failed it, so the region got its own label. And the first control-border measurement said 10:1: it was taken while the field was focused. Measure resting states.
-
-### 2026-10-13 — Trimming the contact route: what a plain-text form really needs
-
-**Decision:** Remove the in-memory rate limiter, the streaming body reader and the forwarded-host handling from the contact route; keep validation, the fixed recipient, the sanitised sender, the honeypot and the simple Origin/Host check.
-**Alternatives considered:** keep everything the review suggested; replace the rate limiter with Cloudflare Turnstile or a Vercel firewall rule (the right tool if spam ever appears, not needed on day one).
-**Why:** The owner asked whether plain-text inputs justify the hardening. The honest split: the server must defend itself against any client, not just the form (so validation and a fixed recipient stay), but a per-instance in-memory limiter is easy to walk around, Vercel already caps request bodies, and the forwarded-host code fixed a problem that only exists off Vercel. About 50 lines and four tests went; no protection that worked went with them.
-**Wrong turn / lesson:** The review reported "the origin check can reject every real submission" as high severity. On Vercel it never did, and the owner's live test had already shown it working. A finding's severity depends on where the code runs; checking that against a known-good production result would have saved a round of code.
-
 ### 2026-10-13 — Review findings → static rendering, localized metadata, visible hero
 
 **Decision:** Pre-render both locales (`generateStaticParams` + `setRequestLocale`), generate all page metadata from one helper with canonical + hreflang + Open Graph, add the missing SEO files (robots, sitemap, icons, OG image, JSON-LD), and make the hero visible without waiting for JavaScript. See ADR-010.
@@ -247,3 +239,17 @@ Running record of decisions, alternatives considered, and wrong turns for the br
 **Why:** A four-way review (design, code, accessibility, SEO) agreed on the same root cause: the site looked right in a browser but was built for a visitor with JavaScript and an English locale. Pages were rendered per request, `/cs` carried English metadata, and the hero's largest paint waited for hydration.
 **Wrong turn / lesson:** The 404 template first imported a styled `Container` into a server component, and the prerender of an unrelated page failed with `createContext is not a function`. Emotion-styled modules must only be imported from client components.
 **Measured:** LCP 1136 ms → 316 ms (desktop) and 3472 ms → 1248 ms (mobile, throttled).
+
+### 2026-10-13 — Tooling: tests that fail when the code is wrong, and CI that guards the rendering mode
+
+**Decision:** ESLint (with jsx-a11y), Prettier via lint-staged, Vitest for the contact route and message parity, Playwright + axe against a production build, typed translation keys, GitHub Actions with a check that the pages are still statically pre-rendered, Dependabot, and security headers. See ADR-011.
+**Alternatives considered:** a mass reformat now (rejected: it would conflict with every open PR; formatting converges through lint-staged instead); a full Content-Security-Policy (deferred: nonces would make the pages dynamic again); testing against `next dev` (rejected: the production build is what ships, and is where static rendering and the real middleware show up).
+**Why:** Every serious defect found in the review was invisible to the tooling that existed: pages silently rendering per request, a honeypot named like an autofill target, an origin check tied to the server's host. Each is now a test or a CI assertion.
+**Wrong turn / lesson:** The first e2e run failed six tests, none of them a site bug: a `role="alert"` locator also matched Next's own route announcer, and an axe run started while a section was mid-fade (blended opacity reads as low contrast). Both were test-design mistakes. Mutation-checking the tests (break the code on purpose, watch them fail) is what makes a green suite trustworthy.
+
+### 2026-10-13 — Trimming the contact route: what a plain-text form really needs
+
+**Decision:** Remove the in-memory rate limiter, the streaming body reader and the forwarded-host handling from the contact route; keep validation, the fixed recipient, the sanitised sender, the honeypot and the simple Origin/Host check.
+**Alternatives considered:** keep everything the review suggested; replace the rate limiter with Cloudflare Turnstile or a Vercel firewall rule (the right tool if spam ever appears, not needed on day one).
+**Why:** The owner asked whether plain-text inputs justify the hardening. The honest split: the server must defend itself against any client, not just the form (so validation and a fixed recipient stay), but a per-instance in-memory limiter is easy to walk around, Vercel already caps request bodies, and the forwarded-host code fixed a problem that only exists off Vercel. About 50 lines and four tests went; no protection that worked went with them.
+**Wrong turn / lesson:** The review reported "the origin check can reject every real submission" as high severity. On Vercel it never did, and the owner's live test had already shown it working. A finding's severity depends on where the code runs; checking that against a known-good production result would have saved a round of code.

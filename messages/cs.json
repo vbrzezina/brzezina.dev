@@ -216,7 +216,7 @@
     "tagline": "Senior full-stack inženýr — TypeScript a React na frontendu, Node.js a AWS za ním. Devět let dodávám produkty; žiju v Česku a jsem k dispozici pro freelance a kontraktorskou spolupráci.",
     "sectionsLabel": "Sekce",
     "elsewhereLabel": "Jinde",
-    "copyright": "© 2026 Václav Brzezina",
+    "copyright": "© {year} Václav Brzezina",
     "privacy": "Ochrana osobních údajů",
     "cookieSettings": "Nastavení cookies",
     "backToTop": "Zpět nahoru"
