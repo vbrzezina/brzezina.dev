@@ -209,6 +209,7 @@ Running record of decisions, alternatives considered, and wrong turns for the br
 **Why:** The diagram draws exactly what the bio's lede says. It belongs to the site's blueprint grid language, works in both themes from tokens alone and costs no image bytes. A stock photo would read as filler on a portfolio whose point is authenticity.
 **Wrong turn / lesson:** Three rounds of photo-picking for this slot. The slot never needed a photo, it needed something that explained the work.
 
+<<<<<<< Updated upstream
 ### 2026-10-13 — Security upgrade: Next.js 15.5.27, next-intl v4; postcss advisory accepted
 
 **Decision:** Patch Next.js to 15.5.27, which fixes two critical RCE advisories, one of them in the Image Optimization API that `next/image` uses. Move next-intl from 3.26.5 to 4.14.9: the middleware open-redirect fix only exists in v4. Leave the postcss advisory open; Next 15 pins postcss to exactly 8.4.31, and the only fix on offer is Next 16.
@@ -260,3 +261,50 @@ Running record of decisions, alternatives considered, and wrong turns for the br
 **Alternatives considered:** keep everything the review suggested; replace the rate limiter with Cloudflare Turnstile or a Vercel firewall rule (the right tool if spam ever appears, not needed on day one).
 **Why:** The owner asked whether plain-text inputs justify the hardening. The honest split: the server must defend itself against any client, not just the form (so validation and a fixed recipient stay), but a per-instance in-memory limiter is easy to walk around, Vercel already caps request bodies, and the forwarded-host code fixed a problem that only exists off Vercel. About 50 lines and four tests went; no protection that worked went with them.
 **Wrong turn / lesson:** The review reported "the origin check can reject every real submission" as high severity. On Vercel it never did, and the owner's live test had already shown it working. A finding's severity depends on where the code runs; checking that against a known-good production result would have saved a round of code.
+=======
+### 2026-10-14 — Full design file rebuilt in Penpot through MCP (Figma quota ran out)
+
+**Decision:** The redesign now has a complete design file in the self-hosted Penpot ("brzezina.dev — Redesign"). It was built entirely by the agent through Penpot's built-in MCP server and contains:
+- **Foundations:** 57 native design tokens in three sets: `core`, `mode/dark` and `mode/light`. A "Mode" theme switches between Dark and Light, and every surface, text and stroke on every page is bound to a token.
+- **Type ramp:** 16 typography styles.
+- **Components:** 13 components, 7 of them variant sets: Button, Badge, LocaleSwitch, IconButton, Field, ProjectCard and Nav.
+- **Pages:** full Desktop 1440 and Mobile 390 home pages made of instances of those components.
+Measured against the live build, the desktop page is 7,534px tall versus 7,536px, and mobile is 11,490px versus 11,579px.
+**Alternatives considered:**
+- Finishing the partial Figma library (the Starter plan's 20 MCP calls a month were already spent).
+- Keeping the spec document as the only source of truth.
+**Why:**
+- **Call budget:** Penpot is self-hosted, so MCP calls are unmetered. The build took roughly 60 calls, which is three months of the Figma quota.
+- **Theming:** Penpot's tokens are W3C-style, with sets and themes, so one Dark/Light switch re-themes the whole file. This mirrors `tokens.css` and `html[data-theme]` one-to-one.
+- **Code parity:** Penpot's flex layout maps directly to the CSS, and the layout was taken from DOM measurements of the running site rather than eyeballed.
+**Wrong turn / lesson:**
+- **Setup:** Penpot MCP isn't a catalogue plugin. You enable it under Integrations, then each file has to be connected via File → MCP Server → Connect. Only one tab holds the connection: another open Penpot file silently "stole" it mid-session. Every write therefore checks the file id first.
+- **API quirks:**
+  - `typography.applyToText` doesn't copy line height, so it is set explicitly.
+  - Main components can only be edited while their page is active.
+  - Token bindings occasionally don't stick when applied right after `openPage`, so the build re-audits for unbound fills.
+- **Gradients:** tokens can't drive gradient stops, and a gradient-mask fade rendered as a dark vignette. The hero grid fade from the CSS was dropped so the hero re-themes cleanly.
+- **Export tool:** it returned stale renders for a freshly edited variant set and caps output at 2000px, so verification used the live canvas instead.
+
+### 2026-10-14 — Penpot file audited against the code
+
+**Decision:** The Penpot file follows the code rather than the spec wherever the two disagree.
+- **Core token set mirrors `theme.ts`:**
+  - `space.1`–`space.32`, the full 13-step scale; the spec only listed 10 steps.
+  - `radius.sm` and `radius.md`.
+  - `layout.*`, with fluid `clamp()` values stored as their min and max.
+  - Each token's description names its source in the code.
+- **Colours:** re-derived independently from `tokens.css` with the OKLab maths. Dark matches exactly; light is within 1/255 of what Chrome renders.
+- **Type:** the 1440 and 390 frames use the exact clamp outputs (title-l 27.84px, display-xl 52.24px), not rounded values.
+- **Borders:** every CSS-bordered box got +1px of padding.
+- **Mobile menu sheet:** added as a component, built from `SiteNav.tsx`.
+
+**Alternatives considered:** Keeping the spec's `space.4…space.128` names, the rounded type sizes, and Penpot's default inner strokes.
+**Why:** The design file should answer "what does the code do", and drift between the two is exactly what the redesign set out to remove.
+**Wrong turn / lesson:**
+- **Border-box drift.** CSS borders add to the box, but Penpot's inner strokes don't. That made every tag, button and card 2px small, and the mobile chips wrapped differently, costing up to 40px per section. Desktop now matches the live page to ±2px per section; mobile is within 20px, mostly from Penpot rounding text box heights up.
+- **Penpot API pitfalls:**
+  - Editing a typography style re-propagates it and resets line height.
+  - Main-component edits don't always reflow their instances until poked.
+  - Swapping a variant drops the instance's fill-width.
+>>>>>>> Stashed changes
