@@ -12,7 +12,7 @@ Decisions made during the brzezina.dev build. Each TDR records what was chosen, 
 | [001](001-framework.md) | Next.js App Router | accepted |
 | [002](002-styling-layer.md) | Emotion + Radix Primitives | accepted |
 | [003](003-deployment-mode.md) | Vercel-native SSG vs static export | accepted |
-| [004](004-i18n-library.md) | next-intl vs next-i18next | accepted / revisit |
+| [004](004-i18n-library.md) | next-intl vs next-i18next | accepted |
 | [005](005-cms-strategy.md) | No-CMS + Keystatic upgrade path | accepted |
 | [006](006-contact-form-mailer.md) | Contact form + Resend | accepted |
 | [007](007-design-system.md) | Design language and visual identity | accepted |

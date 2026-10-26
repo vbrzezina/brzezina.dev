@@ -1,7 +1,7 @@
 # i18n content management approach
 
 Type: grilling
-Status: open
+Status: resolved
 Blocked by: 01, 02, 10
 
 ## Question
@@ -19,3 +19,15 @@ Resolve:
 3. **Routing structure**: confirm `app/[locale]/` folder layout and library-specific wiring
 4. **Content scope**: is all content bilingual, or are some sections EN-only?
 5. **Maintenance workflow**: how does Václav update Czech content going forward?
+
+## Answer
+
+**next-intl**, as built. Resolved with ticket 10 (Vercel-native) on 2026-10-13; the library was chosen in August and has run in production since.
+
+1. **Library:** next-intl v4 (next-i18next rejected: singleton concurrency footgun with the App Router).
+2. **Format:** nested JSON, `messages/en.json` and `messages/cs.json`. Translation keys are type-checked against `en.json`, and a Vitest test enforces EN/CS key parity.
+3. **Routing:** `app/[locale]/` with `localePrefix: 'always'` (`/en`, `/cs`); both locales are pre-rendered.
+4. **Scope:** all content is bilingual.
+5. **Maintenance:** edit the JSON files in git. Keystatic remains the upgrade path (ticket 07) if that becomes a burden.
+
+See `docs/adr/004-i18n-library.md`.
