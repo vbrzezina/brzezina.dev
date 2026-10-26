@@ -209,7 +209,6 @@ Running record of decisions, alternatives considered, and wrong turns for the br
 **Why:** The diagram draws exactly what the bio's lede says. It belongs to the site's blueprint grid language, works in both themes from tokens alone and costs no image bytes. A stock photo would read as filler on a portfolio whose point is authenticity.
 **Wrong turn / lesson:** Three rounds of photo-picking for this slot. The slot never needed a photo, it needed something that explained the work.
 
-<<<<<<< Updated upstream
 ### 2026-10-13 — Security upgrade: Next.js 15.5.27, next-intl v4; postcss advisory accepted
 
 **Decision:** Patch Next.js to 15.5.27, which fixes two critical RCE advisories, one of them in the Image Optimization API that `next/image` uses. Move next-intl from 3.26.5 to 4.14.9: the middleware open-redirect fix only exists in v4. Leave the postcss advisory open; Next 15 pins postcss to exactly 8.4.31, and the only fix on offer is Next 16.
@@ -261,7 +260,7 @@ Running record of decisions, alternatives considered, and wrong turns for the br
 **Alternatives considered:** keep everything the review suggested; replace the rate limiter with Cloudflare Turnstile or a Vercel firewall rule (the right tool if spam ever appears, not needed on day one).
 **Why:** The owner asked whether plain-text inputs justify the hardening. The honest split: the server must defend itself against any client, not just the form (so validation and a fixed recipient stay), but a per-instance in-memory limiter is easy to walk around, Vercel already caps request bodies, and the forwarded-host code fixed a problem that only exists off Vercel. About 50 lines and four tests went; no protection that worked went with them.
 **Wrong turn / lesson:** The review reported "the origin check can reject every real submission" as high severity. On Vercel it never did, and the owner's live test had already shown it working. A finding's severity depends on where the code runs; checking that against a known-good production result would have saved a round of code.
-=======
+
 ### 2026-10-14 — Full design file rebuilt in Penpot through MCP (Figma quota ran out)
 
 **Decision:** The redesign now has a complete design file in the self-hosted Penpot ("brzezina.dev — Redesign"). It was built entirely by the agent through Penpot's built-in MCP server and contains:
@@ -307,4 +306,3 @@ Measured against the live build, the desktop page is 7,534px tall versus 7,536px
   - Editing a typography style re-propagates it and resets line height.
   - Main-component edits don't always reflow their instances until poked.
   - Swapping a variant drops the instance's fill-width.
->>>>>>> Stashed changes

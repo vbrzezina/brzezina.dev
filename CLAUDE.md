@@ -4,10 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project status
 
-Pre-build. The stack and architecture are locked via a wayfinder planning effort — read the map before starting any implementation work:
+Live at https://brzezina.dev (EN and CS). The stack and architecture were locked via a wayfinder planning effort; the decision record is:
 
 - **Map**: `.scratch/brzezina-dev-portfolio/map.md`
 - **Issue tracker**: `.scratch/brzezina-dev-portfolio/issues/` (local markdown — see `docs/agents/issue-tracker.md` for conventions)
+- **ADRs**: `docs/adr/`
 
 ## Confirmed stack
 
@@ -108,7 +109,7 @@ NN —— SECTION NAME
 
 ### Content and i18n
 - All user-facing text lives in translation files (`messages/en.json`, `messages/cs.json`) — no `content.ts` or inline string literals in components
-- i18n library: next-intl (pending ticket 10 resolution for route structure)
+- i18n library: next-intl (`app/[locale]/` routing, `localePrefix: 'always'`)
 - Structured data (skill lists, experience entries, work projects) will be typed TypeScript files in `src/data/` but contain no translatable strings — labels and descriptions go in messages files
 
 ## Case study log
@@ -170,13 +171,6 @@ Types: feat | fix | docs | style | refactor | perf | test | build | ci | chore |
 3. Push the branch and open a PR via `gh pr create`
 4. Never run `git push origin main` — the Claude Code hook will block it
 
-## Open decisions — do not treat research recommendations as approved
+## Decisions
 
-Resolved 2026-10-13: deployment is **Vercel-native** (ticket `10`, ADR-003) and the contact form sends through **Resend** from `src/app/api/contact/route.ts` (ticket `08`, ADR-006).
-
-The following are **not yet decided** — work the relevant ticket before coding against them:
-
-| Decision | Ticket | Notes |
-|----------|--------|-------|
-| i18n library | `06` | next-intl recommended by research; not HITL-approved; next-i18next still viable |
-| CMS strategy | `07` | No-CMS recommended by research; not HITL-approved |
+All wayfinder tickets are resolved: deployment is **Vercel-native** (ticket `10`, ADR-003), the contact form sends through **Resend** from `src/app/api/contact/route.ts` (ticket `08`, ADR-006), i18n is **next-intl** (ticket `06`, ADR-004) and there is **no CMS** (ticket `07`, ADR-005). The Blog is deferred. Do not treat new research recommendations as approved until the owner confirms them.

@@ -180,5 +180,5 @@ None of these apply to this project.
 |----------|--------|
 | Translation file format | Resolved — flat nested JSON, `messages/` directory |
 | Routing structure | Resolved — `app/[locale]/` with `localePrefix: 'always'` |
-| Content scope | Partially — all sections EN/CS; some Czech translations still to be written |
-| Maintenance workflow | Open — how does Václav update Czech content? Git + editor for now; Keystatic if editing friction grows (see ADR-005) |
+| Content scope | Resolved — all sections are bilingual; a Vitest test enforces EN/CS key parity |
+| Maintenance workflow | Resolved — edit the JSON in git; Keystatic if editing friction grows (see ADR-005) |
