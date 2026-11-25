@@ -306,3 +306,10 @@ Measured against the live build, the desktop page is 7,534px tall versus 7,536px
   - Editing a typography style re-propagates it and resets line height.
   - Main-component edits don't always reflow their instances until poked.
   - Swapping a variant drops the instance's fill-width.
+
+### 2026-11-25 — Site name is the person, not the domain
+
+**Decision:** WebSite structured data and `og:site_name` use "Václav Brzezina" as the site name, with "brzezina.dev" as `alternateName`. The second segment of the CS title now starts with a capital letter ("Freelance React a TypeScript vývojář, Praha").
+**Alternatives considered:** Keeping the domain as the site name and only capitalising the title.
+**Why:** On a search for the name, Google showed the site as "brzezina.dev" and cut "Václav Brzezina —" off the title, so the result read "freelance React a TypeScript vývojář, Praha": lowercase, with no name. Google takes the site name from WebSite.name, and people searching for a person expect to see that person's name. Whatever Google trims, the remaining segment now reads as a heading.
+**Wrong turn / lesson (optional):** A title that starts with the name does not guarantee Google shows it. Google drops a segment it treats as the brand, so every segment has to stand on its own.

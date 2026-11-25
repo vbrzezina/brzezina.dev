@@ -3,6 +3,8 @@
 export const SECTION_IDS = ['about', 'experience', 'services', 'work', 'contact'] as const;
 
 export const site = {
+  /** Site name for Google (WebSite structured data) and og:site_name — the person, not the domain. */
+  name: 'Václav Brzezina',
   /** Canonical origin — used for metadataBase, canonical/hreflang URLs, the sitemap and structured data. */
   url: 'https://brzezina.dev',
   githubUrl: 'https://github.com/vbrzezina',

@@ -39,7 +39,7 @@ export function pageMetadata({ locale, path = '', title, description }: PageMeta
     },
     openGraph: {
       type: 'website',
-      siteName: site.url.replace('https://', ''),
+      siteName: site.name,
       locale: OG_LOCALE[locale as keyof typeof OG_LOCALE] ?? OG_LOCALE.en,
       alternateLocale: OG_LOCALE[other],
       url,
