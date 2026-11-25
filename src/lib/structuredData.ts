@@ -58,7 +58,9 @@ export function homeStructuredData({ locale, description, jobTitle, serviceNames
         '@type': 'WebSite',
         '@id': `${site.url}/#website`,
         url: site.url,
-        name: site.url.replace('https://', ''),
+        // Google takes its site name from here; the domain stays as the alternative.
+        name: site.name,
+        alternateName: site.url.replace('https://', ''),
         inLanguage: ['en', 'cs'],
         publisher: { '@id': `${site.url}/#person` },
       },
