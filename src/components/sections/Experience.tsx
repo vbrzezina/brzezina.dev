@@ -117,11 +117,21 @@ const Project = styled.div`
   }
 `;
 
+const ClientLine = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+`;
+
+/* The heading holds only the client's name; the terminal arrow is drawn in CSS so search engines and
+   screen readers don't read it as part of the name. */
 const Client = styled.h4`
   ${type.titleM}
   color: ${({ theme }) => theme.colors.fg};
 
-  span[aria-hidden] {
+  &::before {
+    content: '>';
+    content: '>' / '';
     font-family: ${({ theme }) => theme.fonts.mono};
     font-weight: 400;
     color: ${({ theme }) => theme.colors.accent};
@@ -131,7 +141,6 @@ const Client = styled.h4`
 
 const CurrentTag = styled.span`
   ${type.monoEyebrow}
-  align-self: center;
   margin-left: 0.75rem;
   padding: 0.125rem 0.5rem;
   border-radius: ${({ theme }) => theme.radius.sm};
@@ -195,11 +204,10 @@ export function Experience() {
                   {employer.projects.map((project, i) => (
                     <Reveal key={project.id} as="li" delay={i * 70}>
                       <Project>
-                        <Client>
-                          <span aria-hidden="true">&gt;</span>
-                          {project.client}
+                        <ClientLine>
+                          <Client>{project.client}</Client>
                           {project.current && <CurrentTag>{t('current')}</CurrentTag>}
-                        </Client>
+                        </ClientLine>
                         <ProjectRole>{t(`projects.${project.id}.role`)}</ProjectRole>
                         {/* Descriptions are optional (SAP has none yet), so the type — which lists only today's keys — can't see them. */}
                         {t.has(`projects.${project.id}.description` as never) && (

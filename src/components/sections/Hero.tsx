@@ -1,15 +1,15 @@
-'use client'
+'use client';
 
-import Image from 'next/image'
-import styled from '@emotion/styled'
-import { useTranslations } from 'next-intl'
-import { Container } from '@/components/layout'
-import { Reveal } from '@/components/Reveal'
-import { Button, Icon, StatusPill } from '@/components/ui'
-import { CLIENTS, WHOAMI } from '@/data/site'
-import { gridBackdrop } from '@/styles/backdrop'
-import { type } from '@/styles/typography'
-import heroPortrait from '@/assets/photos/portrait-hero.jpg'
+import Image from 'next/image';
+import styled from '@emotion/styled';
+import { useTranslations } from 'next-intl';
+import { Container } from '@/components/layout';
+import { Reveal } from '@/components/Reveal';
+import { Button, Icon, StatusPill } from '@/components/ui';
+import { CLIENTS, WHOAMI } from '@/data/site';
+import { gridBackdrop } from '@/styles/backdrop';
+import { type } from '@/styles/typography';
+import heroPortrait from '@/assets/photos/portrait-hero.jpg';
 
 // ─── Backdrop ─────────────────────────────────────────────────────────────────
 
@@ -19,7 +19,7 @@ const HeroSection = styled.section`
   margin-top: calc(-1 * ${({ theme }) => theme.layout.navHeight});
   padding-top: calc(${({ theme }) => theme.layout.navHeight} + clamp(3rem, 2rem + 4vw, 6rem));
   padding-bottom: clamp(3rem, 2rem + 3vw, 5rem);
-`
+`;
 
 /** 72px technical grid, masked so it dissolves before the edges. */
 const Grid = styled.div`
@@ -30,7 +30,7 @@ const Grid = styled.div`
   background-position: center top;
   mask-image: radial-gradient(ellipse 80% 70% at 60% 35%, #000 30%, transparent 75%);
   -webkit-mask-image: radial-gradient(ellipse 80% 70% at 60% 35%, #000 30%, transparent 75%);
-`
+`;
 
 const Glow = styled.div`
   position: absolute;
@@ -41,7 +41,7 @@ const Glow = styled.div`
   border-radius: 50%;
   pointer-events: none;
   background: radial-gradient(circle, ${({ theme }) => theme.colors.accentSubtle} 0%, transparent 65%);
-`
+`;
 
 // ─── Layout ───────────────────────────────────────────────────────────────────
 
@@ -55,40 +55,42 @@ const Layout = styled.div`
     grid-template-columns: 7fr 5fr;
     gap: 4rem;
   }
-`
+`;
 
-const Copy = styled.div``
+const Copy = styled.div``;
 
 const Name = styled.h1`
   ${type.displayXl}
   color: ${({ theme }) => theme.colors.fg};
   margin-top: 1.75rem;
-`
+`;
 
 const NameLine = styled.span`
   display: block;
-`
+`;
 
-const Role = styled.p`
+// Part of the h1, so the page's main heading carries the role as well as the name.
+const Role = styled.span`
   ${type.monoS}
+  display: block;
   color: ${({ theme }) => theme.colors.accent};
   margin-top: 1.5rem;
   letter-spacing: 0.04em;
-`
+`;
 
 const Tagline = styled.p`
   ${type.titleL}
   color: ${({ theme }) => theme.colors.fg};
   margin-top: 0.75rem;
   max-width: 30ch;
-`
+`;
 
 const Intro = styled.p`
   ${type.bodyL}
   color: ${({ theme }) => theme.colors.fgSecondary};
   margin-top: 1.25rem;
   max-width: 36rem;
-`
+`;
 
 const Actions = styled.div`
   display: flex;
@@ -105,7 +107,7 @@ const Actions = styled.div`
       flex: 0 0 auto;
     }
   }
-`
+`;
 
 // ─── Portrait + whoami ────────────────────────────────────────────────────────
 
@@ -119,7 +121,7 @@ const Visual = styled.div`
     justify-self: end;
     padding-bottom: 4.5rem;
   }
-`
+`;
 
 const Portrait = styled.div`
   position: relative;
@@ -133,7 +135,7 @@ const Portrait = styled.div`
   ${({ theme }) => theme.mq.lg} {
     width: 82%;
   }
-`
+`;
 
 const PortraitFill = styled.div`
   position: relative;
@@ -146,7 +148,7 @@ const PortraitFill = styled.div`
   img {
     object-fit: cover;
   }
-`
+`;
 
 /** Floating material card — anchored to the portrait's lower-left edge. */
 /* Positioning lives on the Reveal wrapper: its transform would otherwise become the containing block mid-animation. */
@@ -162,7 +164,7 @@ const WhoamiReveal = styled(Reveal)`
     bottom: 0;
     margin-top: 0;
   }
-`
+`;
 
 const Whoami = styled.div`
   ${type.monoS}
@@ -177,7 +179,7 @@ const Whoami = styled.div`
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
   }
-`
+`;
 
 const Facts = styled.dl`
   display: grid;
@@ -191,7 +193,7 @@ const Facts = styled.dl`
   dd {
     color: ${({ theme }) => theme.colors.fg};
   }
-`
+`;
 
 const Prompt = styled.p`
   color: ${({ theme }) => theme.colors.fgTertiary};
@@ -204,7 +206,7 @@ const Prompt = styled.p`
   span {
     color: ${({ theme }) => theme.colors.fg};
   }
-`
+`;
 
 // ─── Proof strip ──────────────────────────────────────────────────────────────
 
@@ -215,12 +217,12 @@ const Proof = styled.div`
   align-items: baseline;
   gap: 0.75rem 2rem;
   margin-top: clamp(4rem, 3rem + 4vw, 6rem);
-`
+`;
 
 const ProofLabel = styled.p`
   ${type.monoEyebrow}
   color: ${({ theme }) => theme.colors.fgTertiary};
-`
+`;
 
 const ClientList = styled.ul`
   ${type.monoBody}
@@ -228,13 +230,13 @@ const ClientList = styled.ul`
   flex-wrap: wrap;
   gap: 0.25rem 1.75rem;
   color: ${({ theme }) => theme.colors.fgSecondary};
-`
+`;
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export function Hero() {
-  const t = useTranslations('hero')
-  const [first, ...rest] = t('heading').split(' ')
+  const t = useTranslations('hero');
+  const [first, ...rest] = t('heading').split(' ');
 
   return (
     <HeroSection id="top" aria-labelledby="hero-title">
@@ -247,12 +249,11 @@ export function Hero() {
             <Reveal eager>
               <StatusPill>{t('status')}</StatusPill>
               <Name id="hero-title">
-                <NameLine>{first}</NameLine> <NameLine>{rest.join(' ')}</NameLine>
+                <NameLine>{first}</NameLine> <NameLine>{rest.join(' ')}</NameLine> <Role>{t('role')}</Role>
               </Name>
             </Reveal>
 
             <Reveal eager delay={80}>
-              <Role>{t('role')}</Role>
               <Tagline>{t('tagline')}</Tagline>
               <Intro>{t('intro')}</Intro>
             </Reveal>
@@ -317,5 +318,5 @@ export function Hero() {
         </Proof>
       </Container>
     </HeroSection>
-  )
+  );
 }
