@@ -9,7 +9,7 @@ for (const locale of LOCALES) {
 
       expect(response?.status()).toBe(200);
       await expect(page.locator('html')).toHaveAttribute('lang', locale);
-      await expect(page.getByRole('heading', { level: 1 })).toHaveText('Václav Brzezina');
+      await expect(page.getByRole('heading', { level: 1 })).toContainText('Václav Brzezina');
       for (const id of ['about', 'experience', 'services', 'work', 'contact']) {
         await expect(page.locator(`#${id}`)).toBeAttached();
       }

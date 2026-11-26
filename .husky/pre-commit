@@ -1,3 +1,5 @@
 # Format and lint what is being committed, then make sure the whole project still type-checks.
 npx lint-staged
+# Move a page's sitemap <lastmod> to today when its copy or data changed.
+node scripts/lastmod.mjs && git add src/data/lastModified.json
 npm run typecheck
